@@ -1,4 +1,4 @@
-name: Zip Deploy (Stable Jino)
+name: ZIP Deploy (Frontend + Backend)
 
 on:
   push:
@@ -10,12 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: oven-sh/setup-bun@v1
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       # =========================
-      # BUILD FRONTEND
+      # SETUP BUN
+      # =========================
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      # =========================
+      # BUILD FRONTEND (NUXT)
       # =========================
       - name: Build frontend
         working-directory: ./frontend
@@ -33,55 +38,40 @@ jobs:
           bun run build
 
       # =========================
-      # CREATE DEPLOY PACKAGE
+      # PREPARE DEPLOY PACKAGE
       # =========================
-      - name: Create deploy zip
+      - name: Prepare deploy folder
         run: |
-          mkdir deploy
+          rm -rf deploy
+          mkdir -p deploy
 
+          # frontend
           cp -r frontend/.output deploy/frontend
+
+          # backend
           cp -r backend deploy/backend
 
+      # =========================
+      # CREATE ZIP
+      # =========================
+      - name: Create zip archive
+        run: |
           zip -r deploy.zip deploy
 
       # =========================
-      # UPLOAD ZIP (FTP or SCP)
+      # UPLOAD ZIP VIA FTP
       # =========================
-      - name: Upload zip
-        uses: appleboy/scp-action@v0.1.7
+      - name: Upload zip to server
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.FTP_HOST }}
+          server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
-          source: "deploy.zip"
-          target: "/home/${{ secrets.FTP_USER }}/deploy/"
 
-      # =========================
-      # REMOTE UNZIP + RESTART
-      # =========================
-      - name: Remote unzip & restart
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.FTP_PORT }}
-          script: |
-            cd ~/deploy
+          local-dir: ./
+          server-dir: /deploy/
 
-            unzip -o deploy.zip -d app_new
+          include: deploy.zip
 
-            rm -rf ~/domains/test.prosrochkapatrol.ru/frontend/*
-            rm -rf ~/domains/api.test.prosrochkapatrol.ru/*
-
-            cp -r app_new/deploy/frontend/* ~/domains/test.prosrochkapatrol.ru/frontend/
-            cp -r app_new/deploy/backend/* ~/domains/api.test.prosrochkapatrol.ru/
-
-            echo "Restarting apps..."
-
-            # если у тебя bun processes:
-            pkill bun || true
-            nohup bun ~/domains/api.test.prosrochkapatrol.ru/server.js > ~/logs/api.log 2>&1 &
-
-            echo "Deploy done"
+          log-level: minimal
