@@ -1,4 +1,4 @@
-name: Deploy to Jino (Bun + Nuxt + Payload)
+name: Deploy via FTP (Jino)
 
 on:
   push:
@@ -14,45 +14,14 @@ jobs:
         uses: actions/checkout@v4
 
       # =========================
-      # DEBUG SECRETS (SAFE)
-      # =========================
-      - name: Debug secrets (safe check)
-        run: |
-          echo "🔍 Checking secrets presence..."
-
-          if [ -z "${{ secrets.SSH_HOST }}" ]; then
-            echo "❌ SSH_HOST is EMPTY or NOT SET"
-            exit 1
-          else
-            echo "✅ SSH_HOST is set (length: ${#SSH_HOST})"
-          fi
-
-          if [ -z "${{ secrets.SSH_USER }}" ]; then
-            echo "❌ SSH_USER is EMPTY or NOT SET"
-            exit 1
-          else
-            echo "✅ SSH_USER is set"
-          fi
-
-          if [ -z "${{ secrets.SSH_KEY }}" ]; then
-            echo "❌ SSH_KEY is EMPTY or NOT SET"
-            exit 1
-          else
-            echo "✅ SSH_KEY is set (length hidden)"
-          fi
-
-          if [ -z "${{ secrets.SSH_PORT }}" ]; then
-            echo "⚠️ SSH_PORT not set, defaulting to 22"
-          else
-            echo "✅ SSH_PORT is set: ${{ secrets.SSH_PORT }}"
-          fi
-
-      # =========================
-      # FRONTEND (NUXT + BUN)
+      # SETUP BUN
       # =========================
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
 
+      # =========================
+      # FRONTEND BUILD (NUXT)
+      # =========================
       - name: Install frontend deps
         working-directory: ./frontend
         run: bun install
@@ -62,7 +31,7 @@ jobs:
         run: bun run build
 
       # =========================
-      # BACKEND (BUN + PAYLOAD)
+      # BACKEND BUILD (BUN + PAYLOAD)
       # =========================
       - name: Install backend deps
         working-directory: ./backend
@@ -73,67 +42,24 @@ jobs:
         run: bun run build
 
       # =========================
-      # UPLOAD FRONTEND
+      # FTP DEPLOY
       # =========================
-      - name: Upload frontend
-        uses: appleboy/scp-action@v0.1.7
+      - name: Deploy frontend via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: frontend/.output/
-          target: /home/${{ secrets.SSH_USER }}/domains/test.prosrochkapatrol.ru/frontend
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT }}
+          local-dir: frontend/.output/
+          server-dir: /domains/test.prosrochkapatrol.ru/frontend/
 
-      # =========================
-      # UPLOAD BACKEND
-      # =========================
-      - name: Upload backend
-        uses: appleboy/scp-action@v0.1.7
+      - name: Deploy backend via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: backend/
-          target: /home/${{ secrets.SSH_USER }}/domains/api.test.prosrochkapatrol.ru
-
-      # =========================
-      # SERVER DEPLOY
-      # =========================
-      - name: Deploy on server (migrate + restart)
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-
-            echo "🚀 CONNECTED TO SERVER"
-
-            echo "📂 Backend dir check..."
-            cd ~/domains/api.test.prosrochkapatrol.ru/backend || exit 1
-
-            echo "📦 Installing backend deps..."
-            bun install
-
-            echo "🧬 Running Payload migrations..."
-            npx payload migrate || bunx payload migrate
-
-            echo "🏗 Building backend..."
-            bun run build
-
-            echo "♻️ Restart backend..."
-
-            pkill -f "bun run start" || true
-            nohup bun run start > backend.log 2>&1 &
-
-            echo "🌐 Restart frontend..."
-
-            cd ~/domains/test.prosrochkapatrol.ru/frontend || exit 1
-
-            pkill -f ".output/server" || true
-            nohup node .output/server/index.mjs > frontend.log 2>&1 &
-
-            echo "🎉 DEPLOY FINISHED SUCCESSFULLY"
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT }}
+          local-dir: backend/
+          server-dir: /domains/api.test.prosrochkapatrol.ru/
