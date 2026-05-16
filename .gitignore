@@ -1,0 +1,41 @@
+# ===== FRONTEND (Nuxt) =====
+frontend/.output
+frontend/.data
+frontend/.nuxt
+frontend/.nitro
+frontend/.cache
+frontend/dist
+
+# ===== BACKEND (Next / Payload) =====
+backend/build
+backend/dist
+backend/media
+backend/.next
+backend/next-env.d.ts
+backend/.vercel
+backend/public/media/
+backend/public/robots.txt
+backend/public/sitemap*.xml
+
+# ===== NODE MODULES =====
+node_modules/
+
+# ===== ENV FILES =====
+.env
+.env.*
+!.env.example
+
+# ===== LOGS =====
+logs/
+*.log
+
+# ===== PLAYWRIGHT =====
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# ===== OS / IDE =====
+.DS_Store
+.fleet
+.idea
