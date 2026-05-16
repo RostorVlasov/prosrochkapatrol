@@ -1,4 +1,4 @@
-name: Deploy to Jino (Nuxt + Bun + Payload)
+name: Deploy to Jino (Bun + Nuxt + Payload)
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,28 +14,23 @@ jobs:
         uses: actions/checkout@v4
 
       # =========================
-      # FRONTEND (NUXT)
-      # =========================
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install frontend deps
-        working-directory: ./frontend
-        run: npm ci
-
-      - name: Build Nuxt
-        working-directory: ./frontend
-        run: npm run build
-
-      # =========================
-      # BACKEND (BUN)
+      # FRONTEND (NUXT + BUN)
       # =========================
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
 
-      - name: Install backend deps
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: bun install
+
+      - name: Build frontend (Nuxt)
+        working-directory: ./frontend
+        run: bun run build
+
+      # =========================
+      # BACKEND (BUN + PAYLOAD)
+      # =========================
+      - name: Install backend dependencies
         working-directory: ./backend
         run: bun install
 
@@ -44,7 +39,7 @@ jobs:
         run: bun run build
 
       # =========================
-      # DEPLOY FRONTEND
+      # UPLOAD FRONTEND
       # =========================
       - name: Upload frontend (.output)
         uses: appleboy/scp-action@v0.1.7
@@ -57,7 +52,7 @@ jobs:
           target: ~/domains/test.prosrochkapatrol.ru/frontend
 
       # =========================
-      # DEPLOY BACKEND
+      # UPLOAD BACKEND
       # =========================
       - name: Upload backend
         uses: appleboy/scp-action@v0.1.7
@@ -70,7 +65,7 @@ jobs:
           target: ~/domains/api.test.prosrochkapatrol.ru
 
       # =========================
-      # SERVER COMMANDS
+      # SERVER DEPLOY
       # =========================
       - name: Run migrations + restart services
         uses: appleboy/ssh-action@v1.0.3
@@ -92,7 +87,7 @@ jobs:
             bun install
 
             echo "🧬 Running Payload migrations..."
-            npx payload migrate
+            bunx payload migrate || npx payload migrate
 
             echo "🏗 Building backend..."
             bun run build
@@ -115,7 +110,5 @@ jobs:
 
             pkill -f ".output/server" || true
             nohup node .output/server/index.mjs > frontend.log 2>&1 &
-
-            echo "✅ Frontend running"
 
             echo "🎉 DEPLOY COMPLETE"
