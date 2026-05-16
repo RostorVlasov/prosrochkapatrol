@@ -1,4 +1,4 @@
-name: Deploy via FTP (Jino)
+name: Zip Deploy (Stable Jino)
 
 on:
   push:
@@ -10,83 +10,78 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v1
 
       # =========================
-      # SETUP BUN
+      # BUILD FRONTEND
       # =========================
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
-
-      # =========================
-      # FRONTEND BUILD (NUXT)
-      # =========================
-      - name: Install frontend deps
-        working-directory: ./frontend
-        run: bun install
-
       - name: Build frontend
         working-directory: ./frontend
-        run: bun run build
+        run: |
+          bun install
+          bun run build
 
       # =========================
-      # BACKEND BUILD (BUN + PAYLOAD)
+      # BUILD BACKEND
       # =========================
-      - name: Install backend deps
-        working-directory: ./backend
-        run: bun install
-
       - name: Build backend
         working-directory: ./backend
-        run: bun run build
-
-      # =========================
-      # CLEANUP BEFORE FTP (ВАЖНО)
-      # =========================
-      - name: Clean unnecessary files before deploy
         run: |
-          echo "Removing junk before upload..."
-
-          # frontend cleanup
-          rm -rf frontend/node_modules
-          rm -rf frontend/.git
-
-          # backend cleanup
-          rm -rf backend/node_modules
-          rm -rf backend/.git
+          bun install
+          bun run build
 
       # =========================
-      # FTP DEPLOY FRONTEND
+      # CREATE DEPLOY PACKAGE
       # =========================
-      - name: Deploy frontend via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Create deploy zip
+        run: |
+          mkdir deploy
+
+          cp -r frontend/.output deploy/frontend
+          cp -r backend deploy/backend
+
+          zip -r deploy.zip deploy
+
+      # =========================
+      # UPLOAD ZIP (FTP or SCP)
+      # =========================
+      - name: Upload zip
+        uses: appleboy/scp-action@v0.1.7
         with:
-          server: ${{ secrets.FTP_HOST }}
+          host: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
+          key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.FTP_PORT }}
-
-          local-dir: frontend/.output/
-
-          server-dir: /domains/test.prosrochkapatrol.ru/frontend/
-
-          # 🔥 ускоряет и убирает лишние пересканирования
-          dangerous-clean-slate: false
+          source: "deploy.zip"
+          target: "/home/${{ secrets.FTP_USER }}/deploy/"
 
       # =========================
-      # FTP DEPLOY BACKEND
+      # REMOTE UNZIP + RESTART
       # =========================
-      - name: Deploy backend via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Remote unzip & restart
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          server: ${{ secrets.FTP_HOST }}
+          host: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
+          key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.FTP_PORT }}
+          script: |
+            cd ~/deploy
 
-          local-dir: backend/
+            unzip -o deploy.zip -d app_new
 
-          server-dir: /domains/api.test.prosrochkapatrol.ru/
+            rm -rf ~/domains/test.prosrochkapatrol.ru/frontend/*
+            rm -rf ~/domains/api.test.prosrochkapatrol.ru/*
 
-          dangerous-clean-slate: false
+            cp -r app_new/deploy/frontend/* ~/domains/test.prosrochkapatrol.ru/frontend/
+            cp -r app_new/deploy/backend/* ~/domains/api.test.prosrochkapatrol.ru/
+
+            echo "Restarting apps..."
+
+            # если у тебя bun processes:
+            pkill bun || true
+            nohup bun ~/domains/api.test.prosrochkapatrol.ru/server.js > ~/logs/api.log 2>&1 &
+
+            echo "Deploy done"
