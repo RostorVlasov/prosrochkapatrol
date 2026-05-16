@@ -42,7 +42,22 @@ jobs:
         run: bun run build
 
       # =========================
-      # FTP DEPLOY
+      # CLEANUP BEFORE FTP (ВАЖНО)
+      # =========================
+      - name: Clean unnecessary files before deploy
+        run: |
+          echo "Removing junk before upload..."
+
+          # frontend cleanup
+          rm -rf frontend/node_modules
+          rm -rf frontend/.git
+
+          # backend cleanup
+          rm -rf backend/node_modules
+          rm -rf backend/.git
+
+      # =========================
+      # FTP DEPLOY FRONTEND
       # =========================
       - name: Deploy frontend via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -51,9 +66,17 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
+
           local-dir: frontend/.output/
+
           server-dir: /domains/test.prosrochkapatrol.ru/frontend/
 
+          # 🔥 ускоряет и убирает лишние пересканирования
+          dangerous-clean-slate: false
+
+      # =========================
+      # FTP DEPLOY BACKEND
+      # =========================
       - name: Deploy backend via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -61,5 +84,9 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
+
           local-dir: backend/
+
           server-dir: /domains/api.test.prosrochkapatrol.ru/
+
+          dangerous-clean-slate: false
