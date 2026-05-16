@@ -1,0 +1,121 @@
+name: Deploy to Jino (Nuxt + Bun + Payload)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # =========================
+      # FRONTEND (NUXT)
+      # =========================
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install frontend deps
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Build Nuxt
+        working-directory: ./frontend
+        run: npm run build
+
+      # =========================
+      # BACKEND (BUN)
+      # =========================
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install backend deps
+        working-directory: ./backend
+        run: bun install
+
+      - name: Build backend
+        working-directory: ./backend
+        run: bun run build
+
+      # =========================
+      # DEPLOY FRONTEND
+      # =========================
+      - name: Upload frontend (.output)
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: frontend/.output
+          target: ~/domains/test.prosrochkapatrol.ru/frontend
+
+      # =========================
+      # DEPLOY BACKEND
+      # =========================
+      - name: Upload backend
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: backend
+          target: ~/domains/api.test.prosrochkapatrol.ru
+
+      # =========================
+      # SERVER COMMANDS
+      # =========================
+      - name: Run migrations + restart services
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+
+            echo "🚀 Starting deployment..."
+
+            # =========================
+            # BACKEND DEPLOY
+            # =========================
+            cd ~/domains/api.test.prosrochkapatrol.ru/backend
+
+            echo "📦 Installing backend deps..."
+            bun install
+
+            echo "🧬 Running Payload migrations..."
+            npx payload migrate
+
+            echo "🏗 Building backend..."
+            bun run build
+
+            echo "♻️ Restarting backend..."
+
+            pkill -f "bun run start" || true
+            pkill -f "node.*payload" || true
+
+            nohup bun run start > backend.log 2>&1 &
+
+            echo "✅ Backend running"
+
+            # =========================
+            # FRONTEND DEPLOY
+            # =========================
+            echo "🌐 Restarting frontend..."
+
+            cd ~/domains/test.prosrochkapatrol.ru/frontend
+
+            pkill -f ".output/server" || true
+            nohup node .output/server/index.mjs > frontend.log 2>&1 &
+
+            echo "✅ Frontend running"
+
+            echo "🎉 DEPLOY COMPLETE"
