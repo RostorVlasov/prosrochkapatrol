@@ -1,0 +1,136 @@
+import { CollectionConfig } from 'payload'
+
+export const Complaints: CollectionConfig = {
+  slug: 'complaints',
+  admin: {
+    useAsTitle: 'store_address',
+    hidden: ({ user }) => user?.role !== 'admin',
+  },
+  labels: {
+    singular: 'Жалоба',
+    plural: 'Жалобы',
+  },
+  access: {
+    create: () => true,
+    read: ({ req: { user } }) => user?.role === 'admin',
+    update: ({ req: { user } }) => user?.role === 'admin',
+    delete: ({ req: { user } }) => user?.role === 'admin',
+  },
+  fields: [
+    {
+      name: 'email',
+      label: 'Email заявителя',
+      type: 'email',
+      required: true,
+      admin: {
+        description: 'Email-адрес для обратной связи с заявителем',
+      },
+    },
+    {
+      name: 'store_address',
+      label: 'Адрес магазина',
+      type: 'text',
+      required: true,
+      admin: {
+        description: 'Адрес магазина, на который подаётся жалоба',
+      },
+    },
+    {
+      name: 'problem_types',
+      label: 'Тип проблемы',
+      type: 'select',
+      hasMany: true,
+      required: true,
+      options: [
+        { label: 'Просроченные товары', value: 'expired_products' },
+        { label: 'Товары плохого качества', value: 'poor_quality' },
+        { label: 'Нарушение условий хранения', value: 'storage_violation' },
+        { label: 'Грязь / антисанитария', value: 'unsanitary' },
+        { label: 'Другое', value: 'other' },
+      ],
+      admin: {
+        description: 'Можно выбрать несколько типов нарушений',
+      },
+    },
+    {
+      name: 'problem_date',
+      label: 'Дата обнаружения проблемы',
+      type: 'text',
+      required: true,
+      admin: {
+        description: 'Укажите дату в свободной форме, например: 12 мая 2025',
+      },
+    },
+    {
+      name: 'staff_contacted',
+      label: 'Обращение к персоналу',
+      type: 'radio',
+      required: true,
+      options: [
+        { label: 'Да, обращался', value: 'yes' },
+        { label: 'Нет, не обращался', value: 'no' },
+      ],
+      admin: {
+        description: 'Была ли попытка решить проблему на месте через персонал магазина',
+      },
+    },
+    {
+      name: 'description',
+      label: 'Описание проблемы',
+      type: 'textarea',
+      required: true,
+      admin: {
+        description: 'Подробное описание нарушения в свободной форме',
+      },
+    },
+    {
+      name: 'photos',
+      label: 'Фотографии (доказательства)',
+      type: 'array',
+      admin: {
+        description: 'Фотографии подтверждающие факт нарушения. Файлы необходимо загрузить заранее через /api/media',
+      },
+      fields: [
+        {
+          name: 'photo',
+          label: 'Фото',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'status',
+      label: 'Статус обработки',
+      type: 'select',
+      defaultValue: 'new',
+      access: {
+        create: () => false,
+        update: ({ req: { user } }) => user?.role === 'admin',
+      },
+      options: [
+        { label: 'Новая', value: 'new' },
+        { label: 'В работе', value: 'in_progress' },
+        { label: 'Закрыта', value: 'closed' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Текущий статус рассмотрения жалобы администратором',
+      },
+    },
+    {
+      name: 'admin_note',
+      label: 'Заметка администратора',
+      type: 'textarea',
+      access: {
+        create: () => false,
+        update: ({ req: { user } }) => user?.role === 'admin',
+      },
+      admin: {
+        position: 'sidebar',
+        description: 'Внутренняя заметка для администраторов, не видна заявителю',
+      },
+    },
+  ],
+}

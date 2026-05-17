@@ -69,6 +69,10 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    posts: Post;
+    rubrics: Rubric;
+    shops: Shop;
+    complaints: Complaint;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +82,10 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
+    rubrics: RubricsSelect<false> | RubricsSelect<true>;
+    shops: ShopsSelect<false> | ShopsSelect<true>;
+    complaints: ComplaintsSelect<false> | ComplaintsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -123,6 +131,14 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  /**
+   * Полное имя пользователя
+   */
+  name: string;
+  /**
+   * Роль определяет права доступа пользователя в системе
+   */
+  role: 'inspector' | 'editor' | 'admin';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -148,7 +164,14 @@ export interface User {
  */
 export interface Media {
   id: number;
-  alt: string;
+  /**
+   * Описание изображения для SEO и доступности (alt-тег)
+   */
+  alt?: string | null;
+  /**
+   * Пользователь, загрузивший этот файл
+   */
+  uploaded_by?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -160,6 +183,327 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  /**
+   * Заголовок поста, отображается в списке и на странице
+   */
+  title: string;
+  /**
+   * Основной текст поста с форматированием
+   */
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Главное изображение поста
+   */
+  cover?: (number | null) | Media;
+  /**
+   * Соотношение сторон обложки в формате ширина/высота, например: 19/6
+   */
+  cover_ratio?: string | null;
+  /**
+   * Галерея или иллюстрации к посту
+   */
+  images?:
+    | {
+        image: number | Media;
+        /**
+         * Краткое описание изображения
+         */
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Черновик — не виден публично. На рассмотрении — ожидает одобрения админа. Опубликовано — виден всем.
+   */
+  status: 'draft' | 'pending' | 'published';
+  /**
+   * Проставляется автоматически в момент публикации
+   */
+  published_at?: string | null;
+  /**
+   * Проставляется автоматически при создании поста
+   */
+  author?: (number | null) | User;
+  /**
+   * Одна или несколько рубрик для категоризации поста
+   */
+  rubrics?: (number | Rubric)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rubrics".
+ */
+export interface Rubric {
+  id: number;
+  /**
+   * Отображаемое название рубрики
+   */
+  name: string;
+  /**
+   * URL-идентификатор рубрики, например: food-quality (только латиница, дефисы)
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shops".
+ */
+export interface Shop {
+  id: number;
+  /**
+   * Официальное название торговой точки
+   */
+  store_name: string;
+  /**
+   * Полный адрес магазина включая город и улицу
+   */
+  address: string;
+  /**
+   * Статус проверки отчёта администратором
+   */
+  status: 'pending' | 'published' | 'rejected';
+  /**
+   * Инспектор или редактор, создавший отчёт
+   */
+  created_by?: (number | null) | User;
+  /**
+   * Общая итоговая оценка магазина от 0.1 до 5
+   */
+  total_score?: number | null;
+  /**
+   * Итоговая оценка раздела качества товаров от 0.1 до 5
+   */
+  quality_score?: number | null;
+  /**
+   * Итоговая оценка раздела условий хранения от 0.1 до 5
+   */
+  storage_score?: number | null;
+  /**
+   * Список выявленных преимуществ в формате JSON-массива строк
+   */
+  advantages?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Список выявленных недостатков в формате JSON-массива строк
+   */
+  disadvantages?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Дата фактического проведения проверки
+   */
+  date_checked?: string | null;
+  /**
+   * Основание для проведения проверки
+   */
+  reason_type?: ('planned' | 'complaint') | null;
+  /**
+   * Содержание жалобы, послужившей основанием для проверки
+   */
+  complaint_text?: string | null;
+  /**
+   * Была ли ранее проведена проверка этого магазина
+   */
+  prev_check_status?: ('never' | 'done') | null;
+  /**
+   * Дата предыдущей проверки этого магазина
+   */
+  last_check_date?: string | null;
+  /**
+   * Общее количество проверок магазина за всё время
+   */
+  total_checks_count?: number | null;
+  /**
+   * Исходная оценка качества до применения штрафов (0.1–5)
+   */
+  quality_start_score?: number | null;
+  /**
+   * Зафиксированные факты нарушений в формате JSON-массива
+   */
+  quality_facts?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Сумма баллов, снятых за нарушения качества (0.1–5)
+   */
+  quality_total_deduction?: number | null;
+  /**
+   * Финальная оценка качества после вычета штрафов (0.1–5)
+   */
+  quality_final_score?: number | null;
+  /**
+   * Произвольный комментарий инспектора по разделу качества
+   */
+  quality_free_text?: string | null;
+  /**
+   * Список нарушенных нормативных статей в формате JSON-массива
+   */
+  quality_violated_articles?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Отметьте если выявлены нарушения условий хранения товаров
+   */
+  storage_has_violations?: boolean | null;
+  /**
+   * Зафиксированные факты нарушений хранения в формате JSON-массива
+   */
+  storage_facts?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Сумма баллов, снятых за нарушения хранения (0.1–5)
+   */
+  storage_total_deduction?: number | null;
+  /**
+   * Финальная оценка условий хранения после вычета штрафов (0.1–5)
+   */
+  storage_final_score?: number | null;
+  /**
+   * Произвольный комментарий инспектора по разделу хранения
+   */
+  storage_free_text?: string | null;
+  /**
+   * Список нарушенных нормативных статей в формате JSON-массива
+   */
+  storage_violated_articles?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Итоговый комментарий инспектора по результатам проверки
+   */
+  inspector_comment?: string | null;
+  /**
+   * Комментарий администратора, публикуемый вместе с отчётом
+   */
+  final_comment?: string | null;
+  /**
+   * Фотографии сделанные в ходе проверки магазина
+   */
+  photos?:
+    | {
+        photo: number | Media;
+        /**
+         * Краткое описание того что изображено на фото
+         */
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "complaints".
+ */
+export interface Complaint {
+  id: number;
+  /**
+   * Email-адрес для обратной связи с заявителем
+   */
+  email: string;
+  /**
+   * Адрес магазина, на который подаётся жалоба
+   */
+  store_address: string;
+  /**
+   * Можно выбрать несколько типов нарушений
+   */
+  problem_types: ('expired_products' | 'poor_quality' | 'storage_violation' | 'unsanitary' | 'other')[];
+  /**
+   * Укажите дату в свободной форме, например: 12 мая 2025
+   */
+  problem_date: string;
+  /**
+   * Была ли попытка решить проблему на месте через персонал магазина
+   */
+  staff_contacted: 'yes' | 'no';
+  /**
+   * Подробное описание нарушения в свободной форме
+   */
+  description: string;
+  /**
+   * Фотографии подтверждающие факт нарушения. Файлы необходимо загрузить заранее через /api/media
+   */
+  photos?:
+    | {
+        photo: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Текущий статус рассмотрения жалобы администратором
+   */
+  status?: ('new' | 'in_progress' | 'closed') | null;
+  /**
+   * Внутренняя заметка для администраторов, не видна заявителю
+   */
+  admin_note?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -192,6 +536,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'rubrics';
+        value: number | Rubric;
+      } | null)
+    | ({
+        relationTo: 'shops';
+        value: number | Shop;
+      } | null)
+    | ({
+        relationTo: 'complaints';
+        value: number | Complaint;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -240,6 +600,8 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -263,6 +625,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  uploaded_by?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -274,6 +637,105 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  body?: T;
+  cover?: T;
+  cover_ratio?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  status?: T;
+  published_at?: T;
+  author?: T;
+  rubrics?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rubrics_select".
+ */
+export interface RubricsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shops_select".
+ */
+export interface ShopsSelect<T extends boolean = true> {
+  store_name?: T;
+  address?: T;
+  status?: T;
+  created_by?: T;
+  total_score?: T;
+  quality_score?: T;
+  storage_score?: T;
+  advantages?: T;
+  disadvantages?: T;
+  date_checked?: T;
+  reason_type?: T;
+  complaint_text?: T;
+  prev_check_status?: T;
+  last_check_date?: T;
+  total_checks_count?: T;
+  quality_start_score?: T;
+  quality_facts?: T;
+  quality_total_deduction?: T;
+  quality_final_score?: T;
+  quality_free_text?: T;
+  quality_violated_articles?: T;
+  storage_has_violations?: T;
+  storage_facts?: T;
+  storage_total_deduction?: T;
+  storage_final_score?: T;
+  storage_free_text?: T;
+  storage_violated_articles?: T;
+  inspector_comment?: T;
+  final_comment?: T;
+  photos?:
+    | T
+    | {
+        photo?: T;
+        caption?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "complaints_select".
+ */
+export interface ComplaintsSelect<T extends boolean = true> {
+  email?: T;
+  store_address?: T;
+  problem_types?: T;
+  problem_date?: T;
+  staff_contacted?: T;
+  description?: T;
+  photos?:
+    | T
+    | {
+        photo?: T;
+        id?: T;
+      };
+  status?: T;
+  admin_note?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

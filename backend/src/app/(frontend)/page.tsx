@@ -19,11 +19,11 @@ export default async function HomePage() {
     <div className="home">
       <div className="content">
         <picture>
-          <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-favicon.svg" />
+          <source srcSet="/logo.png" />
           <Image
-            alt="Payload Logo"
+            alt="FreshCheck Logo"
             height={65}
-            src="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-favicon.svg"
+            src="/logo.png"
             width={65}
           />
         </picture>
