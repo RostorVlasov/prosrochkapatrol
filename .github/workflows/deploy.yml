@@ -54,7 +54,6 @@ jobs:
           cp -r frontend/.output deploy/frontend/
 
           # Бэкенд — только билд без node_modules
-          # standalone НЕ копируем — зависимости поставит сервер
           mkdir -p deploy/backend/.next
           cp -r backend/.next/server deploy/backend/.next/
           cp -r backend/.next/static deploy/backend/.next/
@@ -120,6 +119,8 @@ jobs:
             BACK=/var/www/prosrochkapatrol/back
             FRONT=/var/www/prosrochkapatrol/front
             LOGS=/var/log/prosrochkapatrol
+            BACK_PID=/var/run/prosrochkapatrol-back.pid
+            FRONT_PID=/var/run/prosrochkapatrol-front.pid
 
             mkdir -p $LOGS
 
@@ -173,11 +174,20 @@ jobs:
             echo "✅ Migrations done"
 
             # =========================
-            # KILL OLD PROCESSES
+            # KILL OLD PROCESSES (по PID, не по имени!)
             # =========================
             echo "🔪 Killing old processes..."
-            pkill -f "prosrochkapatrol/back" 2>/dev/null || true
-            pkill -f "prosrochkapatrol/front" 2>/dev/null || true
+
+            if [ -f "$BACK_PID" ]; then
+              kill -9 $(cat $BACK_PID) 2>/dev/null || true
+              rm -f $BACK_PID
+            fi
+
+            if [ -f "$FRONT_PID" ]; then
+              kill -9 $(cat $FRONT_PID) 2>/dev/null || true
+              rm -f $FRONT_PID
+            fi
+
             sleep 3
 
             # =========================
@@ -186,7 +196,7 @@ jobs:
             echo "▶ Starting backend on port 3333..."
             cd $BACK
             PORT=3333 nohup node node_modules/.bin/next start > $LOGS/backend.log 2>&1 &
-            echo $! > /var/run/prosrochkapatrol-back.pid
+            echo $! > $BACK_PID
 
             # =========================
             # START FRONTEND
@@ -194,14 +204,14 @@ jobs:
             echo "▶ Starting frontend on port 3001..."
             cd $FRONT
             PORT=3001 nohup node .output/server/index.mjs > $LOGS/frontend.log 2>&1 &
-            echo $! > /var/run/prosrochkapatrol-front.pid
+            echo $! > $FRONT_PID
 
             # =========================
             # CHECK
             # =========================
             sleep 5
 
-            if kill -0 $(cat /var/run/prosrochkapatrol-back.pid) 2>/dev/null; then
+            if kill -0 $(cat $BACK_PID) 2>/dev/null; then
               echo "✅ Backend is running on port 3333"
             else
               echo "❌ Backend crashed! Log:"
@@ -209,7 +219,7 @@ jobs:
               exit 1
             fi
 
-            if kill -0 $(cat /var/run/prosrochkapatrol-front.pid) 2>/dev/null; then
+            if kill -0 $(cat $FRONT_PID) 2>/dev/null; then
               echo "✅ Frontend is running on port 3001"
             else
               echo "❌ Frontend crashed! Log:"
