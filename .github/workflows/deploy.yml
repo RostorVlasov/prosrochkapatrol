@@ -1,4 +1,4 @@
-name: ZIP Deploy (Frontend + Backend)
+name: Deploy to VDS
 
 on:
   push:
@@ -14,64 +14,204 @@ jobs:
         uses: actions/checkout@v4
 
       # =========================
-      # SETUP BUN
+      # SETUP
       # =========================
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
 
       # =========================
-      # BUILD FRONTEND (NUXT)
+      # BUILD FRONTEND (Nuxt)
       # =========================
+      - name: Install frontend deps
+        working-directory: ./frontend
+        run: bun install
+
       - name: Build frontend
         working-directory: ./frontend
-        run: |
-          bun install
-          bun run build
+        run: bun run build
 
       # =========================
-      # BUILD BACKEND
+      # BUILD BACKEND (Payload/Next)
       # =========================
+      - name: Install backend deps
+        working-directory: ./backend
+        run: bun install
+
       - name: Build backend
         working-directory: ./backend
-        run: |
-          bun install
-          bun run build
+        run: bun run build
 
       # =========================
-      # PREPARE DEPLOY PACKAGE
+      # ADD LINUX BINARIES TO STANDALONE
+      # GitHub Actions = ubuntu-latest = linux-x64, платформа совпадает
+      # =========================
+      - name: Install Linux native binaries into standalone
+        working-directory: ./backend
+        run: |
+          npm install @libsql/linux-x64-gnu \
+            --prefix .next/standalone \
+            --ignore-scripts --no-save
+
+          npm install @img/sharp-linux-x64 @img/sharp-libvips-linux-x64 \
+            --prefix .next/standalone \
+            --ignore-scripts --no-save
+
+      # =========================
+      # PREPARE DEPLOY FOLDER
       # =========================
       - name: Prepare deploy folder
         run: |
           rm -rf deploy
-          mkdir -p deploy
+          mkdir -p deploy/frontend
+          mkdir -p deploy/backend
 
-          # frontend
-          cp -r frontend/.output deploy/frontend
+          # Фронтенд
+          cp -r frontend/.output deploy/frontend/
 
-          # backend
-          cp -r backend deploy/backend
+          # Бэкенд — standalone со всеми зависимостями
+          cp -r backend/.next/standalone/. deploy/backend/
+
+          # .next/static — standalone его не включает
+          mkdir -p deploy/backend/.next/static
+          cp -r backend/.next/static/. deploy/backend/.next/static/
+
+          # public
+          cp -r backend/public deploy/backend/ 2>/dev/null || true
+
+          # Для миграций на сервере
+          cp backend/tsconfig.json deploy/backend/
+          cp -r backend/src deploy/backend/
 
       # =========================
       # CREATE ZIP
       # =========================
-      - name: Create zip archive
+      - name: Create deploy.zip
         run: |
           zip -r deploy.zip deploy
+          echo "📦 Archive size: $(du -sh deploy.zip | cut -f1)"
 
       # =========================
-      # UPLOAD ZIP VIA FTP
+      # UPLOAD ZIP TO SERVER
+      # Один файл — быстро и надёжно
       # =========================
-      - name: Upload zip to server
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Upload deploy.zip to server
+        uses: appleboy/scp-action@v0.1.7
         with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "deploy.zip"
+          target: "/var/www/prosrochkapatrol/"
 
-          local-dir: ./
-          server-dir: /deploy/
+      # =========================
+      # DEPLOY ON SERVER
+      # =========================
+      - name: Deploy on server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            set -e
 
-          include: deploy.zip
+            DEPLOY_ZIP=/var/www/prosrochkapatrol/deploy.zip
+            WORKDIR=/var/www/prosrochkapatrol/work
+            BACK=/var/www/prosrochkapatrol/back
+            FRONT=/var/www/prosrochkapatrol/front
+            LOGS=/var/log/prosrochkapatrol
 
-          log-level: minimal
+            mkdir -p $LOGS
+
+            # =========================
+            # UNZIP
+            # =========================
+            echo "📦 Unzipping..."
+            rm -rf $WORKDIR
+            mkdir -p $WORKDIR
+            unzip -o $DEPLOY_ZIP -d $WORKDIR
+
+            # =========================
+            # DEPLOY FRONTEND
+            # =========================
+            echo "🌐 Deploy frontend..."
+            rm -rf $FRONT/.output
+            mkdir -p $FRONT
+            cp -r $WORKDIR/deploy/frontend/.output $FRONT/
+
+            # =========================
+            # DEPLOY BACKEND
+            # =========================
+            echo "⚙️ Deploy backend..."
+
+            # Не трогаем: .env, БД, media
+            rm -rf $BACK/.next
+            rm -rf $BACK/public
+            rm -rf $BACK/node_modules
+
+            cp -r $WORKDIR/deploy/backend/. $BACK/
+
+            # Докладываем static в нужное место для standalone
+            mkdir -p $BACK/.next/standalone/.next
+            cp -r $BACK/.next/static $BACK/.next/standalone/.next/static 2>/dev/null || true
+            cp -r $BACK/public $BACK/.next/standalone/public 2>/dev/null || true
+
+            # =========================
+            # MIGRATIONS
+            # =========================
+            echo "🗄 Running migrations..."
+            cd $BACK/.next/standalone
+            npx payload migrate
+            echo "✅ Migrations done"
+
+            # =========================
+            # KILL OLD PROCESSES
+            # =========================
+            echo "🔪 Killing old processes..."
+            pkill -f "prosrochkapatrol/back" 2>/dev/null || true
+            pkill -f "prosrochkapatrol/front" 2>/dev/null || true
+            sleep 3
+
+            # =========================
+            # START BACKEND
+            # =========================
+            echo "▶ Starting backend on port 3333..."
+            cd $BACK/.next/standalone
+            PORT=3333 nohup node server.js > $LOGS/backend.log 2>&1 &
+            echo $! > /var/run/prosrochkapatrol-back.pid
+
+            # =========================
+            # START FRONTEND
+            # =========================
+            echo "▶ Starting frontend on port 3001..."
+            cd $FRONT
+            PORT=3001 nohup node .output/server/index.mjs > $LOGS/frontend.log 2>&1 &
+            echo $! > /var/run/prosrochkapatrol-front.pid
+
+            # =========================
+            # CHECK
+            # =========================
+            sleep 5
+
+            if kill -0 $(cat /var/run/prosrochkapatrol-back.pid) 2>/dev/null; then
+              echo "✅ Backend is running on port 3333"
+            else
+              echo "❌ Backend crashed! Log:"
+              tail -30 $LOGS/backend.log
+              exit 1
+            fi
+
+            if kill -0 $(cat /var/run/prosrochkapatrol-front.pid) 2>/dev/null; then
+              echo "✅ Frontend is running on port 3001"
+            else
+              echo "❌ Frontend crashed! Log:"
+              tail -20 $LOGS/frontend.log
+              exit 1
+            fi
+
+            # Чистим zip и рабочую папку
+            rm -rf $WORKDIR $DEPLOY_ZIP
+
+            echo "🎉 DEPLOY COMPLETE"
