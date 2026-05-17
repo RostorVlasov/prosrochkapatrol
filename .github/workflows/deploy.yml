@@ -42,22 +42,7 @@ jobs:
         run: bun run build
 
       # =========================
-      # ADD LINUX BINARIES TO STANDALONE
-      # GitHub Actions = ubuntu-latest = linux-x64, платформа совпадает
-      # =========================
-      - name: Install Linux native binaries into standalone
-        working-directory: ./backend
-        run: |
-          npm install @libsql/linux-x64-gnu \
-            --prefix .next/standalone \
-            --ignore-scripts --no-save
-
-          npm install @img/sharp-linux-x64 @img/sharp-libvips-linux-x64 \
-            --prefix .next/standalone \
-            --ignore-scripts --no-save
-
-      # =========================
-      # PREPARE DEPLOY FOLDER
+      # PREPARE DEPLOY FOLDER (без node_modules)
       # =========================
       - name: Prepare deploy folder
         run: |
@@ -68,19 +53,32 @@ jobs:
           # Фронтенд
           cp -r frontend/.output deploy/frontend/
 
-          # Бэкенд — standalone со всеми зависимостями
-          cp -r backend/.next/standalone/. deploy/backend/
+          # Бэкенд — только билд без node_modules
+          # standalone НЕ копируем — зависимости поставит сервер
+          mkdir -p deploy/backend/.next
+          cp -r backend/.next/server deploy/backend/.next/
+          cp -r backend/.next/static deploy/backend/.next/
+          cp backend/.next/BUILD_ID deploy/backend/.next/
+          cp backend/.next/build-manifest.json deploy/backend/.next/ 2>/dev/null || true
+          cp backend/.next/app-path-routes-manifest.json deploy/backend/.next/ 2>/dev/null || true
+          cp backend/.next/prerender-manifest.json deploy/backend/.next/ 2>/dev/null || true
+          cp backend/.next/routes-manifest.json deploy/backend/.next/ 2>/dev/null || true
+          cp backend/.next/required-server-files.json deploy/backend/.next/ 2>/dev/null || true
+          cp backend/.next/package.json deploy/backend/.next/ 2>/dev/null || true
 
-          # .next/static — standalone его не включает
-          mkdir -p deploy/backend/.next/static
-          cp -r backend/.next/static/. deploy/backend/.next/static/
-
-          # public
+          # Корневые файлы
+          cp backend/package.json deploy/backend/
+          cp backend/package-lock.json deploy/backend/ 2>/dev/null || true
+          cp backend/next.config.ts deploy/backend/ 2>/dev/null || true
+          cp backend/next.config.js deploy/backend/ 2>/dev/null || true
+          cp backend/next.config.mjs deploy/backend/ 2>/dev/null || true
           cp -r backend/public deploy/backend/ 2>/dev/null || true
 
-          # Для миграций на сервере
+          # Для миграций
           cp backend/tsconfig.json deploy/backend/
           cp -r backend/src deploy/backend/
+
+          echo "📊 Deploy folder size: $(du -sh deploy | cut -f1)"
 
       # =========================
       # CREATE ZIP
@@ -92,7 +90,6 @@ jobs:
 
       # =========================
       # UPLOAD ZIP TO SERVER
-      # Один файл — быстро и надёжно
       # =========================
       - name: Upload deploy.zip to server
         uses: appleboy/scp-action@v0.1.7
@@ -114,6 +111,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          command_timeout: 30m
           script: |
             set -e
 
@@ -153,16 +151,24 @@ jobs:
 
             cp -r $WORKDIR/deploy/backend/. $BACK/
 
-            # Докладываем static в нужное место для standalone
-            mkdir -p $BACK/.next/standalone/.next
-            cp -r $BACK/.next/static $BACK/.next/standalone/.next/static 2>/dev/null || true
-            cp -r $BACK/public $BACK/.next/standalone/public 2>/dev/null || true
+            cd $BACK
+
+            # =========================
+            # INSTALL DEPENDENCIES
+            # =========================
+            echo "📦 Installing dependencies..."
+            npm install --omit=dev
+
+            echo "📦 Installing native binaries..."
+            npm install @libsql/linux-x64-gnu
+            npm install @img/sharp-linux-x64 @img/sharp-libvips-linux-x64
+
+            echo "✅ Dependencies installed"
 
             # =========================
             # MIGRATIONS
             # =========================
             echo "🗄 Running migrations..."
-            cd $BACK/.next/standalone
             npx payload migrate
             echo "✅ Migrations done"
 
@@ -178,8 +184,8 @@ jobs:
             # START BACKEND
             # =========================
             echo "▶ Starting backend on port 3333..."
-            cd $BACK/.next/standalone
-            PORT=3333 nohup node server.js > $LOGS/backend.log 2>&1 &
+            cd $BACK
+            PORT=3333 nohup node node_modules/.bin/next start > $LOGS/backend.log 2>&1 &
             echo $! > /var/run/prosrochkapatrol-back.pid
 
             # =========================
@@ -211,7 +217,7 @@ jobs:
               exit 1
             fi
 
-            # Чистим zip и рабочую папку
+            # Чистим
             rm -rf $WORKDIR $DEPLOY_ZIP
 
             echo "🎉 DEPLOY COMPLETE"
