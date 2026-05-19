@@ -170,7 +170,7 @@ jobs:
             # MIGRATIONS
             # =========================
             echo "🗄 Running migrations..."
-            npx payload migrate
+            yes | npx payload migrate --yes
             echo "✅ Migrations done"
 
             # =========================

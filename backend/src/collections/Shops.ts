@@ -17,16 +17,59 @@ export const Shops: CollectionConfig = {
       if (!user) return false
       return user.role === 'admin' || user.role === 'editor' || user.role === 'inspector'
     },
-    read: () => true,
+    read: ({ req: { user } }) => {
+      if (user?.role === 'admin' || user?.role === 'editor' || user?.role === 'inspector') return true;
+      return {
+        'admin_panel.status': { equals: 'published' }
+      };
+    },
     update: ({ req: { user } }) => {
       if (!user) return false
       if (user.role === 'admin') return true
       if (user.role === 'editor' || user.role === 'inspector') {
-        return { created_by: { equals: user.id } }
+        return { 'admin_panel.created_by': { equals: user.id } }
       }
       return false
     },
     delete: ({ req: { user } }) => user?.role === 'admin',
+  },
+  hooks: {
+    beforeChange: [
+      ({ req, data, operation }) => {
+        if (!data.admin_panel) {
+          data.admin_panel = {}
+        }
+
+        if (operation === 'create' && req.user) {
+          data.admin_panel.created_by = req.user.id
+        }
+
+        if (req.user?.role === 'inspector' || req.user?.role === 'editor') {
+          if (data.admin_panel.status === 'published' || data.admin_panel.status === 'rejected') {
+            data.admin_panel.status = 'pending'
+          }
+        }
+
+        const qualityDeduction = typeof data.quality_total_deduction === 'number' ? data.quality_total_deduction : 0
+        data.quality_final_score = Math.max(0, Math.min(5, 5 - qualityDeduction))
+
+        if (data.storage_has_violations) {
+          const storageDeduction = typeof data.storage_total_deduction === 'number' ? data.storage_total_deduction : 0
+          data.storage_final_score = Math.max(0, Math.min(5, 5 - storageDeduction))
+        } else {
+          data.storage_final_score = 5
+          data.storage_total_deduction = 0
+        }
+
+        const quality = typeof data.quality_final_score === 'number' ? data.quality_final_score : 0
+        const storage = typeof data.storage_final_score === 'number' ? data.storage_final_score : 0
+        const totalScore = Math.round(((quality + storage) / 2) * 10) / 10
+
+        data.total_score = totalScore
+
+        return data
+      },
+    ],
   },
   fields: [
     {
@@ -48,178 +91,62 @@ export const Shops: CollectionConfig = {
       },
     },
     {
-      name: 'status',
-      label: 'Статус',
+      name: 'date_checked',
+      label: 'Дата проверки',
+      type: 'date',
+      required: true,
+      admin: { description: 'Дата фактического проведения проверки' },
+    },
+    {
+      name: 'reason_type',
+      label: 'Тип проверки',
       type: 'select',
       required: true,
-      defaultValue: 'pending',
-      access: {
-        read: ({ req: { user }, doc }) => {
-          if (user?.role === 'admin') return true
-          return doc?.status === 'published'
-        },
-        update: ({ req: { user } }) => user?.role === 'admin',
-      },
       options: [
-        { label: 'На рассмотрении', value: 'pending' },
-        { label: 'Опубликовано', value: 'published' },
-        { label: 'Отклонено', value: 'rejected' },
+        { label: 'Плановая', value: 'planned' },
+        { label: 'Жалоба', value: 'complaint' },
       ],
+      admin: { description: 'Основание для проведения проверки' },
+    },
+    {
+      name: 'complaint_text',
+      label: 'Текст жалобы',
+      type: 'textarea',
       admin: {
-        description: 'Статус проверки отчёта администратором',
-        position: 'sidebar',
+        description: 'Содержание жалобы, послужившей основанием для проверки',
+        condition: (data) => data?.reason_type === 'complaint',
       },
-    },
-    {
-      name: 'created_by',
-      label: 'Автор отчёта',
-      type: 'relationship',
-      relationTo: 'users',
-      access: {
-        read: ({ req: { user } }) => user?.role === 'admin',
-      },
-      admin: {
-        readOnly: true,
-        description: 'Инспектор или редактор, создавший отчёт',
-        position: 'sidebar',
-      },
-    },
-    {
-      label: 'Общие оценки',
-      type: 'collapsible',
-      fields: [
-        {
-          name: 'total_score',
-          label: 'Итоговая оценка',
-          type: 'number',
-          min: 0.1,
-          max: 5,
-          access: { read: ({ req: { user } }) => user?.role === 'admin' },
-          admin: { description: 'Общая итоговая оценка магазина от 0.1 до 5' },
-        },
-        {
-          name: 'quality_score',
-          label: 'Оценка качества',
-          type: 'number',
-          min: 0.1,
-          max: 5,
-          access: { read: ({ req: { user } }) => user?.role === 'admin' },
-          admin: { description: 'Итоговая оценка раздела качества товаров от 0.1 до 5' },
-        },
-        {
-          name: 'storage_score',
-          label: 'Оценка хранения',
-          type: 'number',
-          min: 0.1,
-          max: 5,
-          access: { read: ({ req: { user } }) => user?.role === 'admin' },
-          admin: { description: 'Итоговая оценка раздела условий хранения от 0.1 до 5' },
-        },
-        {
-          name: 'advantages',
-          label: 'Преимущества',
-          type: 'json',
-          access: { read: ({ req: { user } }) => user?.role === 'admin' },
-          admin: { description: 'Список выявленных преимуществ в формате JSON-массива строк' },
-        },
-        {
-          name: 'disadvantages',
-          label: 'Недостатки',
-          type: 'json',
-          access: { read: ({ req: { user } }) => user?.role === 'admin' },
-          admin: { description: 'Список выявленных недостатков в формате JSON-массива строк' },
-        },
-      ],
-    },
-    {
-      label: 'Детали проверки',
-      type: 'collapsible',
-      fields: [
-        {
-          name: 'date_checked',
-          label: 'Дата проверки',
-          type: 'date',
-          admin: { description: 'Дата фактического проведения проверки' },
-        },
-        {
-          name: 'reason_type',
-          label: 'Тип проверки',
-          type: 'select',
-          options: [
-            { label: 'Плановая', value: 'planned' },
-            { label: 'Жалоба', value: 'complaint' },
-          ],
-          admin: { description: 'Основание для проведения проверки' },
-        },
-        {
-          name: 'complaint_text',
-          label: 'Текст жалобы',
-          type: 'textarea',
-          admin: {
-            description: 'Содержание жалобы, послужившей основанием для проверки',
-            condition: (data) => data?.reason_type === 'complaint',
-          },
-        },
-        {
-          name: 'prev_check_status',
-          label: 'Статус предыдущей проверки',
-          type: 'select',
-          access: { read: ({ req: { user } }) => user?.role === 'admin' },
-          options: [
-            { label: 'Не проверялся', value: 'never' },
-            { label: 'Проверялся', value: 'done' },
-          ],
-          admin: { description: 'Была ли ранее проведена проверка этого магазина' },
-        },
-        {
-          name: 'last_check_date',
-          label: 'Дата последней проверки',
-          type: 'date',
-          access: { read: ({ req: { user } }) => user?.role === 'admin' },
-          admin: { description: 'Дата предыдущей проверки этого магазина' },
-        },
-        {
-          name: 'total_checks_count',
-          label: 'Всего проверок',
-          type: 'number',
-          access: { read: ({ req: { user } }) => user?.role === 'admin' },
-          admin: { description: 'Общее количество проверок магазина за всё время' },
-        },
-      ],
     },
     {
       label: 'Оценка качества',
       type: 'collapsible',
       fields: [
         {
-          name: 'quality_start_score',
-          label: 'Начальная оценка качества',
+          name: 'quality_total_deduction',
+          label: 'Суммарный штраф за качество',
           type: 'number',
-          min: 0.1,
+          min: 0,
           max: 5,
-          admin: { description: 'Исходная оценка качества до применения штрафов (0.1–5)' },
+          validate: (value: unknown) => {
+            if (value === undefined || value === null || value === '') return true
+            const num = Number(value)
+            if (isNaN(num)) return 'Введите число'
+            if (num < 0) return 'Штраф не может быть меньше 0'
+            if (num > 5) return 'Штраф не может быть больше 5'
+            return true
+          },
+          admin: { description: 'Сумма баллов, снятых за нарушения качества (от 0 до 5). Итоговая оценка рассчитается автоматически.' },
         },
         {
           name: 'quality_facts',
           label: 'Факты нарушений качества',
           type: 'json',
-          admin: { description: 'Зафиксированные факты нарушений в формате JSON-массива' },
-        },
-        {
-          name: 'quality_total_deduction',
-          label: 'Суммарный штраф за качество',
-          type: 'number',
-          min: 0.1,
-          max: 5,
-          admin: { description: 'Сумма баллов, снятых за нарушения качества (0.1–5)' },
-        },
-        {
-          name: 'quality_final_score',
-          label: 'Итоговая оценка качества',
-          type: 'number',
-          min: 0.1,
-          max: 5,
-          admin: { description: 'Финальная оценка качества после вычета штрафов (0.1–5)' },
+          admin: { 
+            description: 'Зафиксированные факты нарушений в формате JSON-массива',
+            components: {
+              Field: '@/app/components/CalculatedFields/TagInputField'
+            }
+          },
         },
         {
           name: 'quality_free_text',
@@ -231,7 +158,26 @@ export const Shops: CollectionConfig = {
           name: 'quality_violated_articles',
           label: 'Нарушенные статьи (качество)',
           type: 'json',
-          admin: { description: 'Список нарушенных нормативных статей в формате JSON-массива' },
+          admin: { 
+            description: 'Список нарушенных нормативных статей в формате JSON-массива',
+            components: {
+              Field: '@/app/components/CalculatedFields/TagInputField'
+            }
+          },
+        },
+        {
+          name: 'quality_final_score',
+          label: 'Итоговая оценка качества',
+          type: 'number',
+          min: 0,
+          max: 5,
+          admin: {
+            description: 'Вычисляется автоматически: 5 - штраф',
+            readOnly: true,
+            components: {
+              Field: '@/app/components/CalculatedFields/QualityFinalScore'
+            }
+          },
         },
       ],
     },
@@ -243,41 +189,73 @@ export const Shops: CollectionConfig = {
           name: 'storage_has_violations',
           label: 'Есть нарушения хранения',
           type: 'checkbox',
-          admin: { description: 'Отметьте если выявлены нарушения условий хранения товаров' },
-        },
-        {
-          name: 'storage_facts',
-          label: 'Факты нарушений хранения',
-          type: 'json',
-          admin: { description: 'Зафиксированные факты нарушений хранения в формате JSON-массива' },
+          admin: { description: 'Отметьте, если выявлены нарушения условий хранения товаров' },
         },
         {
           name: 'storage_total_deduction',
           label: 'Суммарный штраф за хранение',
           type: 'number',
-          min: 0.1,
+          min: 0,
           max: 5,
-          admin: { description: 'Сумма баллов, снятых за нарушения хранения (0.1–5)' },
+          validate: (value: unknown) => {
+            if (value === undefined || value === null || value === '') return true
+            const num = Number(value)
+            if (isNaN(num)) return 'Введите число'
+            if (num < 0) return 'Штраф не может быть меньше 0'
+            if (num > 5) return 'Штраф не может быть больше 5'
+            return true
+          },
+          admin: {
+            description: 'Сумма баллов, снятых за нарушения хранения (от 0 до 5). Итоговая оценка рассчитается автоматически.',
+            condition: (data) => data?.storage_has_violations === true,
+          },
         },
         {
-          name: 'storage_final_score',
-          label: 'Итоговая оценка хранения',
-          type: 'number',
-          min: 0.1,
-          max: 5,
-          admin: { description: 'Финальная оценка условий хранения после вычета штрафов (0.1–5)' },
+          name: 'storage_facts',
+          label: 'Факты нарушений хранения',
+          type: 'json',
+          admin: {
+            components: {
+              Field: '@/app/components/CalculatedFields/TagInputField'
+            },
+            description: 'Зафиксированные факты нарушений хранения в формате JSON-массива',
+            condition: (data) => data?.storage_has_violations === true,
+          },
         },
         {
           name: 'storage_free_text',
           label: 'Комментарий по хранению',
           type: 'textarea',
-          admin: { description: 'Произвольный комментарий инспектора по разделу хранения' },
+          admin: {
+            description: 'Произвольный комментарий инспектора по разделу хранения',
+            condition: (data) => data?.storage_has_violations === true,
+          },
         },
         {
           name: 'storage_violated_articles',
           label: 'Нарушенные статьи (хранение)',
           type: 'json',
-          admin: { description: 'Список нарушенных нормативных статей в формате JSON-массива' },
+          admin: {
+            components: {
+              Field: '@/app/components/CalculatedFields/TagInputField',
+            },
+            description: 'Список нарушенных нормативных статей в формате JSON-массива',
+            condition: (data) => data?.storage_has_violations === true,
+          },
+        },
+        {
+          name: 'storage_final_score',
+          label: 'Итоговая оценка хранения',
+          type: 'number',
+          min: 0,
+          max: 5,
+          admin: {
+            description: 'Вычисляется автоматически: 5 - штраф (если нет нарушений, автоматически 5)',
+            readOnly: true,
+            components: {
+              Field: '@/app/components/CalculatedFields/StorageFinalScore'
+            }
+          },
         },
       ],
     },
@@ -285,6 +263,42 @@ export const Shops: CollectionConfig = {
       label: 'Итоги и медиа',
       type: 'collapsible',
       fields: [
+        {
+          name: 'total_score',
+          label: 'Итоговая оценка',
+          type: 'number',
+          min: 0,
+          max: 5,
+          admin: {
+            description: 'Вычисляется автоматически',
+            readOnly: true,
+            components: {
+              Field: '@/app/components/CalculatedFields/TotalScore'
+            }
+          },
+        },
+        {
+          name: 'advantages',
+          label: 'Преимущества',
+          type: 'json',
+          admin: { 
+            components: {
+              Field: '@/app/components/CalculatedFields/TagInputField'
+            },
+            description: 'Список выявленных преимуществ в формате JSON-массива строк' 
+          },
+        },
+        {
+          name: 'disadvantages',
+          label: 'Недостатки',
+          type: 'json',
+          admin: { 
+            components: {
+              Field: '@/app/components/CalculatedFields/TagInputField'
+            },
+            description: 'Список выявленных недостатков в формате JSON-массива строк' 
+          },
+        },
         {
           name: 'inspector_comment',
           label: 'Комментарий инспектора',
@@ -321,22 +335,80 @@ export const Shops: CollectionConfig = {
         },
       ],
     },
-  ],
-  hooks: {
-    beforeChange: [
-      ({ req, data, operation }) => {
-        if (operation === 'create' && req.user) {
-          data.created_by = req.user.id
-        }
-
-        if (req.user?.role === 'inspector' || req.user?.role === 'editor') {
-          if (data.status === 'published' || data.status === 'rejected') {
-            data.status = operation === 'create' ? 'pending' : undefined
-          }
-        }
-
-        return data
+    {
+      type: 'group',
+      name: 'admin_panel',
+      label: 'Админ панель',
+      admin: {
+        condition: (_, siblingData, { user }) => user?.role === 'admin',
       },
-    ],
-  },
+      fields: [
+        {
+          name: 'status',
+          label: 'Статус',
+          type: 'select',
+          required: true,
+          defaultValue: 'pending',
+          access: {
+            read: () => true,
+            update: ({ req: { user } }) => user?.role === 'admin',
+          },
+          options: [
+            { label: 'На рассмотрении', value: 'pending' },
+            { label: 'Опубликовано', value: 'published' },
+            { label: 'Отклонено', value: 'rejected' },
+          ],
+          admin: {
+            description: 'Статус проверки отчёта администратором',
+            position: 'sidebar',
+          },
+        },
+        {
+          name: 'created_by',
+          label: 'Автор отчёта',
+          type: 'relationship',
+          relationTo: 'users',
+          access: {
+            read: ({ req: { user } }) => user?.role === 'admin',
+          },
+          admin: {
+            readOnly: true,
+            description: 'Инспектор или редактор, создавший отчёт',
+            position: 'sidebar',
+          },
+        },
+        {
+          label: 'Детали проверки',
+          type: 'collapsible',
+          fields: [
+            {
+              name: 'prev_check_status',
+              label: 'Статус предыдущей проверки',
+              type: 'select',
+              access: { read: ({ req: { user } }) => user?.role === 'admin' },
+              options: [
+                { label: 'Не проверялся', value: 'never' },
+                { label: 'Проверялся', value: 'done' },
+              ],
+              admin: { description: 'Была ли ранее проведена проверка этого магазина' },
+            },
+            {
+              name: 'last_check_date',
+              label: 'Дата последней проверки',
+              type: 'date',
+              access: { read: ({ req: { user } }) => user?.role === 'admin' },
+              admin: { description: 'Дата предыдущей проверки этого магазина' },
+            },
+            {
+              name: 'total_checks_count',
+              label: 'Всего проверок',
+              type: 'number',
+              access: { read: ({ req: { user } }) => user?.role === 'admin' },
+              admin: { description: 'Общее количество проверок магазина за всё время' },
+            },
+          ],
+        },
+      ],
+    },
+  ],
 }

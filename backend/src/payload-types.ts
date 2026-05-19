@@ -73,6 +73,7 @@ export interface Config {
     rubrics: Rubric;
     shops: Shop;
     complaints: Complaint;
+    badges: Badge;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,6 +87,7 @@ export interface Config {
     rubrics: RubricsSelect<false> | RubricsSelect<true>;
     shops: ShopsSelect<false> | ShopsSelect<true>;
     complaints: ComplaintsSelect<false> | ComplaintsSelect<true>;
+    badges: BadgesSelect<false> | BadgesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -95,8 +97,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -131,6 +137,10 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  /**
+   * Аватар пользователя
+   */
+  avatar?: (number | null) | Media;
   /**
    * Полное имя пользователя
    */
@@ -172,6 +182,10 @@ export interface Media {
    * Пользователь, загрузивший этот файл
    */
   uploaded_by?: (number | null) | User;
+  /**
+   * IP адрес с которого была загружена медиа
+   */
+  ip_address?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -217,38 +231,23 @@ export interface Post {
    */
   cover?: (number | null) | Media;
   /**
-   * Соотношение сторон обложки в формате ширина/высота, например: 19/6
-   */
-  cover_ratio?: string | null;
-  /**
-   * Галерея или иллюстрации к посту
-   */
-  images?:
-    | {
-        image: number | Media;
-        /**
-         * Краткое описание изображения
-         */
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Черновик — не виден публично. На рассмотрении — ожидает одобрения админа. Опубликовано — виден всем.
-   */
-  status: 'draft' | 'pending' | 'published';
-  /**
-   * Проставляется автоматически в момент публикации
-   */
-  published_at?: string | null;
-  /**
-   * Проставляется автоматически при создании поста
-   */
-  author?: (number | null) | User;
-  /**
    * Одна или несколько рубрик для категоризации поста
    */
   rubrics?: (number | Rubric)[] | null;
+  admin_panel?: {
+    /**
+     * Черновик — не виден публично. На рассмотрении — ожидает одобрения админа. Опубликовано — виден всем.
+     */
+    status: 'draft' | 'pending' | 'published';
+    /**
+     * Проставляется автоматически в момент публикации
+     */
+    published_at?: string | null;
+    /**
+     * Проставляется автоматически при создании поста
+     */
+    author?: (number | null) | User;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -284,77 +283,21 @@ export interface Shop {
    */
   address: string;
   /**
-   * Статус проверки отчёта администратором
-   */
-  status: 'pending' | 'published' | 'rejected';
-  /**
-   * Инспектор или редактор, создавший отчёт
-   */
-  created_by?: (number | null) | User;
-  /**
-   * Общая итоговая оценка магазина от 0.1 до 5
-   */
-  total_score?: number | null;
-  /**
-   * Итоговая оценка раздела качества товаров от 0.1 до 5
-   */
-  quality_score?: number | null;
-  /**
-   * Итоговая оценка раздела условий хранения от 0.1 до 5
-   */
-  storage_score?: number | null;
-  /**
-   * Список выявленных преимуществ в формате JSON-массива строк
-   */
-  advantages?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  /**
-   * Список выявленных недостатков в формате JSON-массива строк
-   */
-  disadvantages?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  /**
    * Дата фактического проведения проверки
    */
-  date_checked?: string | null;
+  date_checked: string;
   /**
    * Основание для проведения проверки
    */
-  reason_type?: ('planned' | 'complaint') | null;
+  reason_type: 'planned' | 'complaint';
   /**
    * Содержание жалобы, послужившей основанием для проверки
    */
   complaint_text?: string | null;
   /**
-   * Была ли ранее проведена проверка этого магазина
+   * Сумма баллов, снятых за нарушения качества (от 0 до 5). Итоговая оценка рассчитается автоматически.
    */
-  prev_check_status?: ('never' | 'done') | null;
-  /**
-   * Дата предыдущей проверки этого магазина
-   */
-  last_check_date?: string | null;
-  /**
-   * Общее количество проверок магазина за всё время
-   */
-  total_checks_count?: number | null;
-  /**
-   * Исходная оценка качества до применения штрафов (0.1–5)
-   */
-  quality_start_score?: number | null;
+  quality_total_deduction?: number | null;
   /**
    * Зафиксированные факты нарушений в формате JSON-массива
    */
@@ -367,14 +310,6 @@ export interface Shop {
     | number
     | boolean
     | null;
-  /**
-   * Сумма баллов, снятых за нарушения качества (0.1–5)
-   */
-  quality_total_deduction?: number | null;
-  /**
-   * Финальная оценка качества после вычета штрафов (0.1–5)
-   */
-  quality_final_score?: number | null;
   /**
    * Произвольный комментарий инспектора по разделу качества
    */
@@ -392,9 +327,17 @@ export interface Shop {
     | boolean
     | null;
   /**
-   * Отметьте если выявлены нарушения условий хранения товаров
+   * Вычисляется автоматически: 5 - штраф
+   */
+  quality_final_score?: number | null;
+  /**
+   * Отметьте, если выявлены нарушения условий хранения товаров
    */
   storage_has_violations?: boolean | null;
+  /**
+   * Сумма баллов, снятых за нарушения хранения (от 0 до 5). Итоговая оценка рассчитается автоматически.
+   */
+  storage_total_deduction?: number | null;
   /**
    * Зафиксированные факты нарушений хранения в формате JSON-массива
    */
@@ -408,14 +351,6 @@ export interface Shop {
     | boolean
     | null;
   /**
-   * Сумма баллов, снятых за нарушения хранения (0.1–5)
-   */
-  storage_total_deduction?: number | null;
-  /**
-   * Финальная оценка условий хранения после вычета штрафов (0.1–5)
-   */
-  storage_final_score?: number | null;
-  /**
    * Произвольный комментарий инспектора по разделу хранения
    */
   storage_free_text?: string | null;
@@ -423,6 +358,38 @@ export interface Shop {
    * Список нарушенных нормативных статей в формате JSON-массива
    */
   storage_violated_articles?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Вычисляется автоматически: 5 - штраф (если нет нарушений, автоматически 5)
+   */
+  storage_final_score?: number | null;
+  /**
+   * Вычисляется автоматически
+   */
+  total_score?: number | null;
+  /**
+   * Список выявленных преимуществ в формате JSON-массива строк
+   */
+  advantages?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Список выявленных недостатков в формате JSON-массива строк
+   */
+  disadvantages?:
     | {
         [k: string]: unknown;
       }
@@ -452,6 +419,28 @@ export interface Shop {
         id?: string | null;
       }[]
     | null;
+  admin_panel?: {
+    /**
+     * Статус проверки отчёта администратором
+     */
+    status: 'pending' | 'published' | 'rejected';
+    /**
+     * Инспектор или редактор, создавший отчёт
+     */
+    created_by?: (number | null) | User;
+    /**
+     * Была ли ранее проведена проверка этого магазина
+     */
+    prev_check_status?: ('never' | 'done') | null;
+    /**
+     * Дата предыдущей проверки этого магазина
+     */
+    last_check_date?: string | null;
+    /**
+     * Общее количество проверок магазина за всё время
+     */
+    total_checks_count?: number | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -461,10 +450,20 @@ export interface Shop {
  */
 export interface Complaint {
   id: number;
-  /**
-   * Email-адрес для обратной связи с заявителем
-   */
-  email: string;
+  admin_panel?: {
+    /**
+     * IP адрес с которого была подана жалоба
+     */
+    ip_address?: string | null;
+    /**
+     * Текущий статус рассмотрения жалобы администратором
+     */
+    status?: ('new' | 'in_progress' | 'closed') | null;
+    /**
+     * Внутренняя заметка для администраторов, не видна заявителю
+     */
+    admin_note?: string | null;
+  };
   /**
    * Адрес магазина, на который подаётся жалоба
    */
@@ -494,14 +493,26 @@ export interface Complaint {
         id?: string | null;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "badges".
+ */
+export interface Badge {
+  id: number;
   /**
-   * Текущий статус рассмотрения жалобы администратором
+   * Введите код строго в формате из регламента (например: #P01-ASTR)
    */
-  status?: ('new' | 'in_progress' | 'closed') | null;
+  code: string;
+  type: 'P' | 'YOU';
+  ownerName?: (number | null) | User;
+  status?: ('active' | 'revoked' | 'lost') | null;
   /**
-   * Внутренняя заметка для администраторов, не видна заявителю
+   * Служебная заметка администратора (например: выдан 05.06.2026)
    */
-  admin_note?: string | null;
+  comment?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -552,6 +563,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'complaints';
         value: number | Complaint;
+      } | null)
+    | ({
+        relationTo: 'badges';
+        value: number | Badge;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -600,6 +615,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  avatar?: T;
   name?: T;
   role?: T;
   updatedAt?: T;
@@ -626,6 +642,7 @@ export interface UsersSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   uploaded_by?: T;
+  ip_address?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -646,18 +663,14 @@ export interface PostsSelect<T extends boolean = true> {
   title?: T;
   body?: T;
   cover?: T;
-  cover_ratio?: T;
-  images?:
+  rubrics?: T;
+  admin_panel?:
     | T
     | {
-        image?: T;
-        caption?: T;
-        id?: T;
+        status?: T;
+        published_at?: T;
+        author?: T;
       };
-  status?: T;
-  published_at?: T;
-  author?: T;
-  rubrics?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -678,31 +691,23 @@ export interface RubricsSelect<T extends boolean = true> {
 export interface ShopsSelect<T extends boolean = true> {
   store_name?: T;
   address?: T;
-  status?: T;
-  created_by?: T;
-  total_score?: T;
-  quality_score?: T;
-  storage_score?: T;
-  advantages?: T;
-  disadvantages?: T;
   date_checked?: T;
   reason_type?: T;
   complaint_text?: T;
-  prev_check_status?: T;
-  last_check_date?: T;
-  total_checks_count?: T;
-  quality_start_score?: T;
-  quality_facts?: T;
   quality_total_deduction?: T;
-  quality_final_score?: T;
+  quality_facts?: T;
   quality_free_text?: T;
   quality_violated_articles?: T;
+  quality_final_score?: T;
   storage_has_violations?: T;
-  storage_facts?: T;
   storage_total_deduction?: T;
-  storage_final_score?: T;
+  storage_facts?: T;
   storage_free_text?: T;
   storage_violated_articles?: T;
+  storage_final_score?: T;
+  total_score?: T;
+  advantages?: T;
+  disadvantages?: T;
   inspector_comment?: T;
   final_comment?: T;
   photos?:
@@ -712,6 +717,15 @@ export interface ShopsSelect<T extends boolean = true> {
         caption?: T;
         id?: T;
       };
+  admin_panel?:
+    | T
+    | {
+        status?: T;
+        created_by?: T;
+        prev_check_status?: T;
+        last_check_date?: T;
+        total_checks_count?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -720,7 +734,13 @@ export interface ShopsSelect<T extends boolean = true> {
  * via the `definition` "complaints_select".
  */
 export interface ComplaintsSelect<T extends boolean = true> {
-  email?: T;
+  admin_panel?:
+    | T
+    | {
+        ip_address?: T;
+        status?: T;
+        admin_note?: T;
+      };
   store_address?: T;
   problem_types?: T;
   problem_date?: T;
@@ -732,8 +752,19 @@ export interface ComplaintsSelect<T extends boolean = true> {
         photo?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "badges_select".
+ */
+export interface BadgesSelect<T extends boolean = true> {
+  code?: T;
+  type?: T;
+  ownerName?: T;
   status?: T;
-  admin_note?: T;
+  comment?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -776,6 +807,111 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Глобальные настройки сайта, доступные только администраторам. Пока все что описано здесь нигде не используется, но в будущем может пригодиться для хранения различных параметров и конфигураций. Make FreshCheck Great Again!
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  /**
+   * Отображается в заголовке браузера и шапке сайта
+   */
+  site_name: string;
+  /**
+   * Краткое описание для SEO (meta description)
+   */
+  site_description?: string | null;
+  /**
+   * Основной логотип сайта
+   */
+  logo?: (number | null) | Media;
+  /**
+   * Иконка сайта в браузере
+   */
+  favicon?: (number | null) | Media;
+  /**
+   * Публичный email для обращений
+   */
+  contact_email?: string | null;
+  /**
+   * Контактный телефон в формате +7 (999) 000-00-00
+   */
+  contact_phone?: string | null;
+  /**
+   * Физический адрес организации
+   */
+  address?: string | null;
+  /**
+   * Например: Пн–Пт с 9:00 до 18:00
+   */
+  working_hours?: string | null;
+  /**
+   * Ссылка на страницу ВКонтакте
+   */
+  social_vk?: string | null;
+  /**
+   * Ссылка на Telegram-канал или бот
+   */
+  social_telegram?: string | null;
+  /**
+   * Ссылка на YouTube-канал
+   */
+  social_youtube?: string | null;
+  /**
+   * Через запятую, для meta keywords
+   */
+  seo_keywords?: string | null;
+  /**
+   * Например: G-XXXXXXXXXX
+   */
+  google_analytics_id?: string | null;
+  /**
+   * Числовой идентификатор счётчика Метрики
+   */
+  yandex_metrika_id?: string | null;
+  /**
+   * На этот адрес будут приходить уведомления о новых жалобах
+   */
+  notification_email?: string | null;
+  /**
+   * Токен бота для отправки уведомлений в Telegram
+   */
+  telegram_bot_token?: string | null;
+  /**
+   * ID чата или канала куда бот отправляет уведомления
+   */
+  telegram_chat_id?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  site_name?: T;
+  site_description?: T;
+  logo?: T;
+  favicon?: T;
+  contact_email?: T;
+  contact_phone?: T;
+  address?: T;
+  working_hours?: T;
+  social_vk?: T;
+  social_telegram?: T;
+  social_youtube?: T;
+  seo_keywords?: T;
+  google_analytics_id?: T;
+  yandex_metrika_id?: T;
+  notification_email?: T;
+  telegram_bot_token?: T;
+  telegram_chat_id?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

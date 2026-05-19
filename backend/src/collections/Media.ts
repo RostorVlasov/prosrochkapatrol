@@ -1,4 +1,7 @@
 import { CollectionConfig } from 'payload'
+import { getIP } from '../utils/getIP'
+
+const DAILY_MEDIA_LIMIT = 20
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -11,7 +14,7 @@ export const Media: CollectionConfig = {
   },
   upload: true,
   access: {
-    create: ({ req: { user } }) => !!user,
+    create: () => true,
     read: () => true,
     update: ({ req: { user } }) => !!user,
     delete: ({ req: { user } }) => user?.role === 'admin',
@@ -35,13 +38,62 @@ export const Media: CollectionConfig = {
         description: 'Пользователь, загрузивший этот файл',
       },
     },
+    {
+      name: 'ip_address',
+      label: 'IP адрес',
+      type: 'text',
+      admin: {
+        readOnly: true,
+        description: 'IP адрес с которого была загружена медиа',
+        position: 'sidebar',
+      },
+      access: {
+        read: ({ req: { user } }) => user?.role === 'admin',
+        update: () => false,
+      },
+    },
   ],
   hooks: {
+    beforeOperation: [
+      async ({ operation, req, args }) => {
+        if (operation !== 'create') return args
+        if (req.user) return args
+
+        const ip = getIP(req)
+
+        const startOfDay = new Date()
+        startOfDay.setHours(0, 0, 0, 0)
+
+        const result = await req.payload.find({
+          collection: 'media',
+          where: {
+            and: [
+              { ip_address: { equals: ip } },
+              { createdAt: { greater_than: startOfDay.toISOString() } },
+            ],
+          },
+          limit: 0,
+        })
+
+        if (result.totalDocs >= DAILY_MEDIA_LIMIT) {
+          const err = new Error(
+            `Достигнут лимит загрузок медиа на сегодня`,
+          ) as any
+          err.status = 429
+          throw err
+        }
+
+        return args
+      },
+    ],
     beforeChange: [
       ({ req, data }) => {
         if (req.user) {
           data.uploaded_by = req.user.id
         }
+
+        data.ip_address = getIP(req)
+
         return data
       },
     ],

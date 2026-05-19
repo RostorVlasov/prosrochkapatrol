@@ -16,7 +16,12 @@ export const Posts: CollectionConfig = {
       if (!user) return false
       return user.role === 'editor' || user.role === 'admin'
     },
-    read: () => true,
+    read: ({ req: { user } }) => {
+      if (user?.role === 'admin' || user?.role === 'editor' || user?.role === 'inspector') return true;
+      return {
+        'admin_panel.status': { equals: 'published' }
+      };
+    },
     update: ({ req: { user } }) => {
       if (!user) return false
       if (user.role === 'admin') return true
@@ -55,85 +60,6 @@ export const Posts: CollectionConfig = {
       },
     },
     {
-      name: 'cover_ratio',
-      label: 'Соотношение сторон обложки',
-      type: 'text',
-      defaultValue: '19/6',
-      admin: {
-        description: 'Соотношение сторон обложки в формате ширина/высота, например: 19/6',
-      },
-    },
-    {
-      name: 'images',
-      label: 'Дополнительные изображения',
-      type: 'array',
-      admin: {
-        description: 'Галерея или иллюстрации к посту',
-      },
-      fields: [
-        {
-          name: 'image',
-          label: 'Изображение',
-          type: 'upload',
-          relationTo: 'media',
-          required: true,
-        },
-        {
-          name: 'caption',
-          label: 'Подпись к изображению',
-          type: 'text',
-          admin: {
-            description: 'Краткое описание изображения',
-          },
-        },
-      ],
-    },
-    {
-      name: 'status',
-      label: 'Статус',
-      type: 'select',
-      required: true,
-      defaultValue: 'draft',
-      access: {
-        read: ({ req: { user }, doc }) => {
-          if (user?.role === 'admin' || user?.role === 'editor') return true
-          return doc?.status === 'published'
-        },
-      },
-      options: [
-        { label: 'Черновик', value: 'draft' },
-        { label: 'На рассмотрении', value: 'pending' },
-        { label: 'Опубликовано', value: 'published' },
-      ],
-      admin: {
-        position: 'sidebar',
-        description: 'Черновик — не виден публично. На рассмотрении — ожидает одобрения админа. Опубликовано — виден всем.',
-      },
-    },
-    {
-      name: 'published_at',
-      label: 'Дата публикации',
-      type: 'date',
-      access: {
-        read: ({ req: { user } }) => user?.role === 'admin',
-      },
-      admin: {
-        position: 'sidebar',
-        description: 'Проставляется автоматически в момент публикации',
-      },
-    },
-    {
-      name: 'author',
-      label: 'Автор',
-      type: 'relationship',
-      relationTo: 'users',
-      admin: {
-        readOnly: true,
-        position: 'sidebar',
-        description: 'Проставляется автоматически при создании поста',
-      },
-    },
-    {
       name: 'rubrics',
       label: 'Рубрики',
       type: 'relationship',
@@ -143,6 +69,56 @@ export const Posts: CollectionConfig = {
         position: 'sidebar',
         description: 'Одна или несколько рубрик для категоризации поста',
       },
+    },
+    {
+      type: 'group',
+      name: 'admin_panel',
+      label: 'Админ панель',
+      admin: {
+        condition: (_, __, { user }) => user?.role === 'admin',
+      },
+      fields: [
+        {
+          name: 'status',
+          label: 'Статус',
+          type: 'select',
+          required: true,
+          defaultValue: 'draft',
+          access: {
+            read: () => true,
+          },
+          options: [
+            { label: 'Черновик', value: 'draft' },
+            { label: 'На рассмотрении', value: 'pending' },
+            { label: 'Опубликовано', value: 'published' },
+          ],
+          admin: {
+            position: 'sidebar',
+            description:
+              'Черновик — не виден публично. На рассмотрении — ожидает одобрения админа. Опубликовано — виден всем.',
+          },
+        },
+        {
+          name: 'published_at',
+          label: 'Дата публикации',
+          type: 'date',
+          admin: {
+            position: 'sidebar',
+            description: 'Проставляется автоматически в момент публикации',
+          },
+        },
+        {
+          name: 'author',
+          label: 'Автор',
+          type: 'relationship',
+          relationTo: 'users',
+          admin: {
+            readOnly: true,
+            position: 'sidebar',
+            description: 'Проставляется автоматически при создании поста',
+          },
+        },
+      ],
     },
   ],
   hooks: {
@@ -154,17 +130,24 @@ export const Posts: CollectionConfig = {
 
         if (req.user?.role === 'editor') {
           if (operation === 'create') {
-            data.status = 'pending'
-          } else if (data.status === 'published') {
-            data.status = originalDoc?.status ?? 'pending'
+            data.admin_panel = { ...data.admin_panel, status: 'pending' }
+          } else if (data.admin_panel?.status === 'published') {
+            data.admin_panel = {
+              ...data.admin_panel,
+              status: originalDoc?.admin_panel?.status ?? 'pending',
+            }
           }
-          if (operation === 'update' && originalDoc?.status === 'pending' && data.status === 'draft') {
-            data.status = 'pending'
+          if (
+            operation === 'update' &&
+            originalDoc?.admin_panel?.status === 'pending' &&
+            data.admin_panel?.status === 'draft'
+          ) {
+            data.admin_panel = { ...data.admin_panel, status: 'pending' }
           }
         }
 
-        if (data?.status === 'published' && !originalDoc?.published_at) {
-          data.published_at = new Date()
+        if (data?.admin_panel?.status === 'published' && !originalDoc?.admin_panel?.published_at) {
+          data.admin_panel = { ...data.admin_panel, published_at: new Date() }
         }
 
         return data

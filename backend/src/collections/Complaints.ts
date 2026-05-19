@@ -1,10 +1,12 @@
 import { CollectionConfig } from 'payload'
+import { getIP } from '../utils/getIP'
+
+const DAILY_COMPLAINT_LIMIT = 15
 
 export const Complaints: CollectionConfig = {
   slug: 'complaints',
   admin: {
     useAsTitle: 'store_address',
-    hidden: ({ user }) => user?.role !== 'admin',
   },
   labels: {
     singular: 'Жалоба',
@@ -12,19 +14,67 @@ export const Complaints: CollectionConfig = {
   },
   access: {
     create: () => true,
-    read: ({ req: { user } }) => user?.role === 'admin',
+    read: ({ req: { user } }) => user?.role === 'admin' || user?.role === 'inspector' || user?.role === 'editor',
     update: ({ req: { user } }) => user?.role === 'admin',
     delete: ({ req: { user } }) => user?.role === 'admin',
   },
   fields: [
     {
-      name: 'email',
-      label: 'Email заявителя',
-      type: 'email',
-      required: true,
+      type: 'group',
+      name: 'admin_panel',
+      label: 'Админ панель',
       admin: {
-        description: 'Email-адрес для обратной связи с заявителем',
+        condition: (_, __, { user }) => user?.role === 'admin',
       },
+      fields: [
+        {
+          name: 'ip_address',
+          label: 'IP адрес заявителя',
+          type: 'text',
+          admin: {
+            readOnly: true,
+            description: 'IP адрес с которого была подана жалоба',
+            position: 'sidebar',
+          },
+          access: {
+            read: ({ req: { user } }) => user?.role === 'admin',
+            update: () => false,
+            create: () => false,
+          },
+        },
+        {
+          name: 'status',
+          label: 'Статус обработки',
+          type: 'select',
+          defaultValue: 'new',
+          access: {
+            create: () => false,
+            update: ({ req: { user } }) => user?.role === 'admin',
+          },
+          options: [
+            { label: 'Новая', value: 'new' },
+            { label: 'В работе', value: 'in_progress' },
+            { label: 'Закрыта', value: 'closed' },
+          ],
+          admin: {
+            position: 'sidebar',
+            description: 'Текущий статус рассмотрения жалобы администратором',
+          },
+        },
+        {
+          name: 'admin_note',
+          label: 'Заметка администратора',
+          type: 'textarea',
+          access: {
+            create: () => false,
+            update: ({ req: { user } }) => user?.role === 'admin',
+          },
+          admin: {
+            position: 'sidebar',
+            description: 'Внутренняя заметка для администраторов, не видна заявителю',
+          },
+        },
+      ],
     },
     {
       name: 'store_address',
@@ -88,7 +138,8 @@ export const Complaints: CollectionConfig = {
       label: 'Фотографии (доказательства)',
       type: 'array',
       admin: {
-        description: 'Фотографии подтверждающие факт нарушения. Файлы необходимо загрузить заранее через /api/media',
+        description:
+          'Фотографии подтверждающие факт нарушения. Файлы необходимо загрузить заранее через /api/media',
       },
       fields: [
         {
@@ -100,37 +151,45 @@ export const Complaints: CollectionConfig = {
         },
       ],
     },
-    {
-      name: 'status',
-      label: 'Статус обработки',
-      type: 'select',
-      defaultValue: 'new',
-      access: {
-        create: () => false,
-        update: ({ req: { user } }) => user?.role === 'admin',
-      },
-      options: [
-        { label: 'Новая', value: 'new' },
-        { label: 'В работе', value: 'in_progress' },
-        { label: 'Закрыта', value: 'closed' },
-      ],
-      admin: {
-        position: 'sidebar',
-        description: 'Текущий статус рассмотрения жалобы администратором',
-      },
-    },
-    {
-      name: 'admin_note',
-      label: 'Заметка администратора',
-      type: 'textarea',
-      access: {
-        create: () => false,
-        update: ({ req: { user } }) => user?.role === 'admin',
-      },
-      admin: {
-        position: 'sidebar',
-        description: 'Внутренняя заметка для администраторов, не видна заявителю',
-      },
-    },
   ],
+  hooks: {
+    beforeOperation: [
+      async ({ operation, req, args }) => {
+        if (operation !== 'create') return args
+        if (req.user) return args
+
+        const ip = getIP(req)
+
+        const startOfDay = new Date()
+        startOfDay.setHours(0, 0, 0, 0)
+
+        const result = await req.payload.find({
+          collection: 'complaints',
+          where: {
+            and: [
+              { ip_address: { equals: ip } },
+              { createdAt: { greater_than: startOfDay.toISOString() } },
+            ],
+          },
+          limit: 0,
+        })
+
+        if (result.totalDocs >= DAILY_COMPLAINT_LIMIT) {
+          const err = new Error(
+            `Достигнут лимит жалоб на сегодня`,
+          ) as any
+          err.status = 429
+          throw err
+        }
+
+        return args
+      },
+    ],
+    beforeChange: [
+      ({ req, data }) => {
+        data.ip_address = getIP(req)
+        return data
+      },
+    ],
+  },
 }

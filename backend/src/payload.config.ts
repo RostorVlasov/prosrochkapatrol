@@ -13,13 +13,17 @@ import { Posts } from './collections/Posts'
 import { Rubrics } from './collections/Rubrics'
 import { Shops } from './collections/Shops'
 import { Complaints } from './collections/Complaints'
+import { Badges } from './collections/Badges'
+import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  globals: [SiteSettings],
   admin: {
     components: {
+      providers: ['./app/components/AvatarOverrideProvider'],
       graphics: {
         Logo: './app/components/Logo',
         Icon: './app/components/Icon',
@@ -38,7 +42,7 @@ export default buildConfig({
     baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Posts, Rubrics, Shops, Complaints],
+  collections: [Users, Media, Posts, Rubrics, Shops, Complaints, Badges],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

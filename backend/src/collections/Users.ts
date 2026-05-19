@@ -1,4 +1,6 @@
 import { CollectionConfig } from 'payload'
+import { getIP } from '../utils/getIP'
+import { checkLoginRateLimit, resetLoginAttempts } from '../utils/loginRateLimit'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -27,13 +29,18 @@ export const Users: CollectionConfig = {
   },
   fields: [
     {
+      name: 'avatar',
+      label: 'Аватар',
+      type: 'upload',
+      relationTo: 'media',
+      admin: { description: 'Аватар пользователя' },
+    },
+    {
       name: 'name',
       label: 'Имя',
       type: 'text',
       required: true,
-      admin: {
-        description: 'Полное имя пользователя',
-      },
+      admin: { description: 'Полное имя пользователя' },
     },
     {
       name: 'role',
@@ -54,12 +61,35 @@ export const Users: CollectionConfig = {
         { label: 'Редактор', value: 'editor' },
         { label: 'Администратор', value: 'admin' },
       ],
-      admin: {
-        description: 'Роль определяет права доступа пользователя в системе',
-      },
+      admin: { description: 'Роль определяет права доступа пользователя в системе' },
     },
   ],
   hooks: {
+    beforeOperation: [
+      async ({ operation, req, args }) => {
+        if (operation !== 'login') return args
+
+        const ip = getIP(req)
+        const result = checkLoginRateLimit(ip)
+
+        if (!result.allowed) {
+          const err = new Error(result.reason) as any
+          err.status = 429
+          throw err
+        }
+
+        return args
+      },
+    ],
+    afterOperation: [
+      ({ operation, req, result }) => {
+        if (operation === 'login' && result?.user) {
+          const ip = getIP(req)
+          resetLoginAttempts(ip)
+        }
+        return result
+      },
+    ],
     beforeChange: [
       ({ req, data, operation, originalDoc }) => {
         if (req.user?.role !== 'admin' && operation === 'update') {
