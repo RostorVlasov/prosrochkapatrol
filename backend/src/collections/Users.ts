@@ -4,7 +4,17 @@ import { checkLoginRateLimit, resetLoginAttempts } from '../utils/loginRateLimit
 
 export const Users: CollectionConfig = {
   slug: 'users',
-  auth: true,
+  auth: {
+    useSessions: true,
+    tokenExpiration: 180 * 24 * 60 * 60 * 1000,
+    removeTokenFromResponses: true,
+    cookies: {
+      secure: true,
+      sameSite: 'Strict',
+    },
+    maxLoginAttempts: 8,
+    lockTime: 60 * 60 * 1000,
+  },
   admin: {
     useAsTitle: 'name',
     hidden: ({ user }) => user?.role !== 'admin',
@@ -43,6 +53,32 @@ export const Users: CollectionConfig = {
       admin: { description: 'Полное имя пользователя' },
     },
     {
+      name: 'sessions',
+      type: 'array',
+      access: {
+        read: ({ req, data }) => {
+          return req.user?.id === data?.id;
+        }
+      },
+      admin: {
+        disabled: true,
+      },
+      fields: [
+        { name: 'id', type: 'text' },
+        { name: 'expiresAt', type: 'date' }
+      ]
+    },
+    {
+      name: 'email',
+      type: 'email',
+      unique: true,
+      access: {
+        read: ({ req: { user } }) => {
+          return user?.role === 'admin'
+        }
+      }
+    },
+    {
       name: 'role',
       label: 'Роль',
       type: 'select',
@@ -65,6 +101,19 @@ export const Users: CollectionConfig = {
     },
   ],
   hooks: {
+    afterRead: [
+      ({ doc, req }) => {
+        if (req.user?.role !== 'admin') {
+          if (doc._strategy) delete doc._strategy
+          if (doc.collection) delete doc.collection
+          if (doc.createdAt) delete doc.createdAt
+          if (doc.updatedAt) delete doc.updatedAt
+          if (doc.exp) delete doc.exp
+          return doc
+        }
+        return doc
+      },
+    ],
     beforeOperation: [
       async ({ operation, req, args }) => {
         if (operation !== 'login') return args
