@@ -25,11 +25,7 @@ export const Users: CollectionConfig = {
   },
   access: {
     create: ({ req: { user } }) => user?.role === 'admin',
-    read: ({ req: { user } }) => {
-      if (!user) return false
-      if (user.role === 'admin') return true
-      return { id: { equals: user.id } }
-    },
+    read: () => true,
     update: ({ req: { user } }) => {
       if (!user) return false
       if (user.role === 'admin') return true
@@ -56,8 +52,8 @@ export const Users: CollectionConfig = {
       name: 'sessions',
       type: 'array',
       access: {
-        read: ({ req, data }) => {
-          return req.user?.id === data?.id;
+        read: ({ req, doc }) => {
+          return req.user?.id === doc?.id;
         }
       },
       admin: {
@@ -73,8 +69,11 @@ export const Users: CollectionConfig = {
       type: 'email',
       unique: true,
       access: {
-        read: ({ req: { user } }) => {
-          return user?.role === 'admin'
+        read: ({ req, doc }) => {
+          if (!req.user) return false
+          if (req.user.role === 'admin') return true
+          if (req.user.id === doc?.id) return true
+          return false
         }
       }
     },
@@ -85,11 +84,7 @@ export const Users: CollectionConfig = {
       required: true,
       defaultValue: 'inspector',
       access: {
-        read: ({ req: { user }, id }) => {
-          if (!user) return false
-          if (user.role === 'admin') return true
-          return user.id === id
-        },
+        read: () => true,
         update: ({ req: { user } }) => user?.role === 'admin',
       },
       options: [
