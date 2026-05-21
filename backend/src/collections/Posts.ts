@@ -125,29 +125,33 @@ export const Posts: CollectionConfig = {
     beforeChange: [
       ({ req, data, operation, originalDoc }) => {
         if (operation === 'create' && req.user) {
-          data.author = req.user.id
+          if (!data.admin_panel) {
+            data.admin_panel = {}
+          }
+          data.admin_panel.author = req.user.id
         }
 
         if (req.user?.role === 'editor') {
+          if (!data.admin_panel) {
+            data.admin_panel = {};
+          }
           if (operation === 'create') {
-            data.admin_panel = { ...data.admin_panel, status: 'pending' }
+            data.admin_panel.status = 'pending'
           } else if (data.admin_panel?.status === 'published') {
-            data.admin_panel = {
-              ...data.admin_panel,
-              status: originalDoc?.admin_panel?.status ?? 'pending',
-            }
+            data.admin_panel.status = originalDoc?.admin_panel?.status ?? 'pending'
           }
           if (
             operation === 'update' &&
             originalDoc?.admin_panel?.status === 'pending' &&
             data.admin_panel?.status === 'draft'
           ) {
-            data.admin_panel = { ...data.admin_panel, status: 'pending' }
+            data.admin_panel.status = 'pending'
           }
         }
 
         if (data?.admin_panel?.status === 'published' && !originalDoc?.admin_panel?.published_at) {
-          data.admin_panel = { ...data.admin_panel, published_at: new Date() }
+          if (!data.admin_panel) data.admin_panel = {};
+          data.admin_panel.published_at = new Date()
         }
 
         return data
