@@ -1,12 +1,14 @@
 <template>
     <header class="px-5 absolute z-50 right-0 left-0 top-0 py-2 bg-white dark:border-0 border-b border-gray-200 backdrop-blur-2xl dark:bg-black/70 flex justify-between">
-         <img class="w-50 h-auto" :src="mode.value === 'dark' ? '/freshcheck-light.png' : '/freshcheck.png'" alt="">
+         <NuxtLink to="/">
+            <img class="w-50 h-auto" :src="mode.value === 'dark' ? '/freshcheck-light.png' : '/freshcheck.png'" alt="">
+         </NuxtLink>
         <button @click="toggleColorMode" class="text-gray-800 dark:text-white">
             <AppIcon class="size-8" name="theme"/>
         </button>
     </header>
     <div class="dark:bg-gray-800 dark:text-white text-black min-h-screen transition-colors">
-        <div @click="menuActive = false" class="pt-16 pb-14">
+        <div @click="menuActive = false" class="pt-20 pb-14">
             <slot></slot>
         </div>
     </div>

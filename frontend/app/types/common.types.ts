@@ -1,3 +1,5 @@
+import type { PhotoMeta } from "./photo.types";
+
 export interface Pagination {
     hasNextPage: boolean;
     hasPrevPage: boolean;
@@ -10,6 +12,15 @@ export interface Pagination {
     totalPages: number;
 }
 
+export interface Author {
+  id: number;
+  avatar: PhotoMeta;
+  name: string;
+  role: string;
+}
+
 export interface AdminPanel {
   status: "published" | "draft" | "archived" | string;
+  published_at?: string;
+  author?: Author;
 }

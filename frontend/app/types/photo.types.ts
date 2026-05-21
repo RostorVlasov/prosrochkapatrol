@@ -1,5 +1,5 @@
 export interface PhotoMeta {
-    id: number;
+    id: string;
     alt: string | null;
     uploaded_by: number;
     updatedAt: string;
@@ -18,5 +18,5 @@ export interface PhotoMeta {
 export interface Photo {
     id: string;
     photo: PhotoMeta;
-    caption: string | null;
+    caption?: string | null;
 }
