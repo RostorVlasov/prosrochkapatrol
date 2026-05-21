@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useApi } from '~/composables/useApi';
-import type { ShopsResponse } from '~/types/shops.types';
+import type { ShopDoc, ShopsResponse } from '~/types/shops.types';
 
 export const useShopStore = defineStore('shop', () => {
     const { api } = useApi()
@@ -21,5 +21,18 @@ export const useShopStore = defineStore('shop', () => {
         }
     }
 
-    return { fetchShopData, isLoading, shops };
+    async function fetchShop(id: string) {
+        isLoading.value = true;
+        try {
+            const response = await api<ShopDoc>('/api/shops/' + id);
+            return response
+        } catch (error) {
+            console.error('Ошибка получение данных :', error);
+        }
+        finally {
+            isLoading.value = false;
+        }
+    }
+
+    return { fetchShopData,fetchShop, isLoading, shops };
 });

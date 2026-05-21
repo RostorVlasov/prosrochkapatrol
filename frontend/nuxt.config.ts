@@ -24,11 +24,12 @@ export default defineNuxtConfig({
       title: 'FreshCheck',
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'theme-color', content: '#272a2d' }
+      
       ],
       link: [
         { rel: 'stylesheet', href: 'https://awesome-lib.css' },
-        //лого сюда
-        // { rel: 'icon', type: 'image/svg', href: '/logo.svg' },
+        { rel: 'icon', type: 'image/png', href: '/logo.png' },
       ],
     },
   },
@@ -39,7 +40,7 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
-  modules: ['@pinia/nuxt', '@nuxt/ui', 'nuxt-single-html', '@vueuse/nuxt'],
+  modules: ['@pinia/nuxt', '@nuxt/ui', 'nuxt-single-html', '@vueuse/nuxt', '@nuxtjs/color-mode'],
   
   components: [
     {

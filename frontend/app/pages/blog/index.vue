@@ -1,3 +1,3 @@
 <template>
-    потом
+    <develop/>
 </template>
