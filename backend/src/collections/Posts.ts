@@ -113,7 +113,6 @@ export const Posts: CollectionConfig = {
           type: 'relationship',
           relationTo: 'users',
           admin: {
-            readOnly: true,
             position: 'sidebar',
             description: 'Проставляется автоматически при создании поста',
           },
