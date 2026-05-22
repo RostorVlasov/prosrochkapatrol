@@ -8,7 +8,7 @@ export interface PostDoc {
   title: string;
   body: DocBody;
   cover?: PhotoMeta;
-  rubrics: Rubric[];
+  rubrics?: Rubric[];
   admin_panel: AdminPanel;
   updatedAt: string;
   createdAt: string;

@@ -11,7 +11,7 @@
                 id: post.cover.id,
                 photo: post.cover
             }]" />
-            <div v-if="post.rubrics.length > 0" class="flex mt-3 select-none gap-2 flex-wrap text-sm">
+            <div v-if="post.rubrics && post.rubrics.length > 0" class="flex mt-3 select-none gap-2 flex-wrap text-sm">
                 <span class="p-2 py-1 text-white bg-surface-brown uppercase rounded-md" v-for="rubric in post.rubrics">{{
                     rubric.name }}</span>
             </div>

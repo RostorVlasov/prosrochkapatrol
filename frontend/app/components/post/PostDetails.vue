@@ -16,7 +16,7 @@
             <span class="text-sm">{{ formatDate(post.updatedAt) }}</span>
         </div>
 
-        <div v-if="post.rubrics.length > 0" class="flex items-center gap-3 text-center">
+        <div v-if="post.rubrics && post.rubrics.length > 0" class="flex items-center gap-3 text-center">
             <p class="dark:text-gray-200 text-gray-700 text-lg">Рубрики -</p>
             <div class="flex select-none gap-2 flex-wrap text-sm">
                     <span class="p-2 py-1 text-white bg-surface-brown uppercase rounded-md" v-for="rubric in post.rubrics">{{
