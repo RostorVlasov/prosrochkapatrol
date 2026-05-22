@@ -159,7 +159,7 @@ jobs:
             echo "✅ Dependencies installed"
 
             # =========================
-            # FIX MONGODB PERMISSIONS (после npm install!)
+            # FIX MONGODB PERMISSIONS
             # =========================
             chown -R mongodb:mongodb /var/lib/mongodb
             chmod -R 750 /var/lib/mongodb
@@ -172,14 +172,14 @@ jobs:
             if ! systemctl is-active --quiet mongod; then
               echo "⚠️ MongoDB not running, starting..."
               systemctl start mongod
-              sleep 3
+              sleep 5
             fi
 
             if systemctl is-active --quiet mongod; then
               echo "✅ MongoDB is running"
             else
               echo "❌ MongoDB failed to start!"
-              journalctl -u mongod -n 20 --no-pager
+              journalctl -u mongod -n 20 --no-pager --since "2 minutes ago"
               exit 1
             fi
 
