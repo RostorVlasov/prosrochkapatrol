@@ -137,12 +137,6 @@ jobs:
             cp -r $WORKDIR/deploy/frontend/.output $FRONT/
 
             # =========================
-            # STOP MONGODB BEFORE DEPLOY
-            # =========================
-            echo "🍃 Stopping MongoDB before deploy..."
-            systemctl stop mongod || true
-
-            # =========================
             # DEPLOY BACKEND
             # =========================
             echo "⚙️ Deploy backend..."
@@ -157,26 +151,7 @@ jobs:
             npm install --omit=dev
             npm install @img/sharp-linux-x64 @img/sharp-libvips-linux-x64
             echo "✅ Dependencies installed"
-
-            # =========================
-            # FIX PERMISSIONS + START MONGODB
-            # =========================
-            chown -R mongodb:mongodb /var/lib/mongodb
-            chmod -R 750 /var/lib/mongodb
-            chown -R mongodb:mongodb /var/log/mongodb
             
-            echo "🍃 Starting MongoDB..."
-            systemctl start mongod
-            sleep 5
-
-            if systemctl is-active --quiet mongod; then
-              echo "✅ MongoDB is running"
-            else
-              echo "❌ MongoDB failed to start!"
-              journalctl -u mongod -n 20 --no-pager --since "2 minutes ago"
-              exit 1
-            fi
-
             # =========================
             # KILL OLD PROCESSES
             # =========================
