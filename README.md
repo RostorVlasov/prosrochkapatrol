@@ -14,7 +14,6 @@
 - [Архитектура проекта](#-архитектура-проекта)
 - [Локальный запуск](#-локальный-запуск)
 - [Структура репозитория](#-структура-репозитория)
-- [Деплой](#-деплой-на-сервер-джино)
 - [Переменные окружения](#-переменные-окружения)
 - [Разработка](#-разработка)
 
@@ -24,18 +23,20 @@
 
 | Слой | Технология | Версия |
 |---|---|---|
-| **Фронтенд / SSR** | Nuxt.js 4 (Vue.js 3) | 4.3.0 |
+| **Фронтенд / SPA** | Nuxt.js | 4.3.0 |
+| **Фронтенд / SPA** | Vue.js | 3.5.27 |
 | **Бэкенд / CMS** | Payload CMS | 3.84.1 |
-| **Сервер приложений** | Next.js | 15.2.4 |
-| **База данных** | SQLite | - |
+| **Сервер приложений** | Next.js | 15.2.9 |
+| **База данных** | SQLite | — |
 | **ORM** | Payload DB (SQLite адаптер) | 3.84.1 |
-| **UI фреймворк** | Nuxt UI | 4.7.1 |
-| **Стилизация** | TailwindCSS | 4.3.0 |
-| **Валидация** | Zod | 4.3.6 |
-| **State Management** | Pinia | 3.0.4 |
-| **Пакетный менеджер** | pnpm | 9+ или 10+ |
-| **Язык** | TypeScript | 5.7+ |
-| **Тестирование** | Vitest, Playwright | - |
+| **UI фреймворк** | Nuxt UI | ^4.7.1 |
+| **Стилизация** | TailwindCSS | ^4.3.0 |
+| **State Management** | Pinia | ^3.0.4 |
+| **Пакетный менеджер** | bun | 1.x |
+| **Node.js** | Node.js | ^18.20.2 или >=20.9.0 |
+| **Язык** | TypeScript | 5.7.3 (backend) / ^5.9.3 (frontend) |
+| **Тестирование** | Vitest | 4.0.18 |
+| **Тестирование E2E** | Playwright | 1.58.2 |
 
 ---
 
@@ -45,7 +46,7 @@
 
 ```
 prosrochkapatrol/
-├── backend/              # Payload CMS + GraphQL API
+├── backend/              # Payload CMS
 │   ├── src/
 │   │   ├── collections/  # Коллекции данных (Media, Users)
 │   │   ├── payload.config.ts
@@ -65,18 +66,12 @@ prosrochkapatrol/
 ### Основные сервисы:
 
 - **Backend** (Payload CMS): API, админ-панель, управление медиа
-- **Frontend** (Nuxt): Пользовательский интерфейс, SSR
+- **Frontend** (Nuxt): Пользовательский интерфейс, SPA
 - **Database**: SQLite для хранения всех данных
 
 ---
 
 ## 🚀 Локальный запуск
-
-### Требования
-
-- **Node.js**: 18.20.2 или >=20.9.0
-- **pnpm**: 9+ или 10+
-- **Git**
 
 ### 1. Клонировать репозиторий
 
@@ -88,14 +83,14 @@ cd prosrochkapatrol
 ### 2. Установить зависимости
 
 ```bash
-pnpm install
+bun install
 ```
 
 Это установит зависимости для обоих приложений (frontend и backend).
 
 ### 3. Создать файл `.env` в каждой директории
 
-#### Backend (`.env` в корне проекта или `backend/`)
+#### Backend (`backend/.env`)
 
 ```env
 # Database
@@ -108,13 +103,14 @@ PAYLOAD_SECRET=your_super_secret_key_here_change_in_production
 NODE_ENV=development
 ```
 
-**Примечание**: Оригинальный `.env.example` используется MongoDB URL, но проект настроен на SQLite!
-
-#### Frontend (`.env` в `frontend/`)
+#### Frontend (`frontend/.env`)
 
 ```env
 # API
 NUXT_PUBLIC_API_URL=http://localhost:3000
+
+# Порт фронтенда (бэкенд занимает 3000)
+NUXT_PORT=3001
 ```
 
 ### 4. Запустить приложения
@@ -123,7 +119,7 @@ NUXT_PUBLIC_API_URL=http://localhost:3000
 
 ```bash
 cd backend
-pnpm run dev
+bun run dev
 ```
 
 Backend будет доступен на: **http://localhost:3000**
@@ -133,30 +129,30 @@ Backend будет доступен на: **http://localhost:3000**
 
 ```bash
 cd frontend
-pnpm run dev
+bun run dev
 ```
 
-Frontend будет доступен на: **http://localhost:3000** (по умолчанию)
+Frontend будет доступен на: **http://localhost:3001**
 
 #### Вариант C: Запуск обоих (рекомендуется для локальной разработки)
 
-**Терминал 1** - Backend:
+**Терминал 1** — Backend:
 ```bash
 cd backend
-pnpm run dev
+bun run dev
 ```
 
-**Терминал 2** - Frontend:
+**Терминал 2** — Frontend:
 ```bash
 cd frontend
-pnpm run dev
+bun run dev
 ```
 
 ### 5. Проверить установку
 
 Откройте в браузере:
-- Backend админ-панель: **http://localhost:3000/admin**
-- Frontend приложение: **http://localhost:3000** (если запущен фронтенд на другом порте, он будет на http://localhost:3001)
+- Backend API + админ-панель: **http://localhost:3000/admin**
+- Frontend приложение: **http://localhost:3001**
 
 ---
 
@@ -190,43 +186,7 @@ prosrochkapatrol/
 │
 ├── .gitignore
 ├── README.md                   # Этот файл
-└── package.json               # Корневой package.json (если есть)
-```
-
----
-
-## 🌍 Деплой на сервер (Джино)
-
-### Обновление production-версии через SSH
-
-```bash
-# Подключиться к серверу
-ssh j06939231@7e49d50600f.hosting.myjino.ru
-
-# Перейти в директорию сайта
-cd domains/7e49d50600f.hosting.myjino.ru
-
-# Подтянуть изменения из main
-git pull origin main
-
-# Переустановить зависимости (если были изменения)
-pnpm install
-
-# Пересобрать приложение
-pnpm run build
-
-# Перезагрузить сервис (команда зависит от конфигурации хостера)
-```
-
-### Production переменные окружения
-
-На production сервере убедитесь, что установлены:
-
-```env
-NODE_ENV=production
-PAYLOAD_SECRET=your_secure_production_secret
-DATABASE_URL=file:/path/to/production/database.sqlite
-# Другие переменные в зависимости от конфигурации
+└── package.json                # Корневой package.json (если есть)
 ```
 
 ---
@@ -249,6 +209,16 @@ DATABASE_URL=file:/path/to/production/database.sqlite
 | `NUXT_HOST` | Хост фронтенда | `localhost` | ❌ |
 | `NUXT_PORT` | Порт фронтенда | `3001` | ❌ |
 
+### Production
+
+На production сервере убедитесь, что установлены:
+
+```env
+NODE_ENV=production
+PAYLOAD_SECRET=your_secure_production_secret
+DATABASE_URL=file:/path/to/production/database.sqlite
+```
+
 ---
 
 ## 💻 Разработка
@@ -261,23 +231,18 @@ DATABASE_URL=file:/path/to/production/database.sqlite
 cd backend
 
 # Разработка
-pnpm run dev           # Запуск dev сервера
-pnpm run devsafe       # Очистка .next и запуск (если проблемы)
+bun run dev           # Запуск dev сервера
+bun run devsafe       # Очистка .next и запуск dev сервера
 
 # Production
-pnpm run build         # Сборка приложения
-pnpm run start         # Запуск продакшена
+bun run build         # Сборка приложения
+bun run start         # Запуск продакшена
 
 # CMS
-pnpm run payload       # Управление Payload CMS
-pnpm run generate:types    # Генерация TypeScript типов
-pnpm run generate:importmap # Генерация import map
-
-# Качество кода
-pnpm run lint          # ESLint проверка
-pnpm run test:int      # Unit тесты (Vitest)
-pnpm run test:e2e      # E2E тесты (Playwright)
-pnpm run test          # Все тесты
+bun run payload                    # Управление Payload CMS
+bun payload generate:types         # Генерация TypeScript типов
+bun payload generate:importmap     # Генерация import map
+bun payload migrate:create         # Создать миграцию базы данных
 ```
 
 #### Frontend
@@ -286,25 +251,16 @@ pnpm run test          # Все тесты
 cd frontend
 
 # Разработка
-pnpm run dev           # Запуск dev сервера
+bun run dev           # Запуск dev сервера
 
 # Production
-pnpm run build         # Сборка для продакшена
-pnpm run start         # Запуск продакшена
-pnpm run generate      # Статическая генерация сайта
+bun run build         # Сборка для продакшена
+bun run start         # Запуск продакшена (после build — через nuxt start)
+bun run generate      # Статическая генерация сайта
 
 # Тестирование
-pnpm run preview       # Preview собранного приложения
+bun run preview       # Preview собранного приложения
 ```
-
-### Основные фреймворки и библиотеки
-
-- **Payload CMS**: Управление контентом, API, админ-панель
-- **Nuxt.js**: Meta-фреймворк для Vue.js с SSR и SSG
-- **GraphQL**: API язык запросов (включен в Payload)
-- **TailwindCSS**: Утилити-классы для стилизации
-- **Pinia**: State management для Vue.js
-- **Zod**: TypeScript-first валидация схем
 
 ### Расширение проекта
 
@@ -342,7 +298,7 @@ collections: [Users, Media, YourCollection],
 3. Пересоберите типы:
 
 ```bash
-pnpm run generate:types
+bun run generate:types
 ```
 
 #### Добавление новой страницы в Nuxt
@@ -382,6 +338,7 @@ Copyright (c) 2026 Roman Troshin, Boris Stepanenko (FreshCheck). All rights rese
 Все права защищены. Никакая часть данного исходного кода или связанных с ним файлов документации не может быть воспроизведена, распространена или передана в любой форме и любыми средствами без предварительного письменного разрешения правообладателей.
 
 ---
+
 ## 📞 Контакты
 
 Проект: **FreshCheck** — Общественный мониторинг качества товаров
