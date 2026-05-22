@@ -8,10 +8,20 @@ export const useShopStore = defineStore('shop', () => {
     const isLoading = ref(false)
     const shops = ref<ShopsResponse | null>(null)
 
-    async function fetchShopData(params?: Record<string, any>) {
+    async function fetchShopData(params?: Record<string, any>, search?: string) {
         isLoading.value = true;
         try {
-            const response = await api<ShopsResponse>('/api/shops', { params });
+            const response = await api<ShopsResponse>('/api/shops', {
+                params,
+                query: {
+                    where: JSON.stringify({
+                        or: [
+                            { store_name: { like: search } },
+                            { address: { like: search } },
+                        ]
+                    })
+                }
+            });
             shops.value = response;
         } catch (error) {
             console.error('Ошибка получение данных :', error);
@@ -34,5 +44,5 @@ export const useShopStore = defineStore('shop', () => {
         }
     }
 
-    return { fetchShopData,fetchShop, isLoading, shops };
+    return { fetchShopData, fetchShop, isLoading, shops };
 });

@@ -8,10 +8,24 @@ export const usePostsStore = defineStore('post', () => {
     const isLoading = ref(false)
     const posts = ref<PostsResponse | null>(null)
 
-    async function fetchPostsData(params?: Record<string, any>) {
+    async function fetchPostsData(search: string, params?: Record<string, any>) {
         isLoading.value = true;
         try {
-            const response = await api<PostsResponse>('/api/posts', { params });
+            const response = await api<PostsResponse>('/api/posts', { 
+                params,
+                query: {
+                    where: JSON.stringify({
+                        or: [
+                            { title: { like: search } },
+                            { title: { like: search.toLowerCase() } },
+                            { title: { like: search.toUpperCase() } },
+                            { 'admin_panel.author.name': { like: search } },
+                            { 'admin_panel.author.name': { like: search.toLowerCase() } },
+                            { 'admin_panel.author.name': { like: search.toUpperCase() } },
+                        ]
+                    })
+                }
+             });
             posts.value = response;
         } catch (error) {
             console.error('Ошибка получение данных :', error);

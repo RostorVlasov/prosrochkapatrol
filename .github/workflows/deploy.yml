@@ -42,7 +42,7 @@ jobs:
         run: bun run build
 
       # =========================
-      # PREPARE DEPLOY FOLDER (без node_modules)
+      # PREPARE DEPLOY FOLDER
       # =========================
       - name: Prepare deploy folder
         run: |
@@ -50,10 +50,8 @@ jobs:
           mkdir -p deploy/frontend
           mkdir -p deploy/backend
 
-          # Фронтенд
           cp -r frontend/.output deploy/frontend/
 
-          # Бэкенд — только билд без node_modules
           mkdir -p deploy/backend/.next
           cp -r backend/.next/server deploy/backend/.next/
           cp -r backend/.next/static deploy/backend/.next/
@@ -65,7 +63,6 @@ jobs:
           cp backend/.next/required-server-files.json deploy/backend/.next/ 2>/dev/null || true
           cp backend/.next/package.json deploy/backend/.next/ 2>/dev/null || true
 
-          # Корневые файлы
           cp backend/package.json deploy/backend/
           cp backend/package-lock.json deploy/backend/ 2>/dev/null || true
           cp backend/next.config.ts deploy/backend/ 2>/dev/null || true
@@ -73,7 +70,6 @@ jobs:
           cp backend/next.config.mjs deploy/backend/ 2>/dev/null || true
           cp -r backend/public deploy/backend/ 2>/dev/null || true
 
-          # Для миграций
           cp backend/tsconfig.json deploy/backend/
           cp -r backend/src deploy/backend/
 
@@ -145,7 +141,6 @@ jobs:
             # =========================
             echo "⚙️ Deploy backend..."
 
-            # Не трогаем: .env, БД, media
             rm -rf $BACK/.next
             rm -rf $BACK/public
             rm -rf $BACK/node_modules
@@ -161,20 +156,30 @@ jobs:
             npm install --omit=dev
 
             echo "📦 Installing native binaries..."
-            npm install @libsql/linux-x64-gnu
             npm install @img/sharp-linux-x64 @img/sharp-libvips-linux-x64
 
             echo "✅ Dependencies installed"
 
             # =========================
-            # MIGRATIONS
+            # ENSURE MONGODB IS RUNNING
             # =========================
-            echo "🗄 Running migrations..."
-            yes | npx payload migrate --yes
-            echo "✅ Migrations done"
+            echo "🍃 Checking MongoDB..."
+            if ! systemctl is-active --quiet mongod; then
+              echo "⚠️ MongoDB not running, starting..."
+              systemctl start mongod
+              sleep 3
+            fi
+
+            if systemctl is-active --quiet mongod; then
+              echo "✅ MongoDB is running"
+            else
+              echo "❌ MongoDB failed to start!"
+              journalctl -u mongod -n 20
+              exit 1
+            fi
 
             # =========================
-            # KILL OLD PROCESSES (по PID, не по имени!)
+            # KILL OLD PROCESSES
             # =========================
             echo "🔪 Killing old processes..."
 
@@ -227,7 +232,6 @@ jobs:
               exit 1
             fi
 
-            # Чистим
             rm -rf $WORKDIR $DEPLOY_ZIP
 
             echo "🎉 DEPLOY COMPLETE"
