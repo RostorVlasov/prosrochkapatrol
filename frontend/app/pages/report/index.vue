@@ -1,3 +1,3 @@
 <template>
-    <BadgesView/>
+    <ReportView/>
 </template>

@@ -41,7 +41,14 @@ export default defineNuxtConfig({
     },
   },
   modules: ['@pinia/nuxt', '@nuxt/ui', 'nuxt-single-html', '@vueuse/nuxt', '@nuxtjs/color-mode'],
-  
+  icon: {
+    serverBundle: 'local',
+    clientBundle: {
+      scan: true,
+      includeCustomCollections: true,
+    },
+    fallbackToApi: false,
+  },
   components: [
     {
       path: '~/components',

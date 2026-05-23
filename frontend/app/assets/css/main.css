@@ -2,11 +2,49 @@
 
 
 @custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
     --color-surface-base: #272a2d;
     --color-surface-brown: #a0876e;
+    /* Тёмно-бежевый (#A0876E) и его оттенки */
+    --color-beige-50: #F5EFE8;
+    --color-beige-100: #EBDDD2;
+    --color-beige-200: #D7C0AE;
+    --color-beige-300: #C3A389;
+    --color-beige-400: #B19578;
+    --color-beige-500: #A0876E;
+    /* Основной */
+    --color-beige-600: #806C58;
+    --color-beige-700: #605142;
+    --color-beige-800: #40362C;
+    --color-beige-900: #201B16;
+
+    /* Балтийское море (#3F4245) и его оттенки */
+    --color-gray-50: #ECECED;
+    --color-gray-100: #D9D9DA;
+    --color-gray-200: #B3B4B5;
+    --color-gray-300: #8D8E90;
+    --color-gray-400: #67696B;
+    --color-gray-500: #3F4245;
+    /* Основной */
+    --color-gray-600: #323537;
+    --color-gray-700: #262829;
+    --color-gray-800: #191A1C;
+    --color-gray-900: #0D0D0E;
+
+    /* Белый и отбеливающий белый */
+    --color-white: #FFFFFF;
+    --color-off-white: #E7DCDD;
+    --color-slate: #2B2B2B;
 }
 
 body {
-    background-color: #f6f9fb;
+    background-color: var(--color-beige-50);
+    background-repeat: repeat;
+    background-image: url('/листья.svg');
+}
+
+.dark body {
+    background-color: rgb(33, 33, 33);
+    background-image: url('/листья-dark.svg');
 }

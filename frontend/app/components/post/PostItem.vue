@@ -1,16 +1,19 @@
 <template>
     <NuxtLink :to="'/blog/' + post.id">
-        <div class="p-4 active:dark:bg-gray-600 hover:dark:bg-gray-600 dark:bg-gray-700 bg-gray-300/50 active:bg-gray-300 hover:bg-gray-300 transition-colors rounded-xl">
+        <div class="p-4 pb-6 active:dark:bg-gray-600 hover:dark:bg-gray-600 dark:bg-gray-700 bg-white active:bg-gray-100 hover:bg-gray-100 transition-colors rounded-xl">
+
             <div class="mb-4 flex gap-2 items-center">
-                <img v-if="post.admin_panel.author?.avatar.url" class="rounded-[50%] w-10 h-10" :src="buildApiUrl(post.admin_panel.author?.avatar?.url)" alt="">
+                <Avatar :avatar-url="post.admin_panel.author?.avatar.url"/>
                 <span class="font-semibold text-md">{{ post.admin_panel.author?.name }}</span>
                 <span class="dark:text-gray-300 text-gray-700"> - </span>
                 <span class="text-sm dark:text-gray-300 text-gray-700">{{ formatDate(post.updatedAt) }}</span>
             </div>
+
             <MediaGallery v-if="post.cover" class="pointer-events-none" :images="[{
                 id: post.cover.id,
                 photo: post.cover
             }]" />
+
             <div v-if="post.rubrics && post.rubrics.length > 0" class="flex mt-3 select-none gap-2 flex-wrap text-sm">
                 <span class="p-2 py-1 text-white bg-surface-brown uppercase rounded-md" v-for="rubric in post.rubrics">{{
                     rubric.name }}</span>

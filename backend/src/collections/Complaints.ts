@@ -172,6 +172,7 @@ export const Complaints: CollectionConfig = {
             ],
           },
           limit: 0,
+          overrideAccess: true,
         })
 
         if (result.totalDocs >= DAILY_COMPLAINT_LIMIT) {
@@ -187,7 +188,11 @@ export const Complaints: CollectionConfig = {
     ],
     beforeChange: [
       ({ req, data }) => {
-        data.ip_address = getIP(req)
+        if (!data.admin_panel) {
+          data.admin_panel = {}
+        }
+
+        data.admin_panel.ip_address = getIP(req)
         return data
       },
     ],

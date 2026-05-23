@@ -1,29 +1,29 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useApi } from '~/composables/useApi';
-import type { PostDoc, PostsResponse } from '~/types/post.types';
+import type { BadgeDoc, BadgesResponse } from '~/types/badges.types';
 
-export const usePostsStore = defineStore('post', () => {
+export const useBadgesStore = defineStore('badge', () => {
     const { api } = useApi()
     const isLoading = ref(false)
-    const posts = ref<PostsResponse | null>(null)
+    const badges = ref<BadgesResponse | null>(null)
 
-    async function fetchPostsData(search: string, params?: Record<string, any>) {
+    async function fetchBadgesData(search: string, params?: Record<string, any>) {
         isLoading.value = true;
         try {
-            const response = await api<PostsResponse>('/api/posts', { 
+            const response = await api<BadgesResponse>('/api/badges', {
                 params,
                 query: {
                     where: JSON.stringify({
                         or: [
-                            { title: { like: search } },
-                            { 'admin_panel.author.name': { like: search } },
-                            { "rubrics.name": { contains: search } },
+                            { code: { like: search } },
+                            { type: { like: search } },
+                            { "ownerName.name": { like: search } },
                         ]
                     })
                 }
-             });
-            posts.value = response;
+            });
+            badges.value = response;
         } catch (error) {
             console.error('Ошибка получение данных :', error);
         }
@@ -32,10 +32,10 @@ export const usePostsStore = defineStore('post', () => {
         }
     }
 
-    async function fetchPost(id: string) {
+    async function fetchBadge(id: string) {
         isLoading.value = true;
         try {
-            const response = await api<PostDoc>('/api/posts/' + id);
+            const response = await api<BadgeDoc>('/api/badges/' + id);
             return response
         } catch (error) {
             console.error('Ошибка получение данных :', error);
@@ -45,5 +45,5 @@ export const usePostsStore = defineStore('post', () => {
         }
     }
 
-    return { fetchPostsData, fetchPost, isLoading, posts };
+    return { fetchBadgesData, fetchBadge, isLoading, badges };
 });

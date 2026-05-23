@@ -16,7 +16,7 @@ export const input = tv({
         fill: {
             transparent: 'bg-transparent',
             subtle: 'bg-surface-secondary',
-            solid: 'dark:bg-gray-600 bg-gray-200',
+            solid: 'dark:bg-gray-600 bg-white',
         },
     },
     defaultVariants: { intent: 'normal', size: 'md', fill: 'solid' },
@@ -26,7 +26,7 @@ export const select = tv({
     base: 'border text-sm w-full  rounded-md p-2 focus:outline-none focus:border-blue-500',
     variants: {
         fill: {
-            base: 'dark:bg-transparent bg-gray-200 border-gray-300'
+            base: 'dark:bg-transparent bg-white border-gray-300'
         }
     },
     defaultVariants: { fill: 'base' }

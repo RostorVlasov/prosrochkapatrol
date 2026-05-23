@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-auto p-6">
+    <div class="mx-auto p-6 bg-stone-100">
         <div>
             <div class="flex gap-4 mb-6 items-center">
                 <NuxtLink to="/blog" class="flex items-center gap-3">
