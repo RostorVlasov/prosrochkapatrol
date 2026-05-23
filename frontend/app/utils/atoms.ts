@@ -1,10 +1,10 @@
 import { tv } from 'tailwind-variants'
 
 export const input = tv({
-    base: ' transition-colors outline-0 w-full px-6 p-2 rounded-md',
+    base: ' transition-colors outline-0 w-full px-3 py-2 rounded-md',
     variants: {
         intent: {
-            normal: 'border-border-input focus:border-blue-500',
+            normal: 'border-border-input border-2 dark:border-0 border-beige-300 focus:border-beige-500',
             error: 'border-red-500 focus:border-red-600',
             success: 'border-green-500 focus:border-green-600',
             disabled: 'border-gray-600 bg-gray-800 cursor-not-allowed',
@@ -23,10 +23,10 @@ export const input = tv({
 })
 
 export const select = tv({
-    base: 'border text-sm w-full  rounded-md p-2 focus:outline-none focus:border-blue-500',
+    base: 'text-sm w-full rounded-md border-2 px-3 py-2 dark:border-1 focus:outline-none focus:border-beige-500',
     variants: {
         fill: {
-            base: 'dark:bg-transparent bg-white border-gray-300'
+            base: 'dark:bg-transparent bg-white border-beige-400'
         }
     },
     defaultVariants: { fill: 'base' }

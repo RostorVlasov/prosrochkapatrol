@@ -1,5 +1,6 @@
 @import "tailwindcss";
-
+@import "@nuxt/ui";
+@import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..900&family=Unbounded:wght@200..900&display=swap');
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -39,6 +40,7 @@
 }
 
 body {
+    font-family: "Golos Text", sans-serif;
     background-color: var(--color-beige-50);
     background-repeat: repeat;
     background-image: url('/листья.svg');
@@ -47,4 +49,8 @@ body {
 .dark body {
     background-color: rgb(33, 33, 33);
     background-image: url('/листья.svg');
+}
+
+.bg-elevated {
+    background-color: #2d3236 !important;
 }

@@ -7,12 +7,6 @@ export default defineNuxtConfig({
       routes.clear() //Do not generate any routes
     }
   },
-  //для сервера вроде не нужно
-  // router: {
-  //   options: {
-  //     hashMode: true,
-  //   }
-  // },
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     public: {

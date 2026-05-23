@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-auto p-6 bg-stone-100">
+    <AdaptiveContainer class="dark:bg-surface-base bg-stone-100 rounded-md">
         <div>
             <div class="flex gap-4 mb-6 items-center">
                 <NuxtLink to="/blog" class="flex items-center gap-3">
@@ -9,8 +9,7 @@
             </div>
         </div>
         <div class="mb-4 flex gap-2 items-center">
-            <img v-if="post.admin_panel.author?.avatar.url" class="rounded-[50%] w-10 h-10"
-                :src="buildApiUrl(post.admin_panel.author?.avatar?.url)" alt="">
+            <Avatar v-if="post.admin_panel.author?.avatar" size="md" :avatar="post.admin_panel.author?.avatar"/>
             <span class="font-semibold text-md">{{ post.admin_panel.author?.name }}</span>
             <span> - </span>
             <span class="text-sm">{{ formatDate(post.updatedAt) }}</span>
@@ -19,10 +18,11 @@
         <div v-if="post.rubrics && post.rubrics.length > 0" class="flex items-center gap-3 text-center">
             <p class="dark:text-gray-200 text-gray-700 text-lg">Рубрики -</p>
             <div class="flex select-none gap-2 flex-wrap text-sm">
-                    <span class="p-2 py-1 text-white bg-surface-brown uppercase rounded-md" v-for="rubric in post.rubrics">{{
-                rubric.name }}</span>
+                <span class="p-2 py-1 text-white bg-surface-brown uppercase rounded-md"
+                    v-for="rubric in post.rubrics">{{
+                        rubric.name }}</span>
             </div>
-            
+
         </div>
         <div>
             <h1 class="text-2xl mt-4 font-bold">{{ post.title }}</h1>
@@ -31,7 +31,7 @@
         </div>
 
         <LexicalRender class="mt-2" :node="post.body.root" />
-    </div>
+    </AdaptiveContainer>
 </template>
 
 <script lang="ts" setup>

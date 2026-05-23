@@ -4,5 +4,9 @@ export interface ComplaintRequest {
     problem_date: string
     staff_contacted: string
     description: string
-    photos: string[]
+    photos: PhotoType[]
+}
+
+interface PhotoType {
+    photo: string
 }

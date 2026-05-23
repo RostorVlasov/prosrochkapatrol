@@ -1,5 +1,5 @@
 <template>
-    <div class="p-6 mx-auto mt-5">
+    <AdaptiveContainer>
         <h1 class="text-2xl font-bold mb-4">Проверенные магазины</h1>
 
         <input v-model="searchInput" placeholder="Поиск" type="text" :class="input() + ' mb-4'">
@@ -22,7 +22,7 @@
                     <ShopItem v-for="shop in shops?.docs || []" :key="shop.id" :shop="shop" />
                 </div>
             </div>
-    </div>
+    </AdaptiveContainer>
 </template>
 
 <script setup lang="ts">

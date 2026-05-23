@@ -5,7 +5,7 @@ export interface PhotoMeta {
     updatedAt: string;
     createdAt: string;
     url: string;
-    thumbnailURL: string | null;
+    thumbnailURL: string
     filename: string;
     mimeType: string;
     filesize: number;
@@ -28,7 +28,7 @@ export interface PhotoResponse {
         focalX: number,
         focalY: number,
         id: string,
-        thumbnailURL: string | null
+        thumbnailURL: string
     },
     message: string
 }

@@ -1,7 +1,6 @@
 <template>
-    <div class="min-h-screen bg-stone-100 dark:bg-stone-900 py-12 px-4">
-        <div class="max-w-xl mx-auto">
-
+    <AdaptiveContainer class="dark:bg-surface-base bg-stone-100 rounded-md">
+        <div class="mx-auto">
             <!-- Header -->
             <div class="mb-8">
                 <h1 class="font-serif text-4xl font-bold leading-tight text-stone-900 dark:text-stone-100 mb-4">
@@ -181,7 +180,7 @@
 
             </form>
         </div>
-    </div>
+    </AdaptiveContainer>
 </template>
 
 <script lang="ts" setup>

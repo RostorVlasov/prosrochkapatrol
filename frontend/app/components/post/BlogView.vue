@@ -1,5 +1,5 @@
 <template>
-    <div class="p-6 mx-auto mt-5">
+    <AdaptiveContainer>
         <h1 class="text-4xl font-bold mb-4">Новости и статьи</h1>
         <input v-model="searchInput" placeholder="Поиск" type="text" :class="input() + ' mb-4'">
 
@@ -7,7 +7,7 @@
         <div v-else class="flex flex-col gap-6" v-if="posts">
             <PostItem v-for="post in posts.docs" :post="post"></PostItem>
         </div>
-    </div>
+    </AdaptiveContainer>
 </template>
 
 <script lang="ts" setup>

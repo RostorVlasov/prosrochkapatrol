@@ -10,6 +10,7 @@ export interface PhotoItem {
     file: File
     previewUrl: string
     status: UploadStatus
+    errorMessage: string | null
     progress: number
     uploadedId: string | null
 }
@@ -57,6 +58,7 @@ export function useReportForm() {
             previewUrl: URL.createObjectURL(file),
             status: 'idle',
             progress: 0,
+            errorMessage: null,
             uploadedId: null,
         }
     }
@@ -70,8 +72,11 @@ export function useReportForm() {
             item.uploadedId = res
             item.progress = 100
             item.status = 'done'
-        } catch {
+            item.errorMessage = null
+        } catch(e: any) {
+            const message = e.data.errors[0].message
             item.status = 'error'
+            item.errorMessage = message
         }
     }
 
@@ -121,7 +126,11 @@ export function useReportForm() {
         try {
             const photos = photoItems.value
                 .filter(p => p.status === 'done' && p.uploadedId)
-                .map(p => p.uploadedId as string)
+                .map(p => {
+                    return {
+                        photo: p.uploadedId as string
+                    }
+                })
 
             createReport({ ...form, photos })
 

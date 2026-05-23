@@ -11,7 +11,7 @@
             <span class="w-2 h-2 rounded-full shrink-0" :class="statusDotClass" />
             <span class="text-sm dark:text-gray-300 text-gray-600">{{ statusLabel }}</span>
             <span class="ml-auto flex items-center gap-1 text-sm dark:text-gray-400 text-gray-500">
-                <Avatar :avatar-url="props.badge.ownerName?.avatar.url" class="w-4 h-4" />
+                <Avatar v-if="badge.ownerName?.avatar" size="sm" :avatar="badge.ownerName.avatar" class="w-4 h-4" />
                 {{ ownerName }}
             </span>
         </div>

@@ -68,7 +68,7 @@
                         <line x1="12" y1="8" x2="12" y2="12" />
                         <line x1="12" y1="16" x2="12.01" y2="16" />
                     </svg>
-                    <span class="text-red-300 text-xs text-center leading-tight">Ошибка загрузки</span>
+                    <span class="text-red-300 text-xs text-center leading-tight">{{ item.errorMessage }}</span>
                     <button type="button" class="text-xs text-white underline mt-0.5 cursor-pointer"
                         @click.stop="$emit('retry', item)">
                         Повторить

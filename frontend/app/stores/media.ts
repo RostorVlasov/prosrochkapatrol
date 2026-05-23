@@ -14,8 +14,8 @@ export const useMediaStore = defineStore('media', () => {
             fd.append('file', file)
             const response = await api<PhotoResponse>('/api/media', {method: 'POST', body: fd})
             return response.doc.id
-        } catch (error) {
-            console.error('Ошибка загрузки медиа:', error);
+        } catch (error: any) {
+            throw error
         }
         finally {
             isLoading.value = false;

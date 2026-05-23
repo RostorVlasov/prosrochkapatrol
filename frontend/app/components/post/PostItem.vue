@@ -3,7 +3,7 @@
         <div class="p-4 pb-6 active:dark:bg-gray-600 hover:dark:bg-gray-600 dark:bg-gray-700 bg-white active:bg-gray-100 hover:bg-gray-100 transition-colors rounded-xl">
 
             <div class="mb-4 flex gap-2 items-center">
-                <Avatar :avatar-url="post.admin_panel.author?.avatar.url"/>
+                <Avatar v-if="post.admin_panel.author?.avatar" size="md" :avatar="post.admin_panel.author?.avatar"/>
                 <span class="font-semibold text-md">{{ post.admin_panel.author?.name }}</span>
                 <span class="dark:text-gray-300 text-gray-700"> - </span>
                 <span class="text-sm dark:text-gray-300 text-gray-700">{{ formatDate(post.updatedAt) }}</span>

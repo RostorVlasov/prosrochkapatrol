@@ -1,6 +1,6 @@
 <template>
     <NuxtLink :to="`shops/${shop.id}`">
-    <div class="p-5 active:dark:bg-gray-500 hover:bg-gray-200 hover:dark:bg-gray-500 bg-white transition-colors dark:bg-gray-600 border border-gray-700">
+    <div class="p-5 active:dark:bg-gray-500 hover:bg-gray-50 dark:border-0 hover:dark:bg-gray-500 bg-white transition-colors dark:bg-gray-600 border-2 border-beige-500">
         <div class="border-b pb-4">
             <div class="p-1 dark:bg-amber-100/20 bg-amber-100/50 flex w-max px-2 items-center mb-4">
                 <AppIcon name="star" class="text-amber-300 size-5" />
