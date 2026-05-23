@@ -167,7 +167,7 @@ export const Complaints: CollectionConfig = {
           collection: 'complaints',
           where: {
             and: [
-              { ip_address: { equals: ip } },
+              { 'admin_panel.ip_address': { equals: ip } },
               { createdAt: { greater_than: startOfDay.toISOString() } },
             ],
           },
