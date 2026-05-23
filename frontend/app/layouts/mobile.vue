@@ -51,9 +51,11 @@ function toggleColorMode() {
     }
 }
 
+const themeColor = computed(() => mode.value === 'dark' ? '#6a7282' : '#A0876E')
+
 useHead({
     meta: [
-        { name: 'theme-color', content: '#6a7282' }
+        { name: 'theme-color', content: themeColor }
     ]
 })
 
