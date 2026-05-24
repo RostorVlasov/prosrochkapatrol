@@ -1,3 +1,0 @@
-<template>
-    <develop></develop>
-</template>

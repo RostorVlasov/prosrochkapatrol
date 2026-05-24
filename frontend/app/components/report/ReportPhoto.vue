@@ -11,8 +11,8 @@
 
         <!-- Dropzone -->
         <div class="relative border-2 border-dashed rounded-xl transition-colors" :class="isDragging
-            ? 'border-amber-400 bg-amber-50 dark:bg-amber-950/20'
-            : 'border-stone-300 dark:border-stone-600 hover:border-amber-400 dark:hover:border-amber-500'"
+            ? 'border-beige-400 bg-beige-50 dark:bg-beige-950/20'
+            : 'border-stone-300 dark:border-stone-600 hover:border-beige-400 dark:hover:border-beige-500'"
             @dragover.prevent="$emit('update:isDragging', true)" @dragleave.prevent="$emit('update:isDragging', false)"
             @drop.prevent="$emit('drop', $event)">
             <input ref="fileInputRef" type="file" accept="image/jpeg,image/png,image/webp" multiple
@@ -28,7 +28,7 @@
                 </div>
                 <p class="text-sm text-stone-600 dark:text-stone-300 text-center">
                     Перетащите фото сюда или
-                    <span class="text-amber-600 dark:text-amber-400 font-medium">нажмите для выбора</span>
+                    <span class="text-beige-600 dark:text-beige-400 font-medium">нажмите для выбора</span>
                 </p>
                 <p class="text-xs text-stone-400 dark:text-stone-500">Можно несколько файлов сразу</p>
             </div>

@@ -1,5 +1,5 @@
 import type { AdminPanel, Pagination } from "./common.types";
-import type { Photo } from "./photo.types";
+import type { Photo, PhotoMeta } from "./photo.types";
 
 export interface ShopDoc {
   id: number;
@@ -27,7 +27,7 @@ export interface ShopDoc {
   advantages: string[];
   disadvantages: string[];
   inspector_comment: string;
-  
+  shop_photo: PhotoMeta,
   photos: Photo[];
   admin_panel: AdminPanel;
   

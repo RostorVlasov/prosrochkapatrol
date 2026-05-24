@@ -1,7 +1,7 @@
 <template>
     <Teleport to="body">
         <Transition name="modal-fade">
-            <div v-if="modelValue !== null"
+            <div v-if="model !== null"
                 class="fixed inset-0 z-100 flex flex-col items-center justify-center bg-black/95 backdrop-blur-md"
                 @click.self="close">
                 
@@ -11,12 +11,10 @@
                     <AppIcon name="cross" class="flex size-10" />
                 </button>
 
-                <!-- Счётчик -->
                 <div class="absolute top-6 left-6 z-10 bg-black/70 text-white text-sm px-3.5 py-1.5 rounded-full pointer-events-none">
-                    {{ modelValue + 1 }} / {{ images.length }}
+                    {{ model + 1 }} / {{ images.length }}
                 </div>
 
-                <!-- Основная область со Swiper -->
                 <div class="relative w-full flex-1 overflow-hidden">
                     <Swiper
                         :modules="modules"
@@ -26,7 +24,9 @@
                         class="h-full w-full"
                         @slideChange="onSlideChange"
                         @click="handleSwiperClick"
+                        @swiper="onSwiper"
                         style="touch-action: pan-y;" 
+                        ref="swiperRef"
                     >
                         <SwiperSlide v-for="(img, idx) in images" :key="idx" class="flex items-center justify-center">
                             <div class="swiper-zoom-container w-full h-full flex items-center justify-center">
@@ -38,9 +38,9 @@
                     </Swiper>
                 </div>
 
-                <!-- Миниатюры -->
                 <div v-if="images.length > 1"
-                    class="w-full flex gap-2.5 overflow-x-auto pb-safe px-4 py-3 scrollbar-hide snap-x snap-mandatory">
+                    ref="thumbnailsRef"
+                    class="w-full flex gap-2.5 overflow-x-auto pb-safe mb-2  px-4 py-3 scrollbar-hide snap-x snap-mandatory">
                     <img v-for="(img, idx) in images" :key="idx"
                         :src="buildApiUrl(img.photo.url)"
                         class="w-14 h-14 shrink-0 object-cover rounded-xl cursor-pointer border-2 transition-all snap-start"
@@ -60,38 +60,56 @@ import 'swiper/css'
 import 'swiper/css/zoom'
 import 'swiper/css/keyboard'
 
+const swiperInstance = ref<any>(null)
+const thumbnailsRef = ref<HTMLElement | null>(null)
+
 const props = defineProps<{
-    modelValue: number | null
     images: Photo[]
 }>()
 
-const emit = defineEmits<{
-    (e: 'update:modelValue', value: number | null): void
-}>()
+const scrollThumbnailIntoView = (idx: number) => {
+    const container = thumbnailsRef.value
+    if (!container) return
+    const thumb = container.children[idx] as HTMLElement
+    if (!thumb) return
+    const containerCenter = container.offsetWidth / 2
+    const thumbCenter = thumb.offsetLeft + thumb.offsetWidth / 2
+    container.scrollTo({ left: thumbCenter - containerCenter, behavior: 'smooth' })
+}
+
+const model = defineModel<number | null>({required: true})
 
 const { buildApiUrl } = useApiBuilder()
 const modules = [Zoom, Keyboard]
 
-const close = () => emit('update:modelValue', null)
-const goTo = (idx: number) => emit('update:modelValue', idx)
+const onSwiper = (swiper: any) => {
+    swiperInstance.value = swiper;
+};
+
+const close = () => {
+    model.value = null
+}
+
+const goTo = (idx: number) => {
+    model.value = idx
+    swiperInstance.value.slideTo(idx)
+    scrollThumbnailIntoView(idx)
+}
 
 const onSlideChange = (swiper: any) => {
-    // Синхронизируем modelValue со Swiper
-    if (props.modelValue !== swiper.activeIndex) {
-        emit('update:modelValue', swiper.activeIndex)
+    if (model.value !== swiper.activeIndex) {
+        model.value = swiper.activeIndex
+        scrollThumbnailIntoView(swiper.activeIndex)
     }
 }
 
 const handleSwiperClick = (swiper: any) => {
-    // Закрываем модалку только если зум = 1 (чтобы не закрывать при попытке снять зум)
     if (swiper.zoom.scale === 1) {
         close()
     }
 }
 
-// ─── Lifecycle ───────────────────────────────────────────────────────────────
-
-watch(() => props.modelValue, (val) => {
+watch(model, (val) => {
     document.body.style.overflow = val !== null ? 'hidden' : ''
 })
 

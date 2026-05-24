@@ -41,6 +41,10 @@ const images = computed(() => props.images || [])
 const currentPreviewIndex = ref(0)
 const selectedIndex = ref<number | null>(null)
 
+watch(selectedIndex, () => {
+    console.log(selectedIndex)
+})
+
 const isImageLoading = ref(true)
 
 const handleImageLoad = () => {

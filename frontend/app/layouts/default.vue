@@ -11,18 +11,9 @@
             </div>
 
             <nav class="flex-1 px-2 py-3 flex flex-col gap-0.5 overflow-y-auto">
-                <SidebarNavItem icon="home" to="/">Главная</SidebarNavItem>
-                <SidebarNavItem icon="posts" to="/blog">Публикации</SidebarNavItem>
-                <SidebarNavItem icon="shops" to="/shops">Магазины</SidebarNavItem>
-                <SidebarNavItem icon="report" to="/report">Отчёт</SidebarNavItem>
-
+                    <SidebarNavItem v-for="page in pages.sidebar" :icon="page.icon" :to="page.url">{{page.name}}</SidebarNavItem>
                 <div class="my-2 border-t border-gray-200 dark:border-gray-800" />
-
-                <SidebarNavItem icon="faq" to="/faq">FAQ</SidebarNavItem>
-                <SidebarNavItem icon="faq" to="/for-shops">Для администраций</SidebarNavItem>
-                <SidebarNavItem icon="faq" to="/docs">Документы проекта</SidebarNavItem>
-                <SidebarNavItem icon="faq" to="/badges">Бейджики участников</SidebarNavItem>
-                <SidebarNavItem icon="faq" to="/report-error">Ошибка в отчёте</SidebarNavItem>
+                    <SidebarNavItem v-for="page in pages.other" :icon="page.icon" :to="page.url">{{page.name}}</SidebarNavItem>
             </nav>
 
             <div class="px-4 py-3 border-t border-gray-200 dark:border-gray-800">
@@ -37,7 +28,7 @@
         <header class="lg:hidden px-5 absolute z-50 right-0 left-0 top-0 py-2
                    bg-white dark:bg-black/70 border-b border-gray-200 dark:border-0
                    backdrop-blur-2xl flex justify-between items-center">
-            <NuxtLink to="/">
+            <NuxtLink :to="pages.sidebar.home.url">
                 <img class="w-50 h-auto" :src="isDark ? '/freshcheck-light.png' : '/freshcheck.png'" alt="FreshCheck" />
             </NuxtLink>
             <button @click="toggleColorMode" class="text-gray-800 dark:text-white">
@@ -55,27 +46,18 @@
                 dark:bg-surface-base bg-beige-500 rounded-tr-2xl rounded-tl-2xl">
             <MenuSlide>
                 <div v-if="menuActive" class="p-5 flex flex-col gap-4">
-                    <MobileMenuItem @click="menuActive = false" to="/faq">Часто задаваемые вопросы (FAQ)
-                    </MobileMenuItem>
-                    <MobileMenuItem @click="menuActive = false" to="/for-shops">Информация для администраций магазинов
-                    </MobileMenuItem>
-                    <MobileMenuItem @click="menuActive = false" to="/docs">Документы проекта FreshCheck</MobileMenuItem>
-                    <MobileMenuItem @click="menuActive = false" to="/badges">Бейджики участников</MobileMenuItem>
-                    <MobileMenuItem @click="menuActive = false" to="/report-error">Ошибка или неточность в отчёте
-                    </MobileMenuItem>
+                    <MobileMenuItem v-for="page in pages.other" @click="menuActive = false" :to="page.url">{{page.name}}</MobileMenuItem>
                 </div>
             </MenuSlide>
             <div class="py-3 pb-6 px-8">
                 <div class="flex justify-between items-center mobile-navbar">
-                    <MobileNavItem @click="menuActive = false" icon="home" to="/"></MobileNavItem>
-                    <MobileNavItem @click="menuActive = false" icon="posts" to="/blog"></MobileNavItem>
-                    <MobileNavItem @click="menuActive = false" class="h-6 w-6" icon="shops" to="/shops"></MobileNavItem>
-                    <MobileNavItem @click="menuActive = false" class="h-8 w-8" icon="report" to="/report"></MobileNavItem>
+                    <MobileNavItem v-for="page in pages.sidebar" @click="menuActive = false" :icon="page.icon" :to="page.url"></MobileNavItem>
+
                     <div class="flex items-center cursor-pointer" @click.stop="menuActive = !menuActive">
-                        <AppIcon :class="` size-7 ${menuActive
+                        <AppIcon :class="` size-8 ${menuActive
                             ? 'dark:text-surface-brown text-white'
                             : 'dark:text-white text-beige-100'}
-                        `" name="faq" />
+                        `" name="hamburger" />
                     </div>
                 </div>
             </div>

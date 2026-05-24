@@ -1,9 +1,10 @@
 <template>
     <AdaptiveContainer>
+        
         <h1 class="text-4xl font-bold mb-4">Новости и статьи</h1>
         <input v-model="searchInput" placeholder="Поиск" type="text" :class="input() + ' mb-4'">
 
-        <div v-if="isLoading" class="text-gray-500">Тут будет скелетон загрузка когда-то....</div>
+        <PostsSkeleton v-if="isLoading"/>
         <div v-else class="flex flex-col gap-6" v-if="posts">
             <PostItem v-for="post in posts.docs" :post="post"></PostItem>
         </div>

@@ -1,3 +1,3 @@
 <template>
-    <ReportView/>
+    <develop></develop>
 </template>

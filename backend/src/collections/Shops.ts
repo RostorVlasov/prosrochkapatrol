@@ -313,6 +313,14 @@ export const Shops: CollectionConfig = {
           admin: { description: 'Комментарий администратора, публикуемый вместе с отчётом' },
         },
         {
+          name: 'shop_photo',
+          label: 'Обложка магазина',
+          type: 'upload',
+          hasMany: false,
+          relationTo: 'media',
+          required: true,
+        },
+        {
           name: 'photos',
           label: 'Фотографии проверки',
           type: 'array',
@@ -320,7 +328,7 @@ export const Shops: CollectionConfig = {
           fields: [
             {
               name: 'photo',
-              label: 'Фото',
+              label: 'Фотографии с проверки',
               type: 'upload',
               relationTo: 'media',
               required: true,

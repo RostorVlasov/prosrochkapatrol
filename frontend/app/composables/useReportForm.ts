@@ -19,7 +19,6 @@ export const problemOptions = [
     { value: 'expired_products', label: 'Просроченные товары' },
     { value: 'poor_quality', label: 'Товары с признаками порчи или ненадлежащего качества' },
     { value: 'storage_violation', label: 'Нарушение условий хранения (температура, выкладка, холодильники)' },
-    { value: 'unsanitary', label: 'Антисанитария и грязь в торговом зале' },
     { value: 'other', label: 'Другое (уточните ниже)' },
 ]
 

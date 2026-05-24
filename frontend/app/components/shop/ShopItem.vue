@@ -1,36 +1,69 @@
 <template>
-    <NuxtLink :to="`shops/${shop.id}`">
-    <div class="p-5 active:dark:bg-gray-500 hover:bg-gray-50 dark:border-0 hover:dark:bg-gray-500 bg-white transition-colors dark:bg-gray-600 border-2 border-beige-500">
-        <div class="border-b pb-4">
-            <div class="p-1 dark:bg-amber-100/20 bg-amber-100/50 flex w-max px-2 items-center mb-4">
-                <AppIcon name="star" class="text-amber-300 size-5" />
-                <span class="ml-2 font-semibold">{{ shop.total_score.toFixed(1) }}</span>
+    <NuxtLink :to="`${pages.sidebar.productReview.url}/${shop.id}`">
+        <div
+            class="rounded-xl overflow-hidden border border-beige-500 dark:border-0 bg-white dark:bg-gray-700
+                hover:bg-stone-50 dark:hover:bg-gray-600 active:bg-stone-100 dark:active:bg-gray-500 transition-colors">
+
+            <div v-if="shop.shop_photo?.url" class="w-full h-[50vh] mb-4 overflow-hidden">
+                <img :src="buildApiUrl(shop.shop_photo?.url as string)" :alt="shop.store_name"
+                    class="w-full h-full object-cover" />
             </div>
-            <h4 class="font-semibold text-xl">{{ shop.store_name }}</h4>
-            <div class="flex items-center text-sm mt-2 gap-2 text-gray-600 dark:text-gray-300">
-                <AppIcon name="calendarText" class="size-4" />
-                <h6>{{ shop.reason_type === 'planned' ? 'Плановая проверка' : 'Проверка по жалобе' }}
-                </h6>
+
+            <div class="p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold"
+                        :class="reasonTypeMapping.class">
+                        <AppIcon :name="reasonTypeMapping.icon" class="size-3.5" />
+                        {{ reasonTypeMapping.text }}
+                    </span>
+                    <span class="text-xs text-gray-500 dark:text-gray-200">{{ formatDate(shop.date_checked) }}</span>
+                </div>
+
+                <h4 class="font-semibold text-lg leading-snug">{{ shop.store_name }}</h4>
+
+                <div class="flex items-center gap-2 mt-1.5 text-sm text-gray-500 dark:text-gray-200">
+                    <AppIcon name="location" class="size-4 shrink-0" />
+                    <span class="truncate">{{ shop.address }}</span>
+                </div>
+
+                <div class="flex items-center gap-2.5 mt-3">
+                    <StarRating :score="shop.total_score" />
+                    <span class="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        {{ shop.total_score.toFixed(1) }} / 5
+                    </span>
+                </div>
             </div>
         </div>
-        <div class="flex gap-2 mt-4 items-center text-sm dark:text-gray-200 text-gray-800">
-            <AppIcon name="location" />
-            <span>{{ shop.address }}</span>
-        </div>
-        <div class="flex items-center mt-2 gap-2 dark:text-gray-300">
-            <AppIcon name="calendarMonth" />
-            <span>{{ formatDate(shop.date_checked) }}</span>
-        </div>
-    </div>
     </NuxtLink>
 </template>
 
 <script lang="ts" setup>
-import type { ShopDoc } from '~/types/shops.types';
+import type { ShopDoc } from '~/types/shops.types'
+import type { IconName } from '../ui/AppIcon.vue';
 
-const props = defineProps<{
-  shop: ShopDoc
-}>()
+const props = defineProps<{ shop: ShopDoc }>()
 
+const { buildApiUrl } = useApiBuilder()
+
+interface ReasonTypeMapping {
+    text: string
+    icon: IconName
+    class: string
+}
+
+const reasonTypeMapping = computed<ReasonTypeMapping>(() => {
+    if (props.shop.reason_type === 'planned') {
+        return {
+            text: 'Плановая',
+            icon: 'calendarMonth',
+            class: 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300'
+        }
+    }
+    return {
+        text: 'По жалобе',
+        icon: 'error',
+        class: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300'
+    }
+})
 
 </script>

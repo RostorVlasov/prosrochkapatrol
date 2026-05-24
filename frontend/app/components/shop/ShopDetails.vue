@@ -1,193 +1,212 @@
 <template>
-  <AdaptiveContainer class="dark:bg-surface-base bg-stone-100 rounded-md">
-    <div class="flex gap-4 items-center">
-      <NuxtLink to="/shops" class="flex items-center">
-        <AppIcon name="arrowUp" class="rotate-270 size-6" />
+  <AdaptiveContainer class="dark:bg-surface-base bg-stone-100 rounded-md pb-10">
+
+    <div class="flex items-center gap-3 py-4">
+      <NuxtLink :to="pages.sidebar.productReview.url"
+        class="size-9 rounded-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700
+               flex items-center justify-center">
+        <AppIcon name="left" class="size-5" />
       </NuxtLink>
-      <span class="text-xl font-semibold">Детали инспекции</span>
+      <span class="text-base font-semibold">Детали инспекции</span>
     </div>
 
-    <div>
-      <div class="mt-4">
-        <MediaGallery v-if="shop.photos?.length" :images="shop.photos" />
-      </div>
+    <div class="w-full rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700">
+      <MediaGallery v-if="shop.photos?.length" :images="shop.photos"></MediaGallery>
+    </div>
 
-      <div>
-        <div class="border-b pb-4 mt-5">
-          <div class="flex items-center gap-3">
-            <h4 class="font-semibold text-3xl">{{ shop.store_name }}</h4>
-            <span class="px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap"
-              :class="reasonTypeMapping.class">
-              {{ reasonTypeMapping.text }}
-            </span>
-          </div>
-          <div class="flex gap-2 mt-1 items-center text-sm dark:text-gray-200 text-gray-800">
-            <AppIcon class="size-4" name="location" />
+    <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 mt-3 flex gap-3 items-start">
+       <img src="/logo.png" alt="logo" class="size-5 shrink-0 mt-0.5">
+      <p class="text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
+        Проверка проведена в рамках общественной инициативы
+        <strong>FreshCheck</strong>.
+        Цель — объективная оценка качества товаров, условий хранения, чистоты и работы персонала.
+        <strong>Не является проверкой официального органа!</strong>
+      </p>
+    </div>
+
+    <div class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <h4 class="text-lg font-semibold leading-snug">{{ shop.store_name }}</h4>
+          <div class="flex items-center gap-1.5 mt-1.5 text-sm text-gray-500 dark:text-gray-50">
+            <AppIcon name="location" class="size-4 shrink-0" />
             <span>{{ shop.address }}</span>
           </div>
-        </div>
-
-        <div v-if="shop.complaint_text" class="mt-4 dark:bg-red-900/20 bg-red-100 rounded-3xl p-4">
-          <h5 class="font-semibold text-red-600 dark:text-red-400">Текст жалобы</h5>
-          <p class="text-sm mt-1 dark:text-gray-300 text-gray-700 whitespace-pre-line">{{ shop.complaint_text }}</p>
-        </div>
-
-        <div class="dark:bg-gray-100/20 bg-gray-100 rounded-3xl p-4 mt-5">
-          <div class="flex justify-between items-center">
-            <div>
-              <span class="text-2xl">Итоговая оценка</span>
-              <p class="text-sm dark:text-gray-300 text-gray-700">От 1 до 5</p>
-            </div>
-            <div
-              class="size-20 text-white rounded-[50%] flex justify-center items-center text-3xl font-bold bg-surface-brown">
-              {{ shop.total_score }}
-            </div>
+          <div class="flex items-center gap-1.5 mt-1 text-sm text-gray-500 dark:text-gray-50">
+            <AppIcon name="calendarMonth" class="size-4 shrink-0" />
+            <span>{{ formatDate(shop.date_checked) }}</span>
           </div>
         </div>
+        <span class="px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap shrink-0"
+          :class="reasonTypeMapping.class">
+          {{ reasonTypeMapping.text }}
+        </span>
+      </div>
+    </div>
 
-        <div class="flex justify-between gap-5">
-          <div class="w-full dark:bg-gray-700 bg-gray-100 rounded-3xl p-4 mt-5 flex flex-col gap-1">
-            <span class="text-sm dark:text-gray-300">Качество продукции</span>
-            <span class="font-bold text-xl">{{ shop.quality_final_score.toFixed(1) }} / 5.0</span>
-          </div>
-          <div class="w-full dark:bg-gray-700 bg-gray-100 rounded-3xl p-4 mt-5 flex flex-col gap-1">
-            <span class="text-sm dark:text-gray-300">Условия хранения</span>
-            <span class="font-bold text-xl">{{ shop.storage_final_score.toFixed(1) }} / 5.0</span>
-          </div>
+    <div class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs text-gray-500 dark:text-gray-50 mb-1">Итоговая оценка</p>
+          <p class="text-4xl font-semibold leading-none">
+            {{ shop.total_score }}
+            <span class="text-base font-normal text-gray-50">/ 5</span>
+          </p>
+          <StarRating :score="shop.total_score" class="mt-2" />
         </div>
-
-        <div class="dark:bg-gray-700 bg-gray-100 rounded-3xl p-4 mt-5">
-          <h5 class="font-bold text-lg mb-3">Качество продукции</h5>
-
-          <div class="flex justify-between text-sm mb-2 dark:text-gray-300">
-            <span>Списание (штраф)</span>
-            <span class="font-bold">{{ shop.quality_total_deduction }}</span>
+        <div class="grid grid-cols-2 gap-2 text-center">
+          <div class="bg-gray-50 dark:bg-gray-600 rounded-xl px-3 py-2">
+            <p class="text-xs text-gray-500 dark:text-gray-50">Качество</p>
+            <p class="text-base font-semibold mt-0.5">{{ shop.quality_final_score.toFixed(1) }}</p>
           </div>
-
-          <div v-if="shop.quality_violated_articles?.length" class="mt-3">
-            <span class="text-sm font-semibold dark:text-gray-300">Нарушенные статьи:</span>
-            <div class="flex flex-wrap gap-2 mt-2">
-              <span v-for="(article, idx) in shop.quality_violated_articles" :key="idx"
-                class="px-2 py-1 bg-red-200 dark:bg-red-900/40 text-red-800 dark:text-red-300 rounded-lg text-xs font-medium">
-                {{ article }}
-              </span>
-            </div>
+          <div class="bg-gray-50 dark:bg-gray-600 rounded-xl px-3 py-2">
+            <p class="text-xs text-gray-500 dark:text-gray-50">Хранение</p>
+            <p class="text-base font-semibold mt-0.5">{{ shop.storage_final_score.toFixed(1) }}</p>
           </div>
-
-          <div v-if="shop.quality_facts?.length" class="mt-3">
-            <span class="text-sm font-semibold dark:text-gray-300">Факты:</span>
-            <ul class="mt-2 space-y-1">
-              <li v-for="(fact, idx) in shop.quality_facts" :key="idx"
-                class="text-sm dark:text-gray-400 flex items-start gap-2">
-                <span class="mt-1.5 size-1.5 rounded-full bg-gray-300 shrink-0"></span>
-                {{ fact }}
-              </li>
-            </ul>
-          </div>
-
-          <div v-if="shop.quality_free_text" class="mt-3 pt-3 border-t dark:border-gray-600">
-            <p class="text-sm dark:text-gray-300 whitespace-pre-line">{{ shop.quality_free_text }}</p>
-          </div>
-        </div>
-
-        <div class="dark:bg-gray-700 bg-gray-100 rounded-3xl p-4 mt-5">
-          <div class="flex items-center justify-between mb-3">
-            <h5 class="font-bold text-lg">Условия хранения</h5>
-            <span class="px-2 py-1 rounded-full text-xs font-semibold"
-              :class="shop.storage_has_violations ? 'bg-red-200 dark:bg-red-900/40 text-red-800 dark:text-red-300' : 'bg-green-200 dark:bg-green-900/40 text-green-800 dark:text-green-300'">
-              {{ shop.storage_has_violations ? 'Есть нарушения' : 'Без нарушений' }}
-            </span>
-          </div>
-
-          <div class="flex justify-between text-sm mb-2 dark:text-gray-300">
-            <span>Списание (штраф)</span>
-            <span class="font-bold">{{ shop.storage_total_deduction }}</span>
-          </div>
-
-          <div v-if="shop.storage_violated_articles?.length" class="mt-3">
-            <span class="text-sm font-semibold dark:text-gray-300">Нарушенные статьи:</span>
-            <div class="flex flex-wrap gap-2 mt-2">
-              <span v-for="(article, idx) in shop.storage_violated_articles" :key="idx"
-                class="px-2 py-1 bg-red-200 dark:bg-red-900/40 text-red-800 dark:text-red-300 rounded-lg text-xs font-medium">
-                {{ article }}
-              </span>
-            </div>
-          </div>
-
-          <div v-if="shop.storage_facts?.length" class="mt-3">
-            <span class="text-sm font-semibold dark:text-gray-300">Факты:</span>
-            <ul class="mt-2 space-y-1">
-              <li v-for="(fact, idx) in shop.storage_facts" :key="idx"
-                class="text-sm dark:text-gray-400 flex items-start gap-2">
-                <span class="mt-1.5 size-1.5 rounded-full bg-gray-500 shrink-0"></span>
-                {{ fact }}
-              </li>
-            </ul>
-          </div>
-
-          <div v-if="shop.storage_free_text" class="mt-3 pt-3 border-t dark:border-gray-600">
-            <p class="text-sm dark:text-gray-300 whitespace-pre-line">{{ shop.storage_free_text }}</p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
-          <div class="dark:bg-green-900/20 bg-green-100 rounded-3xl p-4">
-            <h5 class="font-bold text-green-700 dark:text-green-400 mb-2">Преимущества</h5>
-            <ul v-if="shop.advantages?.length" class="space-y-2">
-              <li v-for="(adv, idx) in shop.advantages" :key="idx"
-                class="text-sm dark:text-gray-300 flex items-start gap-2">
-                <AppIcon name="checkMark" class="size-4 text-green-500 mt-0.5 shrink-0" />
-                <span>{{ adv }}</span>
-              </li>
-            </ul>
-            <p v-else class="text-sm dark:text-gray-500">Не указаны</p>
-          </div>
-
-          <div class="dark:bg-red-900/20 bg-red-100 rounded-3xl p-4">
-            <h5 class="font-bold text-red-700 dark:text-red-400 mb-2">Недостатки</h5>
-            <ul v-if="shop.disadvantages?.length" class="space-y-2">
-              <li v-for="(dis, idx) in shop.disadvantages" :key="idx"
-                class="text-sm dark:text-gray-300 flex items-start gap-2">
-                <AppIcon name="cross" class="size-4 text-red-500 mt-0.5 shrink-0" />
-                <span>{{ dis }}</span>
-              </li>
-            </ul>
-            <p v-else class="text-sm dark:text-gray-500">Не указаны</p>
-          </div>
-        </div>
-
-        <div v-if="shop.inspector_comment" class="dark:bg-gray-700 bg-gray-100 rounded-3xl p-4 mt-5">
-          <h5 class="font-bold text-lg mb-2">Комментарий инспектора</h5>
-          <p class="text-sm dark:text-gray-300 whitespace-pre-line">{{ shop.inspector_comment }}</p>
-        </div>
-
-        <div class="flex items-center mt-5 gap-2 dark:text-gray-300 pb-10">
-          <AppIcon name="calendarMonth" />
-          <span>{{ formatDate(shop.date_checked) }}</span>
         </div>
       </div>
     </div>
+
+    <div v-if="shop.complaint_text"
+      class="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/30 rounded-2xl p-4 mt-3">
+      <div class="flex items-center gap-2 mb-2">
+        <AppIcon name="square" class="size-4 text-red-500" />
+        <p class="text-sm font-semibold text-red-700 dark:text-red-400">Текст жалобы</p>
+      </div>
+      <p class="text-sm text-red-800 dark:text-red-300 whitespace-pre-line leading-relaxed">
+        {{ shop.complaint_text }}
+      </p>
+    </div>
+
+    <div class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3">
+      <div class="flex items-center justify-between mb-3">
+        <p class="font-semibold text-base">Качество продукции</p>
+        <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400">
+          −{{ shop.quality_total_deduction }}
+        </span>
+      </div>
+
+      <template v-if="shop.quality_violated_articles?.length">
+        <p class="text-xs text-gray-500 dark:text-gray-50 mb-2">Нарушенные статьи</p>
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          <span v-for="(article, idx) in shop.quality_violated_articles" :key="idx"
+            class="px-2 py-1 rounded-lg text-xs bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400">
+            {{ article }}
+          </span>
+        </div>
+      </template>
+
+      <template v-if="shop.quality_facts?.length">
+        <p class="text-xs text-gray-500 dark:text-gray-50 mb-2">Факты</p>
+        <ul class="space-y-1.5">
+          <li v-for="(fact, idx) in shop.quality_facts" :key="idx"
+            class="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-100">
+            <span class="mt-2 size-1 rounded-full bg-gray-300 dark:bg-gray-500 shrink-0"></span>
+            {{ fact }}
+          </li>
+        </ul>
+      </template>
+
+      <p v-if="shop.quality_free_text"
+        class="text-sm text-gray-600 dark:text-gray-100 mt-3 pt-3 border-t border-gray-100 dark:border-gray-600 whitespace-pre-line leading-relaxed">
+        {{ shop.quality_free_text }}
+      </p>
+    </div>
+
+    <div class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3">
+      <div class="flex items-center justify-between mb-3">
+        <p class="font-semibold text-base">Условия хранения</p>
+        <span class="px-2.5 py-1 rounded-full text-xs font-semibold"
+          :class="shop.storage_has_violations
+            ? 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+            : 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400'">
+          {{ shop.storage_has_violations ? 'Есть нарушения' : 'Без нарушений' }}
+        </span>
+      </div>
+
+      <template v-if="shop.storage_violated_articles?.length">
+        <p class="text-xs text-gray-500 dark:text-gray-50 mb-2">Нарушенные статьи</p>
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          <span v-for="(article, idx) in shop.storage_violated_articles" :key="idx"
+            class="px-2 py-1 rounded-lg text-xs bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400">
+            {{ article }}
+          </span>
+        </div>
+      </template>
+
+      <template v-if="shop.storage_facts?.length">
+        <p class="text-xs text-gray-500 dark:text-gray-50 mb-2">Факты</p>
+        <ul class="space-y-1.5">
+          <li v-for="(fact, idx) in shop.storage_facts" :key="idx"
+            class="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-100">
+            <span class="mt-2 size-1 rounded-full bg-gray-300 dark:bg-gray-500 shrink-0"></span>
+            {{ fact }}
+          </li>
+        </ul>
+      </template>
+
+      <p v-if="shop.storage_free_text"
+        class="text-sm text-gray-600 dark:text-gray-100 mt-3 pt-3 border-t border-gray-100 dark:border-gray-600 whitespace-pre-line leading-relaxed">
+        {{ shop.storage_free_text }}
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-3 mt-3">
+      <div class="bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800/30 rounded-2xl p-4">
+        <p class="text-sm font-semibold text-green-800 dark:text-green-400 mb-2">Преимущества</p>
+        <ul v-if="shop.advantages?.length" class="space-y-1.5">
+          <li v-for="(adv, idx) in shop.advantages" :key="idx"
+            class="flex items-start gap-1.5 text-sm text-green-900 dark:text-green-300">
+            <AppIcon name="checkMark" class="size-4 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
+            {{ adv }}
+          </li>
+        </ul>
+        <p v-else class="text-sm text-green-700 dark:text-green-500">Не указаны</p>
+      </div>
+      <div class="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/30 rounded-2xl p-4">
+        <p class="text-sm font-semibold text-red-800 dark:text-red-400 mb-2">Недостатки</p>
+        <ul v-if="shop.disadvantages?.length" class="space-y-1.5">
+          <li v-for="(dis, idx) in shop.disadvantages" :key="idx"
+            class="flex items-start gap-1.5 text-sm text-red-900 dark:text-red-300">
+            <AppIcon name="cross" class="size-4 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
+            {{ dis }}
+          </li>
+        </ul>
+        <p v-else class="text-sm text-red-700 dark:text-red-500">Не указаны</p>
+      </div>
+    </div>
+
+    <div v-if="shop.inspector_comment"
+      class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3 flex gap-3 items-start">
+      <div class="size-9 rounded-full bg-gray-100 dark:bg-gray-600 flex items-center justify-center shrink-0">
+        <AppIcon name="user" class="size-5 text-gray-500 dark:text-gray-50" />
+      </div>
+      <div>
+        <p class="text-sm font-semibold mb-1">Комментарий инспектора</p>
+        <p class="text-sm text-gray-600 dark:text-gray-100 whitespace-pre-line leading-relaxed">
+          {{ shop.inspector_comment }}
+        </p>
+      </div>
+    </div>
+
   </AdaptiveContainer>
 </template>
 
 <script lang="ts" setup>
-import type { ShopDoc } from '~/types/shops.types';
+import type { ShopDoc } from '~/types/shops.types'
 
-const props = defineProps<{
-  shop: ShopDoc
-}>()
+const props = defineProps<{ shop: ShopDoc }>()
 
 const reasonTypeMapping = computed(() => {
   if (props.shop.reason_type === 'planned') {
     return {
       text: 'Плановая',
-      class: 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300'
+      class: 'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300'
     }
   }
   return {
     text: 'По жалобе',
-    class: 'bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300'
+    class: 'bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300'
   }
 })
-
 </script>

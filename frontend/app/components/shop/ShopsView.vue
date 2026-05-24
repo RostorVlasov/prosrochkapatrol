@@ -7,7 +7,7 @@
                 <select v-model="sortField" @change="loadShops" :class="select()">
                     <option value="store_name">По названию</option>
                     <option value="total_score">По рейтингу</option>
-                    <option value="updatedAt">По дате добавления</option>
+                    <option value="updatedAt">По дате проверки</option>
                 </select>
 
                 <select v-model="sortOrder" @change="loadShops" :class="select()">
@@ -16,7 +16,7 @@
                 </select>
             </div>
 
-            <div v-if="isLoading" class="text-gray-500">Тут будет скелетон загрузка когда-то....</div>
+            <ShopsSkeleton v-if="isLoading" />
             <div v-if="!isLoading">
                 <div class="flex flex-col gap-3">
                     <ShopItem v-for="shop in shops?.docs || []" :key="shop.id" :shop="shop" />
