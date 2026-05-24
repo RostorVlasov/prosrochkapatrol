@@ -2,9 +2,9 @@
     <AdaptiveContainer>
         <h1 class="text-2xl font-bold mb-4">Реестр проверенных торговых точек Астрахани</h1>
         
-        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-100/50 dark:border-blue-800/30 rounded-2xl p-4 mb-6 flex gap-3 items-start">
+        <div class="bg-zinc-100/90 dark:bg-zinc-950/80 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 mb-6 flex gap-3 items-start backdrop-blur-xl shadow-md">
             <img src="/logo.png" alt="logo" class="size-5 shrink-0 mt-0.5">
-            <p class="text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
+            <p class="text-sm text-zinc-800 dark:text-zinc-100 leading-relaxed font-medium">
                 В данном разделе публикуются результаты независимого общественного мониторинга магазинов и супермаркетов города. 
                 Вы можете ознакомиться с историей рейдов наших активистов, проверить рейтинг свежести конкретного адреса и узнать, 
                 где были зафиксированы нарушения прав потребителей.
