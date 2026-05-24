@@ -1,17 +1,9 @@
 <template>
     <AdaptiveContainer>
-        <h1 class="text-2xl font-bold mb-2">Реестр проверенных торговых точек Астрахани</h1>
+        <h1 class="text-2xl font-bold mb-6">Реестр проверенных торговых точек Астрахани</h1>
         
-        <p class="text-sm leading-relaxed text-stone-500 dark:text-stone-400 mb-6">
-            В данном разделе публикуются результаты независимого общественного мониторинга магазинов и супермаркетов города. Вы можете ознакомиться с историей рейдов наших активистов, проверить рейтинг свежести конкретного адреса и узнать, где были зафиксированы нарушения прав потребителей.
-        </p>
-
         <input v-model="searchInput" placeholder="Введите название торговой сети, магазина или улицу..." type="text" :class="input() + ' mb-4'">
             
-            <p class="text-xs font-medium text-stone-400 dark:text-stone-500 uppercase tracking-wider mb-2">
-                Фильтрация и сортировка реестра:
-            </p>
-
             <div class="flex justify-between gap-5 mb-6">
                 <select v-model="sortField" @change="loadShops" :class="select()">
                     <option value="store_name">Сортировать список по алфавиту</option>
@@ -24,10 +16,6 @@
                     <option value="">Отображать по убыванию (от лучших к худшим)</option>
                 </select>
             </div>
-
-            <p class="text-xs leading-relaxed text-stone-400 dark:text-stone-500 mb-6">
-                * Данные обновляются регулярно по результатам выездных мероприятий активистов проекта FreshCheck.
-            </p>
 
             <ShopsSkeleton v-if="isLoading" />
             <div v-if="!isLoading">
