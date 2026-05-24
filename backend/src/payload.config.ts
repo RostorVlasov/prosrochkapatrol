@@ -42,13 +42,13 @@ export default buildConfig({
     },
     user: Users.slug,
     importMap: {
-    baseDir: path.resolve(dirname),
+      baseDir: path.resolve(dirname),
     },
   },
   collections: [Users, Media, Posts, Rubrics, Shops, Complaints, Badges],
   email: nodemailerAdapter({
     defaultFromAddress: process.env.SMTP_USER!,
-    defaultFromName: 'Просрочка Патруль',
+    defaultFromName: 'FreshCheck',
     transport: nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT),
@@ -57,7 +57,8 @@ export default buildConfig({
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
-    }),
+      authMethod: 'LOGIN',
+    } as any),
   }),
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
