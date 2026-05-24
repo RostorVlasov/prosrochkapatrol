@@ -158,8 +158,12 @@ export const Complaints: CollectionConfig = {
       async ({ doc, operation, req }) => {
         if (operation !== 'create') return
 
+        req.payload.logger.info(`[Complaints.afterChange] new complaint id=${doc.id}, store=${doc.store_address}`)
+
         const appUrl = 'https://api.test.prosrochkapatrol.ru'
         const link = `${appUrl}/admin/collections/complaints/${doc.id}`
+
+        req.payload.logger.info(`[Complaints.afterChange] complaint link: ${link}`)
 
         const problemLabels: Record<string, string> = {
           expired_products: 'Просроченные товары',
@@ -173,19 +177,23 @@ export const Complaints: CollectionConfig = {
           .map((t) => `<li>${problemLabels[t] ?? t}</li>`)
           .join('')
 
-        await sendEmail({
-          payload: req.payload,
-          subject: `Новая жалоба — ${doc.store_address}`,
-          html: `
-            <h2>Поступила новая жалоба</h2>
-            <p><b>Адрес магазина:</b> ${doc.store_address}</p>
-            <p><b>Дата проблемы:</b> ${doc.problem_date}</p>
-            <p><b>Типы нарушений:</b></p>
-            <ul>${problemList}</ul>
-            <p><b>Описание:</b><br>${doc.description}</p>
-            <p><a href="${link}">Открыть жалобу в панели управления →</a></p>
-          `,
-        })
+        try {
+          await sendEmail({
+            payload: req.payload,
+            subject: `Новая жалоба — ${doc.store_address}`,
+            html: `
+          <h2>Поступила новая жалоба</h2>
+          <p><b>Адрес магазина:</b> ${doc.store_address}</p>
+          <p><b>Дата проблемы:</b> ${doc.problem_date}</p>
+          <p><b>Типы нарушений:</b></p>
+          <ul>${problemList}</ul>
+          <p><b>Описание:</b><br>${doc.description}</p>
+          <p><a href="${link}">Открыть жалобу в панели управления →</a></p>
+        `,
+          })
+        } catch (err) {
+          req.payload.logger.error(`[Complaints.afterChange] sendEmailToAdmins threw: ` + err)
+        }
       },
     ],
     beforeOperation: [
