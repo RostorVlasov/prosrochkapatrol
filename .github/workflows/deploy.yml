@@ -157,17 +157,11 @@ jobs:
             # =========================
             echo "🔪 Killing old processes..."
 
-            if [ -f "$BACK_PID" ]; then
-              kill -9 $(cat $BACK_PID) 2>/dev/null || true
-              rm -f $BACK_PID
-            fi
+            fuser -k 3333/tcp 2>/dev/null || true
+            fuser -k 3001/tcp 2>/dev/null || true
+            rm -f $BACK_PID $FRONT_PID
 
-            if [ -f "$FRONT_PID" ]; then
-              kill -9 $(cat $FRONT_PID) 2>/dev/null || true
-              rm -f $FRONT_PID
-            fi
-
-            sleep 3
+            sleep 2
 
             # =========================
             # START BACKEND

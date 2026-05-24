@@ -47,12 +47,12 @@ export default buildConfig({
   },
   collections: [Users, Media, Posts, Rubrics, Shops, Complaints, Badges],
   email: nodemailerAdapter({
-    defaultFromAddress: 'no-reply@api.prosrochkapatrol.ru',
-    defaultFromName: 'FreshCheck',
+    defaultFromAddress: process.env.SMTP_USER!,
+    defaultFromName: 'Просрочка Патруль',
     transport: nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT) || 587,
-      secure: false,
+      port: Number(process.env.SMTP_PORT),
+      secure: Number(process.env.SMTP_PORT) === 465,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
