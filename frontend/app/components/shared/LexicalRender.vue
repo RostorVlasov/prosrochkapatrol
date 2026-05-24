@@ -87,13 +87,13 @@ const { buildApiUrl } = useApiBuilder()
 
             // Цитата
             node.type === 'quote'
-                ? 'border-l-4 border-gray-400 pl-4 my-4 italic text-gray-600 bg-gray-50 py-2 pr-3 rounded-r'
+                ? 'border-l-4 border-gray-400 pl-4 my-4 italic text-gray-600 dark:bg-gray-500 dark:text-white bg-gray-50 py-2 pr-3 rounded-r'
                 : '',
 
             // Списки
-            node.type === 'list' && node.listType === 'check'  ? 'list-none pl-6 space-y-2' : '',
-            node.type === 'list' && node.listType === 'bullet' ? 'list-disc pl-6 space-y-1' : '',
-            node.type === 'list' && node.listType === 'number' ? 'list-decimal pl-6 space-y-1' : '',
+            node.type === 'list' && node.listType === 'check'  ? 'list-none pl-14 space-y-2' : '',
+            node.type === 'list' && node.listType === 'bullet' ? 'list-disc pl-14 space-y-1' : '',
+            node.type === 'list' && node.listType === 'number' ? 'list-decimal pl-14 space-y-1' : '',
 
             // Разделитель
             node.type === 'horizontalrule' ? 'my-6 border-t border-gray-300' : '',

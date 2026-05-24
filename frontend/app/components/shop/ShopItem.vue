@@ -4,9 +4,9 @@
             class="rounded-xl overflow-hidden border border-beige-500 dark:border-0 bg-white dark:bg-gray-700
                 hover:bg-stone-50 dark:hover:bg-gray-600 active:bg-stone-100 dark:active:bg-gray-500 transition-colors">
 
-            <div v-if="shop.shop_photo?.url" class="w-full h-[50vh] mb-4 overflow-hidden">
+            <div v-if="shop.shop_photo?.url" class="w-full mb-4 overflow-hidden">
                 <img :src="buildApiUrl(shop.shop_photo?.url as string)" :alt="shop.store_name"
-                    class="w-full h-full object-cover" />
+                    class="w-full aspect-video object-cover" />
             </div>
 
             <div class="p-4">

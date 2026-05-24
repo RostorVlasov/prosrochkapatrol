@@ -1,5 +1,7 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+import nodemailer from 'nodemailer'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -44,6 +46,19 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Posts, Rubrics, Shops, Complaints, Badges],
+  email: nodemailerAdapter({
+    defaultFromAddress: 'no-reply@api.prosrochkapatrol.ru',
+    defaultFromName: 'FreshCheck',
+    transport: nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT) || 587,
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    }),
+  }),
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

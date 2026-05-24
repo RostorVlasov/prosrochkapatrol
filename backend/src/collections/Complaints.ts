@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload'
 import { getIP } from '../utils/getIP'
+import { sendEmail } from '@/utils/sendEmail'
 
 const DAILY_COMPLAINT_LIMIT = 15
 
@@ -153,6 +154,40 @@ export const Complaints: CollectionConfig = {
     },
   ],
   hooks: {
+    afterChange: [
+      async ({ doc, operation, req }) => {
+        if (operation !== 'create') return
+
+        const appUrl = 'https://api.test.prosrochkapatrol.ru'
+        const link = `${appUrl}/admin/collections/complaints/${doc.id}`
+
+        const problemLabels: Record<string, string> = {
+          expired_products: 'Просроченные товары',
+          poor_quality: 'Товары плохого качества',
+          storage_violation: 'Нарушение условий хранения',
+          unsanitary: 'Грязь / антисанитария',
+          other: 'Другое',
+        }
+
+        const problemList = (doc.problem_types as string[])
+          .map((t) => `<li>${problemLabels[t] ?? t}</li>`)
+          .join('')
+
+        await sendEmail({
+          payload: req.payload,
+          subject: `Новая жалоба — ${doc.store_address}`,
+          html: `
+            <h2>Поступила новая жалоба</h2>
+            <p><b>Адрес магазина:</b> ${doc.store_address}</p>
+            <p><b>Дата проблемы:</b> ${doc.problem_date}</p>
+            <p><b>Типы нарушений:</b></p>
+            <ul>${problemList}</ul>
+            <p><b>Описание:</b><br>${doc.description}</p>
+            <p><a href="${link}">Открыть жалобу в панели управления →</a></p>
+          `,
+        })
+      },
+    ],
     beforeOperation: [
       async ({ operation, req, args }) => {
         if (operation !== 'create') return args
