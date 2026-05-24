@@ -2,20 +2,17 @@
     <AdaptiveContainer class="dark:bg-surface-base bg-stone-100 rounded-md">
         <div class="mx-auto">
             <!-- Header -->
-            <div class="mb-8">
+<div class="mb-8">
                 <h1 class="text-4xl font-bold leading-tight text-stone-900 dark:text-stone-100 mb-4">
-                    Расскажите о нарушении подробнее
+                    Нашли нарушение в магазине? Сообщите нам!
                 </h1>
                 <p class="text-sm leading-relaxed text-stone-500 dark:text-stone-400 mb-4">
-                    Заполните форму ниже — это поможет нам быстрее и точнее проверить магазин.
-                    Укажите максимум деталей: что произошло, когда и где. Все данные конфиденциальны.
+                    Заполните форму ниже — расскажите, где вы столкнулись с просроченными продуктами или другими нарушениями. Наш проект проводит независимый общественный мониторинг, и ваша информация поможет активистам быстрее организовать проверку в этой торговой точке.
                 </p>
                 <div
                     class="border-l-2 border-beige-600 dark:border-beige-500 pl-4 py-1 bg-beige-50 dark:bg-beige-900 rounded-r-lg">
                     <p class="text-sm leading-relaxed text-stone-700 dark:text-stone-300">
-                        Важно: мы проводим мониторинг
-                        <strong class="text-beige-700 dark:text-beige-400 font-medium">только в Астрахани</strong>.
-                        Обращения по другим городам, к сожалению, не рассматриваются.
+                        Обратите внимание: FreshCheck — это <strong class="text-beige-700 dark:text-beige-400 font-medium">не официальный орган власти</strong>, а общественный проект (активисты осуществляют выезды <strong class="text-beige-700 dark:text-beige-400 font-medium">только по Астрахани</strong>). Для привлечения магазина к административной ответственности и назначения штрафов мы настоятельно советуем вам также направить официальную жалобу напрямую в Роспотребнадзор.
                     </p>
                 </div>
             </div>
