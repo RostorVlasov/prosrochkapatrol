@@ -1,6 +1,11 @@
 <template>
     <AdaptiveContainer>
-        <h1 class="text-2xl font-bold mb-6">Проверенные магазины</h1>
+        <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 mb-8 shadow-sm">
+            <h1 class="text-3xl font-bold text-zinc-900 dark:text-white mb-2">Проверенные магазины</h1>
+            <p class="text-zinc-600 dark:text-zinc-400">
+                Результаты независимого мониторинга торговых точек Астрахани
+            </p>
+        </div>
         
         <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 mb-8 shadow-sm">
             <div class="flex gap-4 items-start">
@@ -75,5 +80,3 @@ onMounted(async () => {
 })
 
 </script>
-
-#борисмоймуж

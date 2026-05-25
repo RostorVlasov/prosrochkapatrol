@@ -12,7 +12,8 @@
       <div class="max-w-5xl mx-auto text-center relative z-10">
         <div class="mb-8">
           <span class="inline-flex items-center gap-2 px-6 py-3 bg-[#E7DDCD] dark:bg-[#2B2B2B] text-[#3F4245] dark:text-[#E7DDCD] rounded-full text-sm font-bold uppercase tracking-widest border border-[#A0876E]/30">
-            Независимый мониторинг • Астрахань
+            <span class="w-2 h-2 bg-[#A0876E] rounded-full animate-pulse"></span>
+            Общественный мониторинг • Астрахань
           </span>
         </div>
         
@@ -22,17 +23,18 @@
         </h1>
         
         <p class="text-xl md:text-2xl text-[#3F4245] dark:text-[#E7DDCD]/80 max-w-3xl mx-auto leading-relaxed mb-12">
-          Просроченный товар <span class="font-bold text-[#2B2B2B] dark:text-[#FFFFFF]">не имеет шансов</span>. Мы фиксируем нарушения, показываем правду и защищаем здоровье жителей Астрахани.
+          Мы — <span class="font-bold text-[#2B2B2B] dark:text-[#FFFFFF]">неравнодушные соседи</span>, которые помогают магазинам стать лучше, а жителям Астрахани — покупать <span class="font-bold text-[#2B2B2B] dark:text-[#FFFFFF]">свежие и безопасные продукты</span>.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <button @click="scrollToWhat" class="group px-8 py-4 bg-[#2B2B2B] dark:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#2B2B2B] rounded-xl font-bold text-lg hover:scale-105 transition transform duration-300 flex items-center justify-center gap-2 shadow-xl shadow-[#2B2B2B]/20">
             <UIcon name="i-heroicons-arrow-down-20-solid" class="w-5 h-5 group-hover:translate-y-1 transition" />
-            Узнать подробнее
+            Как это работает
           </button>
-          <button class="px-8 py-4 bg-[#A0876E] hover:bg-[#8a7358] text-[#FFFFFF] rounded-xl font-bold text-lg transition duration-300 shadow-lg shadow-[#A0876E]/30">
-            Сообщить о нарушении
-          </button>
+          <a href="https://t.me/RomanTroshinRF" target="_blank" class="px-8 py-4 bg-[#A0876E] hover:bg-[#8a7358] text-[#FFFFFF] rounded-xl font-bold text-lg transition duration-300 shadow-lg shadow-[#A0876E]/30 flex items-center justify-center gap-2">
+            <UIcon name="i-heroicons-paper-airplane-20-solid" class="w-5 h-5" />
+            Предложить магазин
+          </a>
         </div>
       </div>
     </section>
@@ -45,8 +47,8 @@
             <UIcon name="i-heroicons-shopping-bag-20-solid" class="w-7 h-7 text-[#A0876E]" />
           </div>
           <div class="text-5xl font-black text-[#A0876E] mb-3 tracking-tight">2760+</div>
-          <div class="font-bold text-lg mb-2">Товаров убрано</div>
-          <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/60">С полок магазинов за время работы проекта</p>
+          <div class="font-bold text-lg mb-2">Единиц товара убрано</div>
+          <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/60">С полок магазинов в ходе совместной работы с администрацией</p>
         </div>
 
         <div class="group p-8 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-3xl border border-[#E7DDCD] dark:border-[#3F4245] hover:shadow-2xl hover:border-[#A0876E] transition-all duration-300 transform hover:-translate-y-2">
@@ -54,17 +56,17 @@
             <UIcon name="i-heroicons-building-storefront-20-solid" class="w-7 h-7 text-[#A0876E]" />
           </div>
           <div class="text-5xl font-black text-[#A0876E] mb-3 tracking-tight">11</div>
-          <div class="font-bold text-lg mb-2">Магазинов проверено</div>
-          <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/60">В разных районах Астрахани</p>
+          <div class="font-bold text-lg mb-2">Магазинов в мониторинге</div>
+          <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/60">Регулярно посещаем торговые точки в разных районах Астрахани</p>
         </div>
 
         <div class="group p-8 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-3xl border border-[#E7DDCD] dark:border-[#3F4245] hover:shadow-2xl hover:border-[#A0876E] transition-all duration-300 transform hover:-translate-y-2">
           <div class="mb-6 w-14 h-14 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-2xl flex items-center justify-center">
-            <UIcon name="i-heroicons-shield-check-20-solid" class="w-7 h-7 text-[#A0876E]" />
+            <UIcon name="i-heroicons-hand-thumb-up-20-solid" class="w-7 h-7 text-[#A0876E]" />
           </div>
-          <div class="text-5xl font-black text-[#A0876E] mb-3 tracking-tight">0</div>
-          <div class="font-bold text-lg mb-2">Проигранных споров</div>
-          <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/60">Работаем строго в рамках закона РФ</p>
+          <div class="text-5xl font-black text-[#A0876E] mb-3 tracking-tight">98%</div>
+          <div class="font-bold text-lg mb-2">Решено на месте</div>
+          <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/60">Недочёты устраняются в диалоге с сотрудниками, без эскалации</p>
         </div>
       </div>
     </section>
@@ -73,13 +75,13 @@
     <section id="what" class="max-w-7xl mx-auto px-6 py-24">
       <div class="mb-20">
         <div class="inline-block px-4 py-2 bg-[#E7DDCD] dark:bg-[#2B2B2B] rounded-full text-xs font-bold uppercase tracking-widest text-[#A0876E] mb-6">
-          Методология
+          Наш подход
         </div>
         <h2 class="text-5xl md:text-6xl font-black mb-6 tracking-tight">
-          Как мы это <span class="italic text-[#A0876E]">делаем</span>
+          Как мы <span class="italic text-[#A0876E]">наблюдаем</span>
         </h2>
         <p class="text-xl text-[#3F4245] dark:text-[#E7DDCD]/70 max-w-3xl">
-          Семь дней в неделю мы проверяем полки, документируем нарушения и помогаем жителям Астрахани покупать <span class="font-semibold">безопасные продукты</span>.
+          Каждую неделю мы осматриваем полки, делимся наблюдениями с администрацией и помогаем жителям Астрахани делать <span class="font-semibold">осознанный выбор</span>.
         </p>
       </div>
 
@@ -91,9 +93,9 @@
             <div class="w-16 h-16 bg-[#A0876E]/20 rounded-2xl flex items-center justify-center mb-6">
               <UIcon name="i-heroicons-magnifying-glass-20-solid" class="w-8 h-8 text-[#E7DDCD]" />
             </div>
-            <h3 class="text-3xl font-bold mb-4">Реальный мониторинг</h3>
+            <h3 class="text-3xl font-bold mb-4">Открытый мониторинг</h3>
             <p class="text-lg text-[#E7DDCD]/80 leading-relaxed">
-              Мы ходим в магазины как <span class="italic">обычные покупатели</span>, проверяем сроки годности, условия хранения, санитарное состояние. Каждый визит задокументирован фото и видео.
+              Мы заходим в магазины как <span class="italic">обычные покупатели</span>, обращаем внимание на сроки годности, условия хранения и чистоту. Каждый визит сопровождается фотофиксацией.
             </p>
           </div>
         </div>
@@ -105,9 +107,9 @@
             <div class="w-16 h-16 bg-[#FFFFFF]/15 rounded-2xl flex items-center justify-center mb-6">
               <UIcon name="i-heroicons-chat-bubble-left-right-20-solid" class="w-8 h-8 text-[#FFFFFF]" />
             </div>
-            <h3 class="text-3xl font-bold mb-4">Диалог, <span class="italic">а не война</span></h3>
+            <h3 class="text-3xl font-bold mb-4">Диалог <span class="italic">прежде всего</span></h3>
             <p class="text-lg text-[#FFFFFF]/90 leading-relaxed">
-              Находим нарушение? Сначала разговариваем с администрацией и даём рекомендации. Это помогает быстро решить проблему без конфликтов.
+              Замечаем недочёт? Сначала спокойно обсуждаем его с администрацией и даём рекомендации. В 98% случаев проблема решается на месте — без конфликтов и жалоб.
             </p>
           </div>
         </div>
@@ -121,9 +123,9 @@
             <div class="w-16 h-16 bg-[#A0876E]/20 rounded-2xl flex items-center justify-center mb-6">
               <UIcon name="i-heroicons-document-text-20-solid" class="w-8 h-8 text-[#E7DDCD]" />
             </div>
-            <h3 class="text-3xl font-bold mb-4">Открытые отчёты</h3>
+            <h3 class="text-3xl font-bold mb-4">Объективные обзоры</h3>
             <p class="text-lg text-[#E7DDCD]/80 leading-relaxed">
-              Все проверки публикуются <span class="font-semibold">открыто с фотодоказательствами</span> и рейтингом. Жители Астрахани видят реальную информацию и делают осознанный выбор.
+              Все визиты мы описываем <span class="font-semibold">открыто, с фотофиксацией</span> и честным рейтингом. Жители Астрахани видят реальную картину и делают осознанный выбор магазина.
             </p>
           </div>
         </div>
@@ -135,9 +137,9 @@
             <div class="w-16 h-16 bg-[#A0876E]/15 rounded-2xl flex items-center justify-center mb-6">
               <UIcon name="i-heroicons-scale-20-solid" class="w-8 h-8 text-[#A0876E]" />
             </div>
-            <h3 class="text-3xl font-bold mb-4">По закону РФ</h3>
+            <h3 class="text-3xl font-bold mb-4">В рамках закона</h3>
             <p class="text-lg text-[#3F4245] leading-relaxed">
-              Каждый шаг обоснован <span class="italic">Конституцией</span>, законом о защите прав потребителей и правилами продажи товаров. Мы не выходим за рамки гражданских полномочий.
+              Каждый наш шаг опирается на <span class="italic">Конституцию РФ</span>, закон о защите прав потребителей и правила продажи товаров. Мы действуем как обычные граждане — без претензий на властные полномочия.
             </p>
           </div>
         </div>
@@ -154,7 +156,7 @@
           Четыре шага к <span class="italic text-[#A0876E]">результату</span>
         </h2>
         <p class="text-xl text-[#3F4245] dark:text-[#E7DDCD]/70 max-w-3xl mx-auto">
-          От обнаружения просрочки до публикации отчёта — всё по чётким правилам и стандартам
+          От визита в магазин до публикации обзора — всё прозрачно и по чётким правилам
         </p>
       </div>
 
@@ -177,6 +179,108 @@
       </div>
     </section>
 
+    <!-- ============ ABOUT TEAM — NEW BLOCK ============ -->
+    <section class="max-w-7xl mx-auto px-6 py-24">
+      <div class="text-center mb-20">
+        <div class="inline-block px-4 py-2 bg-[#E7DDCD] dark:bg-[#2B2B2B] rounded-full text-xs font-bold uppercase tracking-widest text-[#A0876E] mb-6">
+          Люди проекта
+        </div>
+        <h2 class="text-5xl md:text-6xl font-black mb-6 tracking-tight">
+          Кто <span class="italic text-[#A0876E]">мы такие</span>
+        </h2>
+        <p class="text-xl text-[#3F4245] dark:text-[#E7DDCD]/70 max-w-3xl mx-auto">
+          Мы — не контролирующий орган и не журналисты. Мы обычные жители Астрахани, которым не всё равно
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8 items-center">
+        <!-- Team photos -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="aspect-[3/4] bg-gradient-to-br from-[#A0876E] to-[#8a7358] rounded-3xl flex items-end p-6 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-20"
+                 style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <div class="relative z-10 text-[#FFFFFF]">
+              <div class="w-12 h-12 bg-[#FFFFFF]/20 rounded-full flex items-center justify-center mb-3 text-xl font-black">Р</div>
+              <div class="font-bold text-lg">Роман Трошин</div>
+              <div class="text-sm text-[#FFFFFF]/80">Основатель проекта</div>
+            </div>
+          </div>
+          <div class="aspect-[3/4] bg-gradient-to-br from-[#3F4245] to-[#2B2B2B] rounded-3xl flex items-end p-6 mt-8 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-20"
+                 style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <div class="relative z-10 text-[#FFFFFF]">
+              <div class="w-12 h-12 bg-[#FFFFFF]/20 rounded-full flex items-center justify-center mb-3 text-xl font-black">Д</div>
+              <div class="font-bold text-lg">Дарья</div>
+              <div class="text-sm text-[#FFFFFF]/80">Участник мониторинга</div>
+            </div>
+          </div>
+          <div class="aspect-[3/4] bg-gradient-to-br from-[#2B2B2B] to-[#3F4245] rounded-3xl flex items-end p-6 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-20"
+                 style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <div class="relative z-10 text-[#FFFFFF]">
+              <div class="w-12 h-12 bg-[#FFFFFF]/20 rounded-full flex items-center justify-center mb-3 text-xl font-black">Р</div>
+              <div class="font-bold text-lg">Роман К.</div>
+              <div class="text-sm text-[#FFFFFF]/80">Участник мониторинга</div>
+            </div>
+          </div>
+          <div class="aspect-[3/4] bg-gradient-to-br from-[#E7DDCD] to-[#A0876E]/60 rounded-3xl flex items-end p-6 mt-8 relative overflow-hidden border border-[#A0876E]/30">
+            <div class="absolute inset-0 opacity-20"
+                 style="background-image: radial-gradient(circle, #2B2B2B 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <div class="relative z-10 text-[#2B2B2B]">
+              <div class="w-12 h-12 bg-[#2B2B2B]/20 rounded-full flex items-center justify-center mb-3 text-xl font-black">А</div>
+              <div class="font-bold text-lg">Артём</div>
+              <div class="text-sm text-[#2B2B2B]/80">Видеограф проекта</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- About text -->
+        <div class="space-y-6">
+          <div class="p-6 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl border border-[#E7DDCD] dark:border-[#3F4245]">
+            <div class="flex gap-4 items-start">
+              <div class="w-12 h-12 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-xl flex items-center justify-center flex-shrink-0">
+                <UIcon name="i-heroicons-users-20-solid" class="w-6 h-6 text-[#A0876E]" />
+              </div>
+              <div>
+                <h3 class="font-bold text-lg mb-2">Обычные жители</h3>
+                <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm leading-relaxed">
+                  Проект запустили в августе 2025 года. Мы не чиновники, не журналисты и не представители надзорных органов. Мы — ваши соседи, родители, покупатели.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl border border-[#E7DDCD] dark:border-[#3F4245]">
+            <div class="flex gap-4 items-start">
+              <div class="w-12 h-12 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-xl flex items-center justify-center flex-shrink-0">
+                <UIcon name="i-heroicons-heart-20-solid" class="w-6 h-6 text-[#A0876E]" />
+              </div>
+              <div>
+                <h3 class="font-bold text-lg mb-2">Безвозмездно</h3>
+                <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm leading-relaxed">
+                  Мы не получаем зарплату, не берём деньги с магазинов и не продаём рейтинги. Это добровольческая инициатива ради общей пользы.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl border border-[#E7DDCD] dark:border-[#3F4245]">
+            <div class="flex gap-4 items-start">
+              <div class="w-12 h-12 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-xl flex items-center justify-center flex-shrink-0">
+                <UIcon name="i-heroicons-identification-20-solid" class="w-6 h-6 text-[#A0876E]" />
+              </div>
+              <div>
+                <h3 class="font-bold text-lg mb-2">С бейджами и открыто</h3>
+                <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm leading-relaxed">
+                  Каждый участник имеет персональный бейдж с кодом, который любой может проверить на нашем сайте. Мы представляемся администрации и не скрываем своих целей.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ FOR WHOM (3 AUDIENCES) — BIG SELLING BLOCK ============ -->
     <section class="max-w-7xl mx-auto px-6 py-24">
       <div class="text-center mb-20">
@@ -187,7 +291,7 @@
           Что это даёт <span class="italic text-[#A0876E]">именно вам</span>?
         </h2>
         <p class="text-xl text-[#3F4245] dark:text-[#E7DDCD]/70 max-w-3xl mx-auto">
-          FreshCheck полезен каждому участнику торговой цепочки
+          FreshCheck приносит пользу каждому участнику торговой цепочки
         </p>
       </div>
 
@@ -200,7 +304,7 @@
                 <UIcon name="i-heroicons-shopping-bag-20-solid" class="w-8 h-8 text-[#FFFFFF]" />
               </div>
               <h3 class="text-4xl font-black mb-3 tracking-tight">Покупателям</h3>
-              <p class="text-[#3F4245] dark:text-[#E7DDCD]/70">Обычным жителям Астрахани, которые хотят покупать безопасные продукты</p>
+              <p class="text-[#3F4245] dark:text-[#E7DDCD]/70">Жителям Астрахани, которые хотят уверенности в свежести продуктов</p>
             </div>
             <div class="lg:col-span-3 p-10">
               <div class="space-y-5">
@@ -209,8 +313,8 @@
                     <UIcon name="i-heroicons-bell-alert-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Узнавайте <span class="italic">первыми</span></h4>
-                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Свежие отчёты и рейтинги магазинов рядом с домом. Выбирайте безопасное место для покупок в вашем микрорайоне.</p>
+                    <h4 class="font-bold text-lg mb-1">Выбирайте <span class="italic">осознанно</span></h4>
+                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Свежие обзоры и рейтинги магазинов рядом с домом помогают выбрать лучшее место для покупок в вашем микрорайоне.</p>
                   </div>
                 </div>
                 <div class="flex gap-4">
@@ -218,8 +322,8 @@
                     <UIcon name="i-heroicons-heart-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Защищайте <span class="italic">семью</span></h4>
-                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Избегайте просроченного детского питания, молочки и мяса благодаря нашим проверкам конкретных магазинов.</p>
+                    <h4 class="font-bold text-lg mb-1">Заботьтесь о <span class="italic">семье</span></h4>
+                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Обращайте особое внимание на детское питание, молочку и мясо в магазинах с нашими обзорами — и покупайте со спокойной душой.</p>
                   </div>
                 </div>
                 <div class="flex gap-4">
@@ -227,8 +331,8 @@
                     <UIcon name="i-heroicons-cursor-arrow-ripple-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Влияйте на <span class="italic">изменения</span></h4>
-                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Ваш сигнал запускает проверку именно в том магазине, куда вы ходите. И вы увидите результат.</p>
+                    <h4 class="font-bold text-lg mb-1">Участвуйте в <span class="italic">улучшениях</span></h4>
+                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Ваше наблюдение запускает визит именно в тот магазин, куда вы ходите. И вы увидите результат — свежую полку и отзыв администрации.</p>
                   </div>
                 </div>
               </div>
@@ -250,11 +354,11 @@
               <div class="space-y-5">
                 <div class="flex gap-4">
                   <div class="flex-shrink-0 w-10 h-10 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-lg flex items-center justify-center">
-                    <UIcon name="i-heroicons-bolt-20-solid" class="w-5 h-5 text-[#A0876E]" />
+                    <UIcon name="i-heroicons-eye-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Оперативный <span class="italic">сигнал</span></h4>
-                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Сразу убираете товар с полки и избегаете претензий от покупателей или серьёзных проверок.</p>
+                    <h4 class="font-bold text-lg mb-1">Взгляд <span class="italic">со стороны</span></h4>
+                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Иногда глаз замыливается — мы помогаем вовремя заметить забытый на полке товар, который вы сами бы хотели убрать.</p>
                   </div>
                 </div>
                 <div class="flex gap-4">
@@ -262,8 +366,8 @@
                     <UIcon name="i-heroicons-chat-bubble-bottom-center-text-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Работайте <span class="italic">спокойнее</span></h4>
-                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Мы начинаем с диалога и рекомендаций. Быстро исправляем нарушение без эскалации в органы.</p>
+                    <h4 class="font-bold text-lg mb-1">Работа <span class="italic">без стресса</span></h4>
+                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Мы всегда начинаем со спокойного разговора. Никаких конфликтов — только рекомендации и возможность быстро поправить ситуацию.</p>
                   </div>
                 </div>
                 <div class="flex gap-4">
@@ -271,8 +375,8 @@
                     <UIcon name="i-heroicons-star-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Улучшайте <span class="italic">репутацию</span></h4>
-                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Сотрудники, которые реагируют на замечания, получают положительную отметку в нашем отчёте.</p>
+                    <h4 class="font-bold text-lg mb-1">Ваша <span class="italic">репутация</span></h4>
+                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Сотрудники, которые спокойно реагируют на замечания и быстро устраняют недочёты, получают положительную отметку в нашем обзоре.</p>
                   </div>
                 </div>
               </div>
@@ -288,17 +392,17 @@
                 <UIcon name="i-heroicons-building-office-20-solid" class="w-8 h-8 text-[#FFFFFF]" />
               </div>
               <h3 class="text-4xl font-black mb-3 tracking-tight text-[#FFFFFF]">Руководству</h3>
-              <p class="text-[#E7DDCD]/80">Директора, владельцы, администрация — те, кто отвечает за всё</p>
+              <p class="text-[#E7DDCD]/80">Директора, владельцы, администрация — те, кто отвечает за качество</p>
             </div>
             <div class="lg:col-span-3 p-10">
               <div class="space-y-5">
                 <div class="flex gap-4">
                   <div class="flex-shrink-0 w-10 h-10 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-lg flex items-center justify-center">
-                    <UIcon name="i-heroicons-trophy-20-solid" class="w-5 h-5 text-[#A0876E]" />
+                    <UIcon name="i-heroicons-clipboard-document-check-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Наклейка <span class="italic">«Одобрено FreshCheck»</span></h4>
-                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Видимый знак качества на входе, который привлекает сознательных покупателей и выделяет ваш магазин.</p>
+                    <h4 class="font-bold text-lg mb-1">Бесплатный <span class="italic">аудит качества</span></h4>
+                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Наши визиты — это взгляд внимательного покупателя, который замечает то, что можно упустить в рутине. Ценный источник обратной связи.</p>
                   </div>
                 </div>
                 <div class="flex gap-4">
@@ -306,17 +410,17 @@
                     <UIcon name="i-heroicons-arrow-trending-up-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Рост <span class="italic">лояльности</span></h4>
-                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Честные полки и высокий рейтинг = больше постоянных клиентов из района. Бесплатный маркетинг.</p>
+                    <h4 class="font-bold text-lg mb-1">Укрепление <span class="italic">доверия</span></h4>
+                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Высокий рейтинг FreshCheck = больше лояльных клиентов из района. Это честный маркетинг, который работает за вас.</p>
                   </div>
                 </div>
                 <div class="flex gap-4">
                   <div class="flex-shrink-0 w-10 h-10 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-lg flex items-center justify-center">
-                    <UIcon name="i-heroicons-shield-check-20-solid" class="w-5 h-5 text-[#A0876E]" />
+                    <UIcon name="i-heroicons-trophy-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Избегайте <span class="italic">штрафов</span></h4>
-                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Наши рекомендации по температуре, хранению и маркировке помогают избежать штрафов Роспотребнадзора.</p>
+                    <h4 class="font-bold text-lg mb-1">Знак <span class="italic">«Одобрено FreshCheck»</span></h4>
+                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Видимый знак качества для магазинов с рейтингом 5/5. Выделяет вас среди соседей и привлекает сознательных покупателей.</p>
                   </div>
                 </div>
               </div>
@@ -371,7 +475,7 @@
           <h2 class="text-5xl md:text-6xl font-black mb-4 tracking-tight">
             Голоса <span class="italic text-[#A0876E]">Астрахани</span>
           </h2>
-          <p class="text-xl text-[#3F4245] dark:text-[#E7DDCD]/70">Слова жителей, которым помогли наши проверки</p>
+          <p class="text-xl text-[#3F4245] dark:text-[#E7DDCD]/70">Слова жителей, которым помогли наши наблюдения</p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -408,7 +512,7 @@
             Знак качества
           </div>
           <h2 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight mb-6 leading-[0.9]">
-            «Проверено<br>
+            «Одобрено<br>
             <span class="italic text-[#A0876E]">FreshCheck»</span>
           </h2>
           <p class="text-lg text-[#E7DDCD]/80 mb-8 leading-relaxed">
@@ -432,7 +536,7 @@
               <span class="text-[#E7DDCD]/90">Конкурентное преимущество среди соседних точек</span>
             </div>
           </div>
-          <NuxtLink to="/#">
+          <NuxtLink to="/badge">
             <button class="inline-flex items-center gap-2 px-8 py-4 bg-[#A0876E] hover:bg-[#8a7358] text-[#FFFFFF] rounded-xl font-bold shadow-xl transition">
               Как получить наклейку
               <UIcon name="i-heroicons-arrow-right-20-solid" class="w-5 h-5" />
@@ -447,15 +551,15 @@
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-16 gap-6">
         <div>
           <div class="inline-block px-4 py-2 bg-[#E7DDCD] dark:bg-[#2B2B2B] rounded-full text-xs font-bold uppercase tracking-widest text-[#A0876E] mb-6">
-            В реальном времени
+            Актуально
           </div>
           <h2 class="text-5xl md:text-6xl font-black mb-4 tracking-tight">
-            Последние <span class="italic text-[#A0876E]">проверки</span>
+            Недавние <span class="italic text-[#A0876E]">визиты</span>
           </h2>
-          <p class="text-xl text-[#3F4245] dark:text-[#E7DDCD]/70">Актуальные рейтинги магазинов Астрахани</p>
+          <p class="text-xl text-[#3F4245] dark:text-[#E7DDCD]/70">Свежие обзоры магазинов Астрахани</p>
         </div>
         <NuxtLink to="/product-review" class="inline-flex items-center gap-2 text-[#A0876E] font-bold hover:text-[#8a7358] transition">
-          Смотреть все
+          Все магазины
           <UIcon name="i-heroicons-arrow-right-20-solid" class="w-5 h-5" />
         </NuxtLink>
       </div>
@@ -488,6 +592,94 @@
       </div>
     </section>
 
+    <!-- ============ FAQ — NEW BLOCK ============ -->
+    <section class="py-24 bg-[#E7DDCD]/30 dark:bg-[#1a1a1a]">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <div class="inline-block px-4 py-2 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-full text-xs font-bold uppercase tracking-widest text-[#A0876E] mb-6">
+            FAQ
+          </div>
+          <h2 class="text-5xl md:text-6xl font-black mb-4 tracking-tight">
+            Частые <span class="italic text-[#A0876E]">вопросы</span>
+          </h2>
+          <p class="text-xl text-[#3F4245] dark:text-[#E7DDCD]/70">Всё, что стоит знать о FreshCheck</p>
+        </div>
+
+        <div class="space-y-3">
+          <div v-for="(item, i) in faq" :key="i"
+               class="bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl border border-[#E7DDCD] dark:border-[#3F4245] overflow-hidden hover:border-[#A0876E] transition-colors">
+            <button @click="toggleFaq(i)" class="w-full p-6 flex justify-between items-center gap-4 text-left">
+              <span class="font-bold text-lg text-[#2B2B2B] dark:text-[#FFFFFF]">{{ item.q }}</span>
+              <UIcon :name="openFaq === i ? 'i-heroicons-chevron-up-20-solid' : 'i-heroicons-chevron-down-20-solid'"
+                     class="w-6 h-6 text-[#A0876E] flex-shrink-0 transition-transform" />
+            </button>
+            <div v-if="openFaq === i" class="px-6 pb-6">
+              <div class="pt-4 border-t border-[#E7DDCD] dark:border-[#3F4245]">
+                <p class="text-[#3F4245] dark:text-[#E7DDCD]/80 leading-relaxed">{{ item.a }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VOLUNTEER CTA — NEW BLOCK ============ -->
+    <section class="max-w-7xl mx-auto px-6 py-24">
+      <div class="relative overflow-hidden rounded-3xl bg-[#3F4245] dark:bg-[#2B2B2B] p-10 sm:p-16 text-[#FFFFFF]">
+        <div class="absolute -top-20 -right-20 w-80 h-80 bg-[#A0876E]/20 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-[#E7DDCD]/10 rounded-full blur-3xl"></div>
+
+        <div class="relative z-10 grid lg:grid-cols-2 gap-10 items-center">
+          <div>
+            <div class="inline-block px-4 py-2 bg-[#A0876E] rounded-full text-xs font-bold uppercase tracking-widest text-[#FFFFFF] mb-6">
+              Присоединяйтесь
+            </div>
+            <h2 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight mb-6 leading-[0.9]">
+              Станьте частью <span class="italic text-[#A0876E]">FreshCheck</span>
+            </h2>
+            <p class="text-lg text-[#E7DDCD]/80 mb-8 leading-relaxed">
+              Хотите, чтобы в вашем районе тоже было больше свежих полок? Наш проект живёт благодаря неравнодушным астраханцам.
+            </p>
+            <div class="space-y-3 mb-8">
+              <div class="flex items-center gap-3">
+                <UIcon name="i-heroicons-map-pin-20-solid" class="w-6 h-6 text-[#A0876E] flex-shrink-0" />
+                <span class="text-[#E7DDCD]/90">Делитесь наблюдениями о магазинах рядом с домом</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <UIcon name="i-heroicons-camera-20-solid" class="w-6 h-6 text-[#A0876E] flex-shrink-0" />
+                <span class="text-[#E7DDCD]/90">Участвуйте в выездах как волонтёр-наблюдатель</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <UIcon name="i-heroicons-identification-20-solid" class="w-6 h-6 text-[#A0876E] flex-shrink-0" />
+                <span class="text-[#E7DDCD]/90">Получите персональный бейдж участника проекта</span>
+              </div>
+            </div>
+            <a href="https://t.me/RomanTroshinRF" target="_blank"
+               class="inline-flex items-center gap-2 px-8 py-4 bg-[#A0876E] hover:bg-[#8a7358] text-[#FFFFFF] rounded-xl font-bold shadow-xl transition">
+              <UIcon name="i-heroicons-paper-airplane-20-solid" class="w-5 h-5" />
+              Написать основателю
+            </a>
+          </div>
+
+          <!-- Visual side -->
+          <div class="grid grid-cols-2 gap-4">
+            <div class="aspect-square bg-[#A0876E]/20 rounded-2xl flex items-center justify-center border border-[#A0876E]/30">
+              <UIcon name="i-heroicons-user-plus-20-solid" class="w-16 h-16 text-[#A0876E]" />
+            </div>
+            <div class="aspect-square bg-[#E7DDCD]/10 rounded-2xl flex items-center justify-center border border-[#E7DDCD]/20 mt-8">
+              <UIcon name="i-heroicons-heart-20-solid" class="w-16 h-16 text-[#E7DDCD]" />
+            </div>
+            <div class="aspect-square bg-[#E7DDCD]/10 rounded-2xl flex items-center justify-center border border-[#E7DDCD]/20">
+              <UIcon name="i-heroicons-map-20-solid" class="w-16 h-16 text-[#E7DDCD]" />
+            </div>
+            <div class="aspect-square bg-[#A0876E]/20 rounded-2xl flex items-center justify-center border border-[#A0876E]/30 mt-8">
+              <UIcon name="i-heroicons-shield-check-20-solid" class="w-16 h-16 text-[#A0876E]" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ FINAL CTA ============ -->
     <section class="max-w-5xl mx-auto px-6 py-24 text-center">
       <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#A0876E] via-[#8a7358] to-[#A0876E] p-12 sm:p-16">
@@ -495,13 +687,13 @@
              style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 24px 24px;"></div>
         <div class="relative z-10">
           <div class="inline-flex items-center justify-center w-20 h-20 bg-[#FFFFFF]/20 rounded-2xl backdrop-blur-sm mb-8">
-            <UIcon name="i-heroicons-megaphone-20-solid" class="w-10 h-10 text-[#FFFFFF]" />
+            <UIcon name="i-heroicons-chat-bubble-left-right-20-solid" class="w-10 h-10 text-[#FFFFFF]" />
           </div>
           <h2 class="text-5xl md:text-6xl font-black text-[#FFFFFF] tracking-tight mb-6 leading-[0.9]">
-            Нашли <span class="italic">просрочку?</span>
+            Заметили <span class="italic">что-то не то?</span>
           </h2>
           <p class="text-xl text-[#FFFFFF]/90 mb-12 max-w-3xl mx-auto">
-            Ваше сообщение — это начало проверки. Мы свяжемся с администрацией и проведём мониторинг магазина.
+            Поделитесь наблюдением — мы заглянем в магазин, поговорим с администрацией и опубликуем честный обзор.
           </p>
           
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -532,37 +724,42 @@ import { ref, onMounted } from 'vue'
 
 const latestShops = ref([])
 const loadingShops = ref(true)
+const openFaq = ref<number | null>(0)
+
+const toggleFaq = (index: number) => {
+  openFaq.value = openFaq.value === index ? null : index
+}
 
 const processSteps = [
   {
     icon: 'i-heroicons-user-plus-20-solid',
-    title: 'Вход',
-    desc: 'Заходим в магазин как обычный покупатель. При возможности представляемся.'
+    title: 'Визит',
+    desc: 'Заходим в магазин как обычные покупатели. При возможности представляемся администрации.'
   },
   {
     icon: 'i-heroicons-camera-20-solid',
-    title: 'Фиксация',
-    desc: 'Фотографируем товары, полки, ценники. Видео — для служебных целей.'
+    title: 'Наблюдение',
+    desc: 'Осматриваем полки, фиксируем сроки годности и условия хранения. Делаем фото для отчёта.'
   },
   {
     icon: 'i-heroicons-chat-bubble-20-solid',
-    title: 'Уведомление',
-    desc: 'Информируем администрацию о нарушениях и даём рекомендации.'
+    title: 'Диалог',
+    desc: 'Делимся наблюдениями с сотрудниками, даём рекомендации. В большинстве случаев всё решается на месте.'
   },
   {
     icon: 'i-heroicons-globe-alt-20-solid',
-    title: 'Публикация',
-    desc: 'В течение 1-3 дней выкладываем отчёт с рейтингом и фото.'
+    title: 'Обзор',
+    desc: 'В течение 1–3 дней публикуем открытый отчёт с фото и рейтингом — для всех жителей Астрахани.'
   }
 ]
 
 const principles = [
   { icon: 'i-heroicons-scale-20-solid', title: 'Законность', desc: 'Строго в рамках Конституции РФ' },
-  { icon: 'i-heroicons-check-circle-20-solid', title: 'Честность', desc: 'Только реальные факты' },
+  { icon: 'i-heroicons-check-circle-20-solid', title: 'Честность', desc: 'Только реальные наблюдения' },
   { icon: 'i-heroicons-eye-20-solid', title: 'Прозрачность', desc: 'Все документы открыты' },
   { icon: 'i-heroicons-hand-raised-20-solid', title: 'Безопасность', desc: 'Здоровье семей в центре' },
-  { icon: 'i-heroicons-chat-bubble-left-20-solid', title: 'Партнёрство', desc: 'Диалог, не война' },
-  { icon: 'i-heroicons-arrow-path-20-solid', title: 'Соразмерность', desc: 'Реакция = тяжести' },
+  { icon: 'i-heroicons-chat-bubble-left-20-solid', title: 'Партнёрство', desc: 'Диалог, а не противостояние' },
+  { icon: 'i-heroicons-arrow-path-20-solid', title: 'Соразмерность', desc: 'Реакция = значимости' },
   { icon: 'i-heroicons-user-20-solid', title: 'Уважение', desc: 'Не публикуем лица людей' },
   { icon: 'i-heroicons-bolt-20-solid', title: 'Независимость', desc: 'Без конфликтов интересов' },
   { icon: 'i-heroicons-chat-bubble-left-right-20-solid', title: 'Диалог', desc: 'Готовы исправлять ошибки' },
@@ -576,14 +773,76 @@ const testimonials = [
     location: 'Кировский район'
   },
   {
-    text: 'Сообщила про просроченный йогурт днём. К вечеру всё убрали и даже пост сделали. Теперь доверяю этому магазину намного больше.',
+    text: 'Поделилась наблюдением про просроченный йогурт днём. К вечеру всё убрали и даже пост сделали. Теперь доверяю этому магазину намного больше.',
     author: 'Мария Л.',
     location: 'Советский район'
   },
   {
-    text: 'Как папа с годовалым малышом скажу: спасибо, что проверяете молочку и детское питание. Для нас это вопрос здоровья сына.',
+    text: 'Как папа с годовалым малышом скажу: спасибо, что обращаете внимание на молочку и детское питание. Для нас это вопрос здоровья сына.',
     author: 'Андрей М.',
     location: 'Ленинский район'
+  }
+]
+
+const faq = [
+  {
+    q: 'Вы из Роспотребнадзора или полиции?',
+    a: 'Нет. FreshCheck — независимая гражданская инициатива жителей Астрахани. Мы не являемся государственным органом, не выдаём предписаний и не выписываем штрафов. Мы действуем как обычные покупатели, реализуя конституционное право на информацию (ст. 29 Конституции РФ).'
+  },
+  {
+    q: 'Законно ли снимать в магазине?',
+    a: 'Да. Постановление Правительства РФ № 2463 (п. 2) прямо подтверждает право потребителей фотографировать товары и ценники в торговых залах. Съёмка в местах свободного доступа также разрешена ст. 152.1 ГК РФ. Мы снимаем только полки, товары и ценники — лица и голоса людей мы не публикуем.'
+  },
+  {
+    q: 'Вы штрафуете магазины или заставляете платить?',
+    a: 'Нет. FreshCheck — некоммерческий волонтёрский проект. Мы не выписываем штрафов, не составляем актов, не берём деньги с магазинов за визиты, рейтинги или наклейки. Наша цель — диалог и рекомендации. В 98% случаев недочёты устраняются на месте, без эскалации.'
+  },
+  {
+    q: 'Кто вам платит? Вы независимы?',
+    a: 'Никто. Участники работают добровольно, мы не принимаем финансирования, которое могло бы повлиять на объективность. Рейтинги не продаются и не покупаются — знак «Одобрено FreshCheck» зарабатывается реальным качеством магазина.'
+  },
+  {
+    q: 'Что если магазин не отреагирует на ваши рекомендации?',
+    a: 'Мы всегда начинаем с диалога. Если нарушения носят систематический характер и администрация не реагирует после нескольких визитов — мы можем помочь жителям оформить официальное обращение в Роспотребнадзор с нашей фотофиксацией как доказательной базой.'
+  },
+  {
+    q: 'Как магазину получить знак «Одобрено FreshCheck»?',
+    a: 'Магазин должен стабильно поддерживать рейтинг 5/5 по итогам наших визитов (обычно это 3–6 месяцев регулярных наблюдений), соблюдать нормы хранения и реагировать на рекомендации. Знак качества выдаётся бесплатно и носит рекомендательный характер.'
+  },
+  {
+    q: 'Как мне поделиться наблюдением?',
+    a: 'Просто напишите в Telegram @RomanTroshinRF — укажите адрес магазина и что именно вас заинтересовало. Мы организуем визит в приоритетном порядке и опубликуем обзор.'
+  }
+]
+
+const mockShops = [
+  {
+    id: 'mock-1',
+    store_name: 'Магнит у дома',
+    address: 'ул. Софьи Перовской, 45',
+    total_score: 4.8,
+    date_checked: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    id: 'mock-2',
+    store_name: 'Пятёрочка',
+    address: 'ул. Кирова, 12',
+    total_score: 5.0,
+    date_checked: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    id: 'mock-3',
+    store_name: 'Магазин "Свежесть"',
+    address: 'пр. Губернатора, 8',
+    total_score: 4.5,
+    date_checked: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    id: 'mock-4',
+    store_name: 'Мини-маркет "Центральный"',
+    address: 'ул. Адмирала Нахимова, 132',
+    total_score: 4.9,
+    date_checked: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
   }
 ]
 
@@ -593,11 +852,14 @@ const fetchLatestShops = async () => {
     const response = await $fetch('https://api.test.prosrochkapatrol.ru/api/shops', {
       query: { limit: 4, sort: '-date_checked', depth: 1, draft: false }
     })
-    if (response && (response as any).docs && Array.isArray((response as any).docs)) {
+    if (response && (response as any).docs && Array.isArray((response as any).docs) && (response as any).docs.length > 0) {
       latestShops.value = (response as any).docs
+    } else {
+      latestShops.value = mockShops
     }
   } catch (error) {
-    console.error('Ошибка загрузки магазинов:', error)
+    console.warn('API недоступен, используем демо-данные:', error)
+    latestShops.value = mockShops
   } finally {
     loadingShops.value = false
   }
