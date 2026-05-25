@@ -42,12 +42,17 @@
         </div>
 
         <ShopsSkeleton v-if="isLoading" />
-        <div v-else class="flex flex-col gap-3">
+        
+        <div v-else-if="shops?.docs?.length" class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <ShopItem 
-                v-for="shop in shops?.docs || []" 
+                v-for="shop in shops.docs" 
                 :key="shop.id" 
                 :shop="shop" 
             />
+        </div>
+
+        <div v-else class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-16 text-center shadow-sm">
+            <p class="text-zinc-500 dark:text-zinc-400">Магазинов пока нет или поиск не дал результатов.</p>
         </div>
     </AdaptiveContainer>
 </template>
@@ -55,7 +60,7 @@
 <script setup lang="ts">
 import { useShopStore } from '~/stores/shops';
 import { refDebounced } from '@vueuse/core'
-import { input } from '~/utils/atoms'
+import { input, select } from '~/utils/atoms'
 
 const shopStore = useShopStore()
 const { fetchShopData } = shopStore
@@ -78,5 +83,4 @@ const loadShops = async () => {
 onMounted(async () => {
     await loadShops()
 })
-
 </script>

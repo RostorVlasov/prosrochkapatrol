@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen bg-[#FFFFFF] dark:bg-[#1a1a1a] text-[#2B2B2B] dark:text-[#E7DDCD] font-sans">
     
-    <!-- ============ HERO ============ -->
     <section class="min-h-screen flex items-center justify-center px-6 py-20 relative overflow-hidden">
       <div class="absolute inset-0 opacity-40 dark:opacity-20">
         <div class="absolute top-20 right-10 w-96 h-96 bg-[#E7DDCD] rounded-full blur-3xl"></div>
@@ -21,7 +20,7 @@
         </h1>
         
         <p class="text-xl md:text-2xl text-[#3F4245] dark:text-[#E7DDCD]/80 max-w-3xl mx-auto leading-relaxed mb-12">
-          Мы — <span class="font-bold text-[#2B2B2B] dark:text-[#FFFFFF]">неравнодушные соседи</span>, которые помогают магазинам стать лучше, а жителям Астрахани — покупать <span class="font-bold text-[#2B2B2B] dark:text-[#FFFFFF]">свежие и безопасные продукты</span>.
+          Мы — <span class="font-bold text-[#2B2B2B] dark:text-[#FFFFFF]">независимая гражданская инициатива жителей Астрахани</span>. Проводим общественный мониторинг, информируем администрацию о недочётах и помогаем защищать права потребителей.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -37,7 +36,6 @@
       </div>
     </section>
 
-    <!-- ============ STATS ============ -->
     <section class="max-w-7xl mx-auto px-6 py-24">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="group p-8 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-3xl border border-[#E7DDCD] dark:border-[#3F4245] hover:shadow-2xl hover:border-[#A0876E] transition-all duration-500">
@@ -69,7 +67,6 @@
       </div>
     </section>
 
-    <!-- ============ HOW TO REPORT ============ -->
     <section class="max-w-7xl mx-auto px-6 py-24">
       <div class="text-center mb-20">
         <div class="inline-block px-4 py-2 bg-[#E7DDCD] dark:bg-[#2B2B2B] rounded-full text-xs font-bold uppercase tracking-widest text-[#A0876E] mb-6">
@@ -124,7 +121,6 @@
       </div>
     </section>
 
-    <!-- ============ WHAT WE DO ============ -->
     <section id="what" class="max-w-7xl mx-auto px-6 py-24">
       <div class="mb-20">
         <div class="inline-block px-4 py-2 bg-[#E7DDCD] dark:bg-[#2B2B2B] rounded-full text-xs font-bold uppercase tracking-widest text-[#A0876E] mb-6">
@@ -195,7 +191,6 @@
       </div>
     </section>
 
-    <!-- ============ TIMELINE / PROCESS ============ -->
     <section class="max-w-7xl mx-auto px-6 py-24">
       <div class="text-center mb-20">
         <div class="inline-block px-4 py-2 bg-[#E7DDCD] dark:bg-[#2B2B2B] rounded-full text-xs font-bold uppercase tracking-widest text-[#A0876E] mb-6">
@@ -227,7 +222,6 @@
       </div>
     </section>
 
-    <!-- ============ ABOUT TEAM ============ -->
     <section class="max-w-7xl mx-auto px-6 py-24">
       <div class="text-center mb-20">
         <div class="inline-block px-4 py-2 bg-[#E7DDCD] dark:bg-[#2B2B2B] rounded-full text-xs font-bold uppercase tracking-widest text-[#A0876E] mb-6">
@@ -241,91 +235,113 @@
         </p>
       </div>
 
-      <div class="grid lg:grid-cols-2 gap-8 items-center">
-        <!-- Team photos — 4 members -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-stretch justify-items-center">
-          <div class="aspect-[3/4] w-full bg-gradient-to-br from-[#A0876E] to-[#8a7358] rounded-3xl flex items-end p-5 relative overflow-hidden">
-            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 20px 20px;"></div>
-            <div class="relative z-10 text-[#FFFFFF]">
-              <div class="w-10 h-10 bg-[#FFFFFF]/20 rounded-full flex items-center justify-center mb-2 text-base font-black">Р</div>
-              <div class="font-bold text-sm leading-tight">Роман Трошин</div>
-              <div class="text-xs text-[#FFFFFF]/80 mt-0.5">Основатель</div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="group p-8 bg-gradient-to-br from-[#A0876E]/10 to-[#E7DDCD]/10 dark:from-[#A0876E]/20 dark:to-[#3F4245]/20 rounded-3xl border border-[#A0876E]/20 hover:border-[#A0876E]/40 transition-colors duration-500">
+          <div class="flex items-start gap-4 mb-4">
+            <div class="w-12 h-12 bg-[#A0876E] rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <span class="text-lg font-bold text-[#FFFFFF]">РТ</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-xl text-[#2B2B2B] dark:text-[#FFFFFF]">Роман Трошин</h3>
+              <p class="text-[#A0876E] font-medium">Основатель</p>
             </div>
           </div>
-          <div class="aspect-[3/4] w-full bg-gradient-to-br from-[#3F4245] to-[#2B2B2B] rounded-3xl flex items-end p-5 relative overflow-hidden">
-            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 20px 20px;"></div>
-            <div class="relative z-10 text-[#FFFFFF]">
-              <div class="w-10 h-10 bg-[#FFFFFF]/20 rounded-full flex items-center justify-center mb-2 text-base font-black">Б</div>
-              <div class="font-bold text-sm leading-tight">Борис</div>
-              <div class="text-xs text-[#FFFFFF]/80 mt-0.5">Разработчик</div>
+          <blockquote class="text-[#3F4245] dark:text-[#E7DDCD]/80 italic text-sm leading-relaxed border-l-2 border-[#A0876E]/30 pl-4">
+            «Запустил проект в августе 2025 года, чтобы сделать магазины Астрахани честнее»
+          </blockquote>
+        </div>
+
+        <div class="group p-8 bg-gradient-to-br from-[#3F4245]/10 to-[#2B2B2B]/10 dark:from-[#3F4245]/20 dark:to-[#1a1a1a]/20 rounded-3xl border border-[#3F4245]/20 hover:border-[#A0876E]/40 transition-colors duration-500">
+          <div class="flex items-start gap-4 mb-4">
+            <div class="w-12 h-12 bg-[#3F4245] rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <span class="text-lg font-bold text-[#FFFFFF]">Б</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-xl text-[#2B2B2B] dark:text-[#FFFFFF]">Борис</h3>
+              <p class="text-[#A0876E] font-medium">Технический директор</p>
             </div>
           </div>
-          <div class="aspect-[3/4] w-full bg-gradient-to-br from-[#2B2B2B] to-[#3F4245] rounded-3xl flex items-end p-5 relative overflow-hidden">
-            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 20px 20px;"></div>
-            <div class="relative z-10 text-[#FFFFFF]">
-              <div class="w-10 h-10 bg-[#FFFFFF]/20 rounded-full flex items-center justify-center mb-2 text-base font-black">Д</div>
-              <div class="font-bold text-sm leading-tight">Дарья</div>
-              <div class="text-xs text-[#FFFFFF]/80 mt-0.5">Мониторинг</div>
+          <blockquote class="text-[#3F4245] dark:text-[#E7DDCD]/80 italic text-sm leading-relaxed border-l-2 border-[#A0876E]/30 pl-4">
+            «Отвечаю за то, чтобы сайт работал быстро, а данные — не терялись»
+          </blockquote>
+        </div>
+
+        <div class="group p-8 bg-gradient-to-br from-[#2B2B2B]/10 to-[#3F4245]/10 dark:from-[#2B2B2B]/20 dark:to-[#3F4245]/20 rounded-3xl border border-[#3F4245]/20 hover:border-[#A0876E]/40 transition-colors duration-500">
+          <div class="flex items-start gap-4 mb-4">
+            <div class="w-12 h-12 bg-[#2B2B2B] rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <span class="text-lg font-bold text-[#FFFFFF]">Д</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-xl text-[#2B2B2B] dark:text-[#FFFFFF]">Дарья</h3>
+              <p class="text-[#A0876E] font-medium">Мониторинг</p>
             </div>
           </div>
-          <div class="aspect-[3/4] w-full bg-gradient-to-br from-[#E7DDCD] to-[#A0876E]/60 rounded-3xl flex items-end p-5 relative overflow-hidden border border-[#A0876E]/30">
-            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle, #2B2B2B 1px, transparent 1px); background-size: 20px 20px;"></div>
-            <div class="relative z-10 text-[#2B2B2B]">
-              <div class="w-10 h-10 bg-[#2B2B2B]/20 rounded-full flex items-center justify-center mb-2 text-base font-black">Р</div>
-              <div class="font-bold text-sm leading-tight">Роман К.</div>
-              <div class="text-xs text-[#2B2B2B]/80 mt-0.5">Мониторинг</div>
+          <blockquote class="text-[#3F4245] dark:text-[#E7DDCD]/80 italic text-sm leading-relaxed border-l-2 border-[#A0876E]/30 pl-4">
+            «Проверяю полки лично — потому что хочу быть уверенной в продуктах для своей семьи»
+          </blockquote>
+        </div>
+
+        <div class="group p-8 bg-gradient-to-br from-[#E7DDCD]/10 to-[#A0876E]/10 dark:from-[#E7DDCD]/20 dark:to-[#A0876E]/20 rounded-3xl border border-[#A0876E]/20 hover:border-[#A0876E]/40 transition-colors duration-500">
+          <div class="flex items-start gap-4 mb-4">
+            <div class="w-12 h-12 bg-[#E7DDCD] rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <span class="text-lg font-bold text-[#2B2B2B]">РК</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-xl text-[#2B2B2B] dark:text-[#FFFFFF]">Роман К</h3>
+              <p class="text-[#A0876E] font-medium">Мониторинг</p>
+            </div>
+          </div>
+          <blockquote class="text-[#3F4245] dark:text-[#E7DDCD]/80 italic text-sm leading-relaxed border-l-2 border-[#A0876E]/30 pl-4">
+            «Важно не найти нарушение, а помочь магазину стать лучше — через диалог, а не конфликт»
+          </blockquote>
+        </div>
+      </div>
+
+      <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-6 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl border border-[#E7DDCD] dark:border-[#3F4245]">
+          <div class="flex gap-4 items-start">
+            <div class="w-12 h-12 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-xl flex items-center justify-center flex-shrink-0">
+              <UIcon name="i-heroicons-users-20-solid" class="w-6 h-6 text-[#A0876E]" />
+            </div>
+            <div>
+              <h3 class="font-bold text-lg mb-2">Обычные жители</h3>
+              <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm leading-relaxed">
+                Проект запустили в августе 2025 года. Мы не чиновники, не журналисты и не представители надзорных органов. Мы — ваши соседи, родители, покупатели.
+              </p>
             </div>
           </div>
         </div>
 
-        <!-- About text -->
-        <div class="space-y-6">
-          <div class="p-6 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl border border-[#E7DDCD] dark:border-[#3F4245]">
-            <div class="flex gap-4 items-start">
-              <div class="w-12 h-12 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-xl flex items-center justify-center flex-shrink-0">
-                <UIcon name="i-heroicons-users-20-solid" class="w-6 h-6 text-[#A0876E]" />
-              </div>
-              <div>
-                <h3 class="font-bold text-lg mb-2">Обычные жители</h3>
-                <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm leading-relaxed">
-                  Проект запустили в августе 2025 года. Мы не чиновники, не журналисты и не представители надзорных органов. Мы — ваши соседи, родители, покупатели.
-                </p>
-              </div>
+        <div class="p-6 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl border border-[#E7DDCD] dark:border-[#3F4245]">
+          <div class="flex gap-4 items-start">
+            <div class="w-12 h-12 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-xl flex items-center justify-center flex-shrink-0">
+              <UIcon name="i-heroicons-heart-20-solid" class="w-6 h-6 text-[#A0876E]" />
+            </div>
+            <div>
+              <h3 class="font-bold text-lg mb-2">Безвозмездно</h3>
+              <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm leading-relaxed">
+                Мы не получаем зарплату, не берём деньги с магазинов и не продаём рейтинги. Это добровольческая инициатива ради общей пользы.
+              </p>
             </div>
           </div>
+        </div>
 
-          <div class="p-6 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl border border-[#E7DDCD] dark:border-[#3F4245]">
-            <div class="flex gap-4 items-start">
-              <div class="w-12 h-12 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-xl flex items-center justify-center flex-shrink-0">
-                <UIcon name="i-heroicons-heart-20-solid" class="w-6 h-6 text-[#A0876E]" />
-              </div>
-              <div>
-                <h3 class="font-bold text-lg mb-2">Безвозмездно</h3>
-                <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm leading-relaxed">
-                  Мы не получаем зарплату, не берём деньги с магазинов и не продаём рейтинги. Это добровольческая инициатива ради общей пользы.
-                </p>
-              </div>
+        <div class="p-6 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl border border-[#E7DDCD] dark:border-[#3F4245]">
+          <div class="flex gap-4 items-start">
+            <div class="w-12 h-12 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-xl flex items-center justify-center flex-shrink-0">
+              <UIcon name="i-heroicons-identification-20-solid" class="w-6 h-6 text-[#A0876E]" />
             </div>
-          </div>
-
-          <div class="p-6 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl border border-[#E7DDCD] dark:border-[#3F4245]">
-            <div class="flex gap-4 items-start">
-              <div class="w-12 h-12 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-xl flex items-center justify-center flex-shrink-0">
-                <UIcon name="i-heroicons-identification-20-solid" class="w-6 h-6 text-[#A0876E]" />
-              </div>
-              <div>
-                <h3 class="font-bold text-lg mb-2">С бейджами и открыто</h3>
-                <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm leading-relaxed">
-                  Каждый участник имеет персональный бейдж с кодом, который любой может проверить на нашем сайте. Мы представляемся администрации и не скрываем своих целей.
-                </p>
-              </div>
+            <div>
+              <h3 class="font-bold text-lg mb-2">С бейджами и открыто</h3>
+              <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm leading-relaxed">
+                Каждый участник имеет персональный бейдж с кодом, который любой может проверить на нашем сайте. Мы представляемся администрации и не скрываем своих целей.
+              </p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ NEWS UPDATES ============ -->
     <section class="max-w-7xl mx-auto px-6 py-24">
       <div class="text-center mb-20">
         <div class="inline-block px-4 py-2 bg-[#E7DDCD] dark:bg-[#2B2B2B] rounded-full text-xs font-bold uppercase tracking-widest text-[#A0876E] mb-6">
@@ -335,59 +351,62 @@
           Последние <span class="italic text-[#A0876E]">обновления</span>
         </h2>
         <p class="text-xl text-[#3F4245] dark:text-[#E7DDCD]/70 max-w-3xl mx-auto">
-          Следите за развитием проекта и новыми проверками
+          Читайте новости проекта, изучайте законы о защите прав потребителей и будьте в курсе изменений
         </p>
       </div>
 
-      <!-- Loading state -->
       <div v-if="loadingNews" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div v-for="i in 3" :key="i" class="h-80 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl animate-pulse border border-[#E7DDCD] dark:border-[#3F4245]"></div>
+        <div v-for="i in 3" :key="i" class="h-96 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl animate-pulse border border-[#E7DDCD] dark:border-[#3F4245]"></div>
       </div>
-
-      <!-- Error state -->
       <div v-else-if="newsError" class="text-center py-12">
         <UIcon name="i-heroicons-exclamation-circle-20-solid" class="w-16 h-16 text-[#A0876E] mx-auto mb-4" />
         <p class="text-xl font-bold text-[#2B2B2B] dark:text-[#FFFFFF] mb-2">Ошибка подключения к API</p>
         <p class="text-[#3F4245] dark:text-[#E7DDCD]/70">Не удалось загрузить новости. Попробуйте позже.</p>
       </div>
-
-      <!-- Success state -->
-      <div v-else-if="newsUpdates.length" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <NuxtLink v-for="news in newsUpdates" :key="news.id" :to="`/post/${news.id}`"
-             class="group bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl border border-[#E7DDCD] dark:border-[#3F4245] hover:border-[#A0876E] hover:shadow-xl transition-all duration-500 overflow-hidden">
-          <!-- 16:9 Cover Image -->
+      <div v-else-if="newsUpdates.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <NuxtLink 
+          v-for="news in newsUpdates" 
+          :key="news.id" 
+          :to="`/post/${news.id}`"
+          class="group bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl border border-[#E7DDCD] dark:border-[#3F4245] hover:border-[#A0876E] hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col"
+        >
           <div v-if="news.cover" class="aspect-[16/9] w-full overflow-hidden bg-[#E7DDCD] dark:bg-[#3F4245]">
-            <img :src="`https://api.test.prosrochkapatrol.ru${news.cover.url}`" 
-                 :alt="news.title"
-                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <img 
+              :src="`https://api.test.prosrochkapatrol.ru${news.cover.url}`" 
+              :alt="news.title"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+            />
           </div>
           <div v-else class="aspect-[16/9] w-full bg-[#E7DDCD] dark:bg-[#3F4245] flex items-center justify-center">
             <UIcon name="i-heroicons-newspaper-20-solid" class="w-16 h-16 text-[#A0876E]/40" />
           </div>
           
-          <div class="p-6">
-            <div class="flex items-center gap-2 mb-4 flex-wrap">
-              <span v-for="rubric in news.rubrics" :key="rubric.id" 
-                    class="px-3 py-1 bg-[#E7DDCD] dark:bg-[#3F4245] text-[#3F4245] dark:text-[#E7DDCD] text-xs font-bold rounded-full">
+          <div class="p-6 flex flex-col flex-grow">
+            <div v-if="news.rubrics && news.rubrics.length" class="flex flex-wrap gap-2 mb-4">
+              <span 
+                v-for="rubric in news.rubrics" 
+                :key="rubric.id" 
+                class="inline-flex px-3 py-1 bg-[#E7DDCD] dark:bg-[#3F4245] text-[#3F4245] dark:text-[#E7DDCD] text-[10px] md:text-xs font-bold rounded-full whitespace-nowrap"
+              >
                 {{ rubric.name }}
               </span>
-              <span class="text-xs text-[#3F4245] dark:text-[#E7DDCD]/60 ml-auto">
-                {{ formatDate(news.admin_panel?.published_at) }}
-              </span>
             </div>
-            <h3 class="font-bold text-lg mb-3 group-hover:text-[#A0876E] transition-colors duration-300 line-clamp-2">{{ news.title }}</h3>
-            <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/70 mb-4 line-clamp-3">
+            <div class="text-xs text-[#3F4245] dark:text-[#E7DDCD]/60 mb-3">
+              {{ formatDate(news.admin_panel?.published_at || news.updatedAt) }}
+            </div>
+            <h3 class="font-bold text-lg mb-3 group-hover:text-[#A0876E] transition-colors duration-300 line-clamp-2">
+              {{ news.title }}
+            </h3>
+            <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/70 mb-4 line-clamp-3 flex-grow">
               {{ extractTextFromLexical(news.body) }}
             </p>
-            <div class="text-[#A0876E] font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
+            <div class="text-[#A0876E] font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-300 pt-4 border-t border-[#E7DDCD] dark:border-[#3F4245]">
               Читать далее
               <UIcon name="i-heroicons-arrow-right-20-solid" class="w-4 h-4" />
             </div>
           </div>
         </NuxtLink>
       </div>
-
-      <!-- No data state -->
       <div v-else class="text-center py-12">
         <UIcon name="i-heroicons-inbox-20-solid" class="w-16 h-16 text-[#A0876E] mx-auto mb-4" />
         <p class="text-xl font-bold text-[#2B2B2B] dark:text-[#FFFFFF] mb-2">Новости пока отсутствуют</p>
@@ -395,7 +414,6 @@
       </div>
     </section>
 
-    <!-- ============ FOR WHOM ============ -->
     <section class="max-w-7xl mx-auto px-6 py-24">
       <div class="text-center mb-20">
         <div class="inline-block px-4 py-2 bg-[#E7DDCD] dark:bg-[#2B2B2B] rounded-full text-xs font-bold uppercase tracking-widest text-[#A0876E] mb-6">
@@ -410,7 +428,6 @@
       </div>
 
       <div class="space-y-6">
-        <!-- Buyers -->
         <div class="group bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-3xl border border-[#E7DDCD] dark:border-[#3F4245] overflow-hidden hover:shadow-2xl transition-all duration-500 hover:border-[#A0876E]">
           <div class="grid lg:grid-cols-5">
             <div class="lg:col-span-2 p-10 bg-[#E7DDCD] dark:bg-[#1a1a1a] flex flex-col justify-center">
@@ -454,43 +471,42 @@
           </div>
         </div>
 
-        <!-- Employees -->
         <div class="group bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-3xl border border-[#E7DDCD] dark:border-[#3F4245] overflow-hidden hover:shadow-2xl transition-all duration-500 hover:border-[#A0876E]">
           <div class="grid lg:grid-cols-5">
-            <div class="lg:col-span-2 p-10 bg-[#3F4245] flex flex-col justify-center">
-              <div class="w-16 h-16 bg-[#A0876E] rounded-2xl flex items-center justify-center mb-6 transition-colors duration-500">
-                <UIcon name="i-heroicons-identification-20-solid" class="w-8 h-8 text-[#FFFFFF]" />
+            <div class="lg:col-span-2 p-10 bg-[#3F4245] flex flex-col justify-center text-[#FFFFFF]">
+              <div class="w-16 h-16 bg-[#A0876E] rounded-2xl flex items-center justify-center mb-6">
+                <UIcon name="i-heroicons-building-storefront-20-solid" class="w-8 h-8 text-[#FFFFFF]" />
               </div>
-              <h3 class="text-4xl font-black mb-3 tracking-tight text-[#FFFFFF]">Сотрудникам</h3>
-              <p class="text-[#E7DDCD]/80">Продавцы, кассиры, кладовщики — те, кто каждый день работает в зале</p>
+              <h3 class="text-4xl font-black mb-3 tracking-tight">Магазинам</h3>
+              <p class="text-[#E7DDCD]/80">Руководителям и сотрудникам, которые хотят улучшить сервис</p>
             </div>
             <div class="lg:col-span-3 p-10">
               <div class="space-y-5">
                 <div class="flex gap-4">
                   <div class="flex-shrink-0 w-10 h-10 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-lg flex items-center justify-center">
-                    <UIcon name="i-heroicons-eye-20-solid" class="w-5 h-5 text-[#A0876E]" />
+                    <UIcon name="i-heroicons-hand-raised-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Взгляд <span class="italic">со стороны</span></h4>
-                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Иногда глаз замыливается — мы помогаем вовремя заметить забытый на полке товар, который вы сами бы хотели убрать.</p>
+                    <h4 class="font-bold text-lg mb-1">Никаких внезапных штрафов</h4>
+                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Мы не проверяющий орган. Наша цель — вежливо указать на недочёт, чтобы вы могли быстро его исправить.</p>
                   </div>
                 </div>
                 <div class="flex gap-4">
                   <div class="flex-shrink-0 w-10 h-10 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-lg flex items-center justify-center">
-                    <UIcon name="i-heroicons-chat-bubble-bottom-center-text-20-solid" class="w-5 h-5 text-[#A0876E]" />
+                    <UIcon name="i-heroicons-arrow-path-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Работа <span class="italic">без стресса</span></h4>
-                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Мы всегда начинаем со спокойного разговора. Никаких конфликтов — только рекомендации и возможность быстро поправить ситуацию.</p>
+                    <h4 class="font-bold text-lg mb-1">Бесплатный внутренний аудит</h4>
+                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Взгляд со стороны помогает вовремя заметить то, что пропустили в повседневной суете.</p>
                   </div>
                 </div>
                 <div class="flex gap-4">
                   <div class="flex-shrink-0 w-10 h-10 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-lg flex items-center justify-center">
-                    <UIcon name="i-heroicons-star-20-solid" class="w-5 h-5 text-[#A0876E]" />
+                    <UIcon name="i-heroicons-trophy-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Ваша <span class="italic">репутация</span></h4>
-                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Сотрудники, которые спокойно реагируют на замечания и быстро устраняют недочёты, получают положительную отметку в нашем обзоре.</p>
+                    <h4 class="font-bold text-lg mb-1">Повышение доверия покупателей</h4>
+                    <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Магазины, которые оперативно реагируют на замечания, получают более высокий рейтинг и лояльность соседей.</p>
                   </div>
                 </div>
               </div>
@@ -498,7 +514,6 @@
           </div>
         </div>
 
-        <!-- Owners -->
         <div class="group bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-3xl border border-[#E7DDCD] dark:border-[#3F4245] overflow-hidden hover:shadow-2xl transition-all duration-500 hover:border-[#A0876E]">
           <div class="grid lg:grid-cols-5">
             <div class="lg:col-span-2 p-10 bg-[#2B2B2B] flex flex-col justify-center">
@@ -515,7 +530,7 @@
                     <UIcon name="i-heroicons-clipboard-document-check-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Бесплатный <span class="italic">аудит качества</span></h4>
+                    <h4 class="font-bold text-lg mb-1">Бесплатный аудит качества</h4>
                     <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Наши визиты — это взгляд внимательного покупателя, который замечает то, что можно упустить в рутине. Ценный источник обратной связи.</p>
                   </div>
                 </div>
@@ -524,7 +539,7 @@
                     <UIcon name="i-heroicons-arrow-trending-up-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Укрепление <span class="italic">доверия</span></h4>
+                    <h4 class="font-bold text-lg mb-1">Укрепление доверия</h4>
                     <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Высокий рейтинг FreshCheck = больше лояльных клиентов из района. Это честный маркетинг, который работает за вас.</p>
                   </div>
                 </div>
@@ -533,7 +548,7 @@
                     <UIcon name="i-heroicons-trophy-20-solid" class="w-5 h-5 text-[#A0876E]" />
                   </div>
                   <div>
-                    <h4 class="font-bold text-lg mb-1">Знак <span class="italic">«Одобрено FreshCheck»</span></h4>
+                    <h4 class="font-bold text-lg mb-1">Знак «Одобрено FreshCheck»</h4>
                     <p class="text-[#3F4245] dark:text-[#E7DDCD]/70 text-sm">Видимый знак качества для магазинов с рейтингом 5/5. Выделяет вас среди соседей и привлекает сознательных покупателей.</p>
                   </div>
                 </div>
@@ -544,7 +559,6 @@
       </div>
     </section>
 
-    <!-- ============ PRINCIPLES ============ -->
     <section class="max-w-7xl mx-auto px-6 py-24">
       <div class="text-center mb-20">
         <div class="inline-block px-4 py-2 bg-[#E7DDCD] dark:bg-[#2B2B2B] rounded-full text-xs font-bold uppercase tracking-widest text-[#A0876E] mb-6">
@@ -578,7 +592,6 @@
       </div>
     </section>
 
-    <!-- ============ TESTIMONIALS ============ -->
     <section class="py-24 bg-[#E7DDCD]/30 dark:bg-[#1a1a1a]">
       <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-20">
@@ -614,7 +627,6 @@
       </div>
     </section>
 
-    <!-- ============ BADGE / STICKER ============ -->
     <section class="max-w-7xl mx-auto px-6 py-24">
       <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#2B2B2B] via-[#3F4245] to-[#2B2B2B] p-10 sm:p-16 text-[#FFFFFF]">
         <div class="absolute top-0 right-0 w-96 h-96 bg-[#A0876E]/20 rounded-full blur-3xl"></div>
@@ -659,7 +671,6 @@
       </div>
     </section>
 
-    <!-- ============ LATEST SHOPS ============ -->
     <section class="max-w-7xl mx-auto px-6 py-24">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-16 gap-6">
         <div>
@@ -677,23 +688,17 @@
         </NuxtLink>
       </div>
 
-      <!-- Loading state -->
       <div v-if="loadingShops" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div v-for="i in 4" :key="i" class="h-80 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl animate-pulse border border-[#E7DDCD] dark:border-[#3F4245]"></div>
       </div>
-
-      <!-- Error state -->
       <div v-else-if="shopsError" class="text-center py-12 col-span-full">
         <UIcon name="i-heroicons-exclamation-circle-20-solid" class="w-16 h-16 text-[#A0876E] mx-auto mb-4" />
         <p class="text-xl font-bold text-[#2B2B2B] dark:text-[#FFFFFF] mb-2">Ошибка подключения к API</p>
         <p class="text-[#3F4245] dark:text-[#E7DDCD]/70">Не удалось загрузить магазины. Попробуйте позже.</p>
       </div>
-
-      <!-- Success state -->
       <div v-else-if="latestShops.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <NuxtLink v-for="shop in latestShops" :key="shop.id" :to="`/product-review/${shop.id}`"
              class="group bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl border border-[#E7DDCD] dark:border-[#3F4245] hover:border-[#A0876E] hover:shadow-xl transition-all duration-500 overflow-hidden">
-          <!-- 16:9 Shop Photo -->
           <div v-if="shop.shop_photo" class="aspect-[16/9] w-full overflow-hidden bg-[#E7DDCD] dark:bg-[#3F4245]">
             <img :src="`https://api.test.prosrochkapatrol.ru${shop.shop_photo.url}`" 
                  :alt="shop.store_name"
@@ -724,8 +729,6 @@
           </div>
         </NuxtLink>
       </div>
-
-      <!-- No data state -->
       <div v-else class="text-center py-12 col-span-full">
         <UIcon name="i-heroicons-inbox-20-solid" class="w-16 h-16 text-[#A0876E] mx-auto mb-4" />
         <p class="text-xl font-bold text-[#2B2B2B] dark:text-[#FFFFFF] mb-2">Проверки пока отсутствуют</p>
@@ -733,7 +736,6 @@
       </div>
     </section>
 
-    <!-- ============ FAQ ============ -->
     <section class="py-24 bg-[#E7DDCD]/30 dark:bg-[#1a1a1a]">
       <div class="max-w-4xl mx-auto px-6">
         <div class="text-center mb-16">
@@ -764,7 +766,6 @@
           </div>
         </div>
 
-        <!-- Link to full FAQ page -->
         <div class="mt-10 text-center">
           <NuxtLink to="/faq" class="inline-flex items-center gap-2 text-[#A0876E] font-bold hover:text-[#8a7358] transition-colors duration-300 text-lg">
             Смотреть все вопросы
@@ -774,7 +775,6 @@
       </div>
     </section>
 
-    <!-- ============ PROJECT CONTACTS ============ -->
     <section class="max-w-7xl mx-auto px-6 py-24">
       <div class="text-center mb-16">
         <div class="inline-block px-4 py-2 bg-[#E7DDCD] dark:bg-[#2B2B2B] rounded-full text-xs font-bold uppercase tracking-widest text-[#A0876E] mb-6">
@@ -789,7 +789,6 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-        <!-- Telegram -->
         <a href="tg://resolve?domain=prosrochka_patrol" target="_blank"
            class="group p-8 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-3xl border border-[#E7DDCD] dark:border-[#3F4245] hover:border-[#2AABEE] hover:shadow-2xl transition-all duration-500">
           <div class="w-16 h-16 bg-[#2AABEE] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -800,7 +799,6 @@
           <p class="text-xs text-[#3F4245] dark:text-[#E7DDCD]/60">Оперативные новости и обзоры</p>
         </a>
 
-        <!-- VK -->
         <a href="https://vk.com/prosrochka_patrol_astrakhan" target="_blank"
            class="group p-8 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-3xl border border-[#E7DDCD] dark:border-[#3F4245] hover:border-[#4C75A3] hover:shadow-2xl transition-all duration-500">
           <div class="w-16 h-16 bg-[#4C75A3] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -811,7 +809,6 @@
           <p class="text-xs text-[#3F4245] dark:text-[#E7DDCD]/60">Сообщество проекта</p>
         </a>
 
-        <!-- Instagram -->
         <a href="https://instagram.com/freshcheckastra/" target="_blank"
            class="group p-8 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-3xl border border-[#E7DDCD] dark:border-[#3F4245] hover:border-[#E4405F] hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
           <div class="w-16 h-16 bg-gradient-to-br from-[#833AB4] via-[#E4405F] to-[#FCAF45] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -822,7 +819,6 @@
           <p class="text-xs text-[#3F4245] dark:text-[#E7DDCD]/60">Визуальный контент</p>
         </a>
 
-        <!-- TikTok -->
         <a href="https://www.tiktok.com/@freshcheckastra" target="_blank"
            class="group p-8 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-3xl border border-[#E7DDCD] dark:border-[#3F4245] hover:border-[#000000] hover:shadow-2xl transition-all duration-500">
           <div class="w-16 h-16 bg-[#000000] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -834,7 +830,6 @@
         </a>
       </div>
 
-      <!-- Legal disclaimers -->
       <div class="mt-12 max-w-4xl mx-auto p-6 bg-[#FEF3C7] dark:bg-[#3F4245]/30 rounded-2xl border border-[#F59E0B]/30">
         <div class="flex items-start gap-3">
           <UIcon name="i-heroicons-exclamation-triangle-20-solid" class="w-6 h-6 text-[#F59E0B] flex-shrink-0 mt-0.5" />
@@ -850,7 +845,6 @@
       </div>
     </section>
 
-    <!-- ============ FINAL CTA ============ -->
     <section class="max-w-5xl mx-auto px-6 py-24 text-center">
       <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#A0876E] via-[#8a7358] to-[#A0876E] p-12 sm:p-16">
         <div class="absolute inset-0 opacity-10"
