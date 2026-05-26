@@ -193,6 +193,7 @@
 </template>
 
 <script lang="ts" setup>
+import { pages } from '~/data/pages';
 import type { ShopDoc } from '~/types/shops.types'
 
 const props = defineProps<{ shop: ShopDoc }>()

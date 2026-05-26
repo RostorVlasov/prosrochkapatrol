@@ -5,8 +5,10 @@
 
             <div class="px-4 py-5 border-b border-gray-200 dark:border-gray-800">
                 <NuxtLink to="/">
-                    <img class="h-15 w-auto" :src="isDark ? '/freshcheck-light.png' : '/freshcheck.png'"
-                        alt="FreshCheck" />
+                    <ClientOnly>
+                        <img class="h-15 w-auto" :src="isDark ? '/freshcheck-light.png' : '/freshcheck.png'"
+                            alt="FreshCheck" />
+                    </ClientOnly>
                 </NuxtLink>
             </div>
 
@@ -20,7 +22,10 @@
                 <button @click="toggleColorMode"
                     class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors">
                     <AppIcon class="size-5" name="theme" />
-                    <span>{{ isDark ? 'Светлая тема' : 'Тёмная тема' }}</span>
+                    
+                    <ClientOnly>
+                        <span>{{ isDark ? 'Светлая тема' : 'Тёмная тема' }}</span>
+                    </ClientOnly>
                 </button>
             </div>
         </aside>
@@ -29,7 +34,9 @@
                    bg-white dark:bg-black/70 border-b border-gray-200 dark:border-0
                    backdrop-blur-2xl flex justify-between items-center">
             <NuxtLink :to="pages.sidebar.home.url">
-                <img class="w-50 h-auto" :src="isDark ? '/freshcheck-light.png' : '/freshcheck.png'" alt="FreshCheck" />
+                <ClientOnly>
+                    <img class="w-50 h-auto" :src="isDark ? '/freshcheck-light.png' : '/freshcheck.png'" alt="FreshCheck" />
+                </ClientOnly>
             </NuxtLink>
             <button @click="toggleColorMode" class="text-gray-800 dark:text-white">
                 <AppIcon class="size-8" name="theme" />
@@ -67,6 +74,7 @@
 </template>
 
 <script lang="ts" setup>
+import { pages } from '~/data/pages'
 
 const menuActive = ref(false)
 const mode = useColorMode()

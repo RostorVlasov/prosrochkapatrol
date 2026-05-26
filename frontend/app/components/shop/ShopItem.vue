@@ -40,6 +40,7 @@
 <script lang="ts" setup>
 import type { ShopDoc } from '~/types/shops.types'
 import type { IconName } from '../ui/AppIcon.vue';
+import { pages } from '~/data/pages.js';
 
 const props = defineProps<{ shop: ShopDoc }>()
 

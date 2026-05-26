@@ -30,14 +30,16 @@
             >
         </div>
 
-        <PostsSkeleton v-if="isLoading" />
+        <PostsSkeleton v-if="postsStore.pending" />
         
-        <div v-else-if="posts?.docs?.length" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <PostItem v-for="post in posts.docs" :key="post.id" :post="post" />
+        <div v-else-if="filteredPosts.length" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <PostItem v-for="post in filteredPosts" :key="post.id" :post="post" />
         </div>
 
         <div v-else class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-16 text-center shadow-sm">
-            <p class="text-zinc-500 dark:text-zinc-400">Материалов пока нет или поиск не дал результатов.</p>
+            <p class="text-zinc-500 dark:text-zinc-400">
+                {{ searchInput ? 'Поиск не дал результатов.' : 'Материалов пока нет.' }}
+            </p>
         </div>
     </AdaptiveContainer>
 </template>
@@ -45,21 +47,27 @@
 <script lang="ts" setup>
 import { usePostsStore } from '~/stores/posts';
 const postsStore = usePostsStore()
-const { posts } = storeToRefs(postsStore)
-const isLoading = ref<boolean>(true)
 const searchInput = ref<string>('')
-const debouncedValue = refDebounced<string>(searchInput, 300)
 
-watch(debouncedValue, () => {
-    loadPosts()
+const debouncedSearch = refDebounced(searchInput, 300)
+await postsStore.fetchPostsData()
+
+const filteredPosts = computed(() => {
+    const posts = postsStore.allPosts || []
+    const query = debouncedSearch.value.toLowerCase().trim()
+
+    if (!query) return posts
+
+    return posts.filter((post: any) => {
+        const title = (post.title || '').toLowerCase()
+        const author = (post.admin_panel?.author?.name || '').toLowerCase()
+
+        const rubrics = (post.rubrics || [])
+        const hasRubricMatch = rubrics.some((r: any) => 
+            (r.name || '').toLowerCase().includes(query)
+        )
+
+        return title.includes(query) || author.includes(query) || hasRubricMatch
+    })
 })
-
-async function loadPosts() {
-    isLoading.value = true
-    await postsStore.fetchPostsData(searchInput.value)
-    isLoading.value = false
-}
-
-onMounted(loadPosts)
-
 </script>

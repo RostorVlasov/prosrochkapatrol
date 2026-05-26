@@ -32,7 +32,7 @@
                 <select v-model="sortField" @change="loadShops" :class="select()">
                     <option value="store_name">Сортировка: по названию</option>
                     <option value="total_score">Сортировка: по уровню свежести</option>
-                    <option value="updatedAt">Сортировка: по дате проверки</option>
+                    <option value="date_checked">Сортировка: по дате проверки</option>
                 </select>
                 <select v-model="sortOrder" @change="loadShops" :class="select()">
                     <option value="-">Порядок: от худших к лучшим</option>

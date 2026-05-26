@@ -22,6 +22,7 @@
 </template>
 
 <script lang="ts" setup>
+import { pages } from '~/data/pages';
 import type { PostDoc } from '~/types/post.types';
 
 const props = defineProps<{
