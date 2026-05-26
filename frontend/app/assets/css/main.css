@@ -54,3 +54,7 @@ body {
 .bg-elevated {
     background-color: #2d3236 !important;
 }
+
+html {
+  scroll-behavior: smooth;
+}

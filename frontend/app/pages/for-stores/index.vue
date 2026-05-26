@@ -20,7 +20,7 @@
         </h1>
         
         <p class="text-lg md:text-xl text-[#3F4245] dark:text-[#E7DDCD]/80 max-w-2xl mx-auto leading-relaxed mb-12">
-          Проект FreshCheck — независимая гражданская инициатива. Рассказываем, на каком основании мы работаем, как проходят визиты и что даёт сотрудничество.
+          Почему это законно и выгодно вам. Общественный мониторинг без штрафов — только диалог и помощь.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -52,14 +52,14 @@
             <span class="font-bold text-[#2B2B2B] dark:text-[#FFFFFF]">FreshCheck</span> — независимая гражданская инициатива жителей Астрахани, действующая с августа 2025 года.
           </p>
           <p class="text-lg text-[#3F4245] dark:text-[#E7DDCD]/80 leading-relaxed">
-            Мы обращаем внимание на нарушения сроков годности и условий хранения товаров и оперативно информируем администрацию магазина.
+            Мы обращаем внимание на <span class="font-bold">качество товаров</span>: просрочка, помятые консервы, продукты с плесенью, вскрытые упаковки, повреждённые этикетки и другие дефекты. Оперативно информируем администрацию магазина.
           </p>
           <div class="bg-[#E7DDCD]/20 dark:bg-[#3F4245]/20 rounded-2xl p-6 border border-[#A0876E]/20">
             <h3 class="font-bold text-xl mb-3 flex items-center gap-2"><UIcon name="i-heroicons-check-circle-20-solid" class="w-6 h-6 text-[#A0876E]" /> Наши цели</h3>
             <ul class="space-y-2 text-[#3F4245] dark:text-[#E7DDCD]/80">
-              <li class="flex gap-2"><UIcon name="i-heroicons-arrow-right-20-solid" class="w-5 h-5 text-[#A0876E] shrink-0 mt-0.5" /> Защитить покупателей от просроченных и потенциально опасных товаров</li>
-              <li class="flex gap-2"><UIcon name="i-heroicons-arrow-right-20-solid" class="w-5 h-5 text-[#A0876E] shrink-0 mt-0.5" /> Помочь магазину оперативно выявить и устранить нарушения</li>
-              <li class="flex gap-2"><UIcon name="i-heroicons-arrow-right-20-solid" class="w-5 h-5 text-[#A0876E] shrink-0 mt-0.5" /> Способствовать формированию культуры, при которой просрочка на полке — исключение</li>
+              <li class="flex gap-2"><UIcon name="i-heroicons-arrow-right-20-solid" class="w-5 h-5 text-[#A0876E] shrink-0 mt-0.5" /> Защитить покупателей от некачественных товаров</li>
+              <li class="flex gap-2"><UIcon name="i-heroicons-arrow-right-20-solid" class="w-5 h-5 text-[#A0876E] shrink-0 mt-0.5" /> Помочь магазину оперативно выявить и устранить любые дефекты товаров</li>
+              <li class="flex gap-2"><UIcon name="i-heroicons-arrow-right-20-solid" class="w-5 h-5 text-[#A0876E] shrink-0 mt-0.5" /> Способствовать формированию культуры, при которой некачественные товары не попадают к покупателю</li>
             </ul>
           </div>
         </div>
@@ -70,6 +70,7 @@
             <li class="flex gap-2"><UIcon name="i-heroicons-minus-20-solid" class="w-5 h-5 text-[#A0876E] shrink-0 mt-0.5" /> Не составляем официальные протоколы и акты</li>
             <li class="flex gap-2"><UIcon name="i-heroicons-minus-20-solid" class="w-5 h-5 text-[#A0876E] shrink-0 mt-0.5" /> Не имеем права закрывать магазин</li>
             <li class="flex gap-2"><UIcon name="i-heroicons-minus-20-solid" class="w-5 h-5 text-[#A0876E] shrink-0 mt-0.5" /> Не являемся представителями государственных органов</li>
+            <li class="flex gap-2"><UIcon name="i-heroicons-minus-20-solid" class="w-5 h-5 text-[#A0876E] shrink-0 mt-0.5" /> Не передаём материалы в Роспотребнадзор без предварительного диалога</li>
           </ul>
         </div>
       </div>
@@ -79,40 +80,65 @@
       <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-16">
           <div class="inline-block px-4 py-2 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-full text-xs font-bold uppercase tracking-widest text-[#A0876E] mb-6">
-            Законность
+            Правовые основания
           </div>
           <h2 class="text-5xl md:text-6xl font-black mb-6 tracking-tight">
-            На каком основании мы ведём <span class="italic text-[#A0876E]">фото- и видеосъёмку</span>
+            Почему наша работа <span class="italic text-[#A0876E]">полностью законна</span>
           </h2>
-          <p class="text-xl text-[#3F4245] dark:text-[#E7DDCD]/70 max-w-3xl mx-auto">
-            Мы фиксируем только товары, полки, ценники, витрины — в месте свободного доступа
-          </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl p-6 border border-[#E7DDCD] dark:border-[#3F4245]">
-            <div class="w-12 h-12 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-xl flex items-center justify-center mb-4">
-              <UIcon name="i-heroicons-document-text-20-solid" class="w-6 h-6 text-[#A0876E]" />
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-3xl p-8 border border-[#E7DDCD] dark:border-[#3F4245]">
+            <div class="w-14 h-14 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-2xl flex items-center justify-center mb-6">
+              <UIcon name="i-heroicons-camera-20-solid" class="w-7 h-7 text-[#A0876E]" />
             </div>
-            <h3 class="font-bold text-lg mb-2">Статья 29 Конституции РФ</h3>
-            <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/70">Каждый имеет право свободно искать, получать, передавать, производить и распространять информацию любым законным способом.</p>
+            <h3 class="text-2xl font-bold mb-4">Что мы можем фиксировать (фото/видео)</h3>
+            <ul class="space-y-4 text-[#3F4245] dark:text-[#E7DDCD]/80">
+              <li class="flex gap-3"><UIcon name="i-heroicons-check-circle-20-solid" class="w-5 h-5 text-green-600 shrink-0 mt-0.5" /> <span><span class="font-bold">Статья 29 Конституции РФ</span> — право свободно искать и получать информацию.</span></li>
+              <li class="flex gap-3"><UIcon name="i-heroicons-check-circle-20-solid" class="w-5 h-5 text-green-600 shrink-0 mt-0.5" /> <span><span class="font-bold">Постановление № 2463 (п. 2)</span> — запрет ограничивать потребителей в фотографировании товара.</span></li>
+              <li class="flex gap-3"><UIcon name="i-heroicons-check-circle-20-solid" class="w-5 h-5 text-green-600 shrink-0 mt-0.5" /> <span><span class="font-bold">Статья 152.1 ГК РФ</span> — съёмка в месте открытого доступа без согласия, если лицо не главный объект.</span></li>
+            </ul>
+            <p class="mt-6 text-sm text-[#A0876E]">Мы всегда замазываем лица людей, случайно попавших в кадр, перед публикацией.</p>
           </div>
-          <div class="bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl p-6 border border-[#E7DDCD] dark:border-[#3F4245]">
-            <div class="w-12 h-12 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-xl flex items-center justify-center mb-4">
-              <UIcon name="i-heroicons-document-text-20-solid" class="w-6 h-6 text-[#A0876E]" />
+
+          <div class="bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-3xl p-8 border border-[#E7DDCD] dark:border-[#3F4245]">
+            <div class="w-14 h-14 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-2xl flex items-center justify-center mb-6">
+              <UIcon name="i-heroicons-scale-20-solid" class="w-7 h-7 text-[#A0876E]" />
             </div>
-            <h3 class="font-bold text-lg mb-2">Постановление № 2463 (п. 2)</h3>
-            <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/70">На торговых объектах не допускается ограничение прав потребителей на поиск и получение информации, в том числе путём фотографирования товара.</p>
-          </div>
-          <div class="bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl p-6 border border-[#E7DDCD] dark:border-[#3F4245]">
-            <div class="w-12 h-12 bg-[#E7DDCD] dark:bg-[#3F4245] rounded-xl flex items-center justify-center mb-4">
-              <UIcon name="i-heroicons-document-text-20-solid" class="w-6 h-6 text-[#A0876E]" />
-            </div>
-            <h3 class="font-bold text-lg mb-2">Статья 152.1 ГК РФ</h3>
-            <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/70">Согласие на обнародование изображения не требуется, если съёмка в месте открытого доступа и человек не является главным объектом.</p>
+            <h3 class="text-2xl font-bold mb-4">Почему общественный мониторинг законен</h3>
+            <ul class="space-y-4 text-[#3F4245] dark:text-[#E7DDCD]/80">
+              <li class="flex gap-3"><UIcon name="i-heroicons-check-circle-20-solid" class="w-5 h-5 text-green-600 shrink-0 mt-0.5" /> <span><span class="font-bold">Статья 29 Конституции РФ</span> — право распространять информацию любым законным способом.</span></li>
+              <li class="flex gap-3"><UIcon name="i-heroicons-check-circle-20-solid" class="w-5 h-5 text-green-600 shrink-0 mt-0.5" /> <span><span class="font-bold">Закон о защите прав потребителей</span> (ст. 7 — безопасность товара, ст. 8–10 — право на информацию, ст. 18 — возврат некачественного товара).</span></li>
+              <li class="flex gap-3"><UIcon name="i-heroicons-check-circle-20-solid" class="w-5 h-5 text-green-600 shrink-0 mt-0.5" /> <span>Никакого специального разрешения не требуется — мы обычные покупатели.</span></li>
+            </ul>
+            <p class="mt-6 text-sm text-[#A0876E]">Наши внутренние документы (Публичная политика, Положение о деятельности, Декларация принципов) открыты и не налагают на вас обязательств.</p>
           </div>
         </div>
-        <p class="text-center text-sm text-[#3F4245] dark:text-[#E7DDCD]/60 mt-8">Мы всегда замазываем лица людей, случайно попавших в кадр, перед публикацией.</p>
+
+        <div class="mt-12 p-8 bg-[#E7DDCD]/20 dark:bg-[#3F4245]/20 rounded-3xl border border-[#A0876E]/30">
+          <div class="flex flex-col md:flex-row gap-6 items-start">
+            <div class="w-12 h-12 bg-[#A0876E] rounded-xl flex items-center justify-center flex-shrink-0">
+              <UIcon name="i-heroicons-document-arrow-down-20-solid" class="w-6 h-6 text-white" />
+            </div>
+            <div class="flex-1">
+              <h3 class="font-bold text-xl mb-2">Наши официальные документы (для скачивания)</h3>
+              <div class="flex flex-wrap gap-4">
+                <a href="/docs/FC-PP-2026-01_Publichnaya-politika.pdf" class="inline-flex items-center gap-2 text-[#A0876E] font-bold hover:underline">
+                  <UIcon name="i-heroicons-document-arrow-down-20-solid" class="w-5 h-5" />
+                  Публичная политика (FC-PP-2026-01)
+                </a>
+                <a href="/docs/FC-PD-2026-02_Polozhenie.pdf" class="inline-flex items-center gap-2 text-[#A0876E] font-bold hover:underline">
+                  <UIcon name="i-heroicons-document-arrow-down-20-solid" class="w-5 h-5" />
+                  Положение о деятельности (FC-PD-2026-02)
+                </a>
+                <a href="/docs/FC-DP-2026-03_Deklaraciya.pdf" class="inline-flex items-center gap-2 text-[#A0876E] font-bold hover:underline">
+                  <UIcon name="i-heroicons-document-arrow-down-20-solid" class="w-5 h-5" />
+                  Декларация принципов (FC-DP-2026-03)
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -139,14 +165,14 @@
             <span class="text-4xl font-black text-[#FFFFFF]">2</span>
           </div>
           <h3 class="font-bold text-xl mb-2">Представляемся администрации</h3>
-          <p class="text-[#3F4245] dark:text-[#E7DDCD]/70">Короткая формула (20–40 секунд): «Здравствуйте, я участник проекта FreshCheck, фиксирую информацию о товарах. Не представитель госорганов.»</p>
+          <p class="text-[#3F4245] dark:text-[#E7DDCD]/70">«Здравствуйте, я участник FreshCheck, фиксирую информацию о товарах. Не представитель госорганов.»</p>
         </div>
         <div class="text-center group">
           <div class="w-20 h-20 bg-[#A0876E] rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
             <span class="text-4xl font-black text-[#FFFFFF]">3</span>
           </div>
           <h3 class="font-bold text-xl mb-2">Осматриваем зал и фиксируем</h3>
-          <p class="text-[#3F4245] dark:text-[#E7DDCD]/70">Сроки годности, температура, условия хранения. Фото только товаров и полок.</p>
+          <p class="text-[#3F4245] dark:text-[#E7DDCD]/70">Сроки годности, целостность упаковки, плесень, повреждения, условия хранения. Фото только товаров и полок.</p>
         </div>
         <div class="text-center group">
           <div class="w-20 h-20 bg-[#A0876E] rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -186,7 +212,7 @@
             </ul>
           </div>
         </div>
-        <p class="text-center text-sm text-[#3F4245] dark:text-[#E7DDCD]/60 mt-8">Служебная видеозапись хранится в зашифрованном виде не более 3 месяцев и используется только для защиты в спорных ситуациях.</p>
+        <p class="text-center text-sm text-[#3F4245] dark:text-[#E7DDCD]/60 mt-8">Служебная видеозапись хранится в зашифрованном виде не более 3 месяцев.</p>
       </div>
     </section>
 
@@ -221,8 +247,8 @@
         <div class="bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-3xl p-8 border border-[#E7DDCD] dark:border-[#3F4245]">
           <h3 class="text-2xl font-bold mb-4">Проверка подлинности</h3>
           <p class="mb-4">Актуальный реестр бейджей публикуется на сайте проекта:</p>
-          <a href="https://prosrochkapatrol.ru/беиджи/" target="_blank" class="inline-flex items-center gap-2 text-[#A0876E] font-bold hover:underline break-all">
-            https://prosrochkapatrol.ru/беиджи/
+          <a href="/badges" target="_blank" class="inline-flex items-center gap-2 text-[#A0876E] font-bold hover:underline break-all">
+            /badges
             <UIcon name="i-heroicons-arrow-top-right-on-square-20-solid" class="w-4 h-4" />
           </a>
           <div class="mt-6 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-200 dark:border-red-800">
@@ -253,7 +279,7 @@
               <UIcon name="i-heroicons-clock-20-solid" class="w-8 h-8 text-white" />
             </div>
             <h3 class="font-bold text-lg mb-2">Раннее выявление</h3>
-            <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/70">Убрать просрочку до того, как её купит покупатель</p>
+            <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/70">Убрать некачественные товары до того, как их заметит покупатель</p>
           </div>
           <div class="bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl p-6 text-center hover:shadow-xl transition-all">
             <div class="w-16 h-16 bg-[#A0876E] rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -271,10 +297,10 @@
           </div>
           <div class="bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl p-6 text-center hover:shadow-xl transition-all">
             <div class="w-16 h-16 bg-[#A0876E] rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <UIcon name="i-heroicons-document-check-20-solid" class="w-8 h-8 text-white" />
+              <UIcon name="i-heroicons-shield-check-20-solid" class="w-8 h-8 text-white" />
             </div>
-            <h3 class="font-bold text-lg mb-2">Снижение жалоб</h3>
-            <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/70">Меньше обращений покупателей в Роспотребнадзор</p>
+            <h3 class="font-bold text-lg mb-2">Аргументированная защита</h3>
+            <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/70">Вы получаете аргументированную защиту перед покупателем: «магазин уже прошёл независимый контроль»</p>
           </div>
         </div>
         <p class="text-center text-lg text-[#3F4245] dark:text-[#E7DDCD]/80 mt-12 max-w-3xl mx-auto">
@@ -293,9 +319,52 @@
           <h2 class="text-4xl md:text-5xl font-black mb-6">Мы готовы учитывать особенности вашего магазина</h2>
           <p class="text-lg text-[#E7DDCD]/80 mb-8">Предварительное уведомление о визитах, фиксированные дни проверок, любые другие предложения — обсуждаемо.</p>
           <div class="flex flex-wrap justify-center gap-4">
-            <div class="bg-white/10 rounded-full px-6 py-3 backdrop-blur-sm">📅 Предупреждение заранее</div>
-            <div class="bg-white/10 rounded-full px-6 py-3 backdrop-blur-sm">🤝 Личное знакомство с администрацией</div>
-            <div class="bg-white/10 rounded-full px-6 py-3 backdrop-blur-sm">📝 Корректировка формы представления</div>
+            <div class="bg-white/10 rounded-full px-6 py-3 backdrop-blur-sm inline-flex items-center gap-2">
+              <UIcon name="i-heroicons-calendar-20-solid" class="w-4 h-4" />
+              Предупреждение заранее
+            </div>
+            <div class="bg-white/10 rounded-full px-6 py-3 backdrop-blur-sm inline-flex items-center gap-2">
+              <UIcon name="i-heroicons-user-group-20-solid" class="w-4 h-4" />
+              Личное знакомство с администрацией
+            </div>
+            <div class="bg-white/10 rounded-full px-6 py-3 backdrop-blur-sm inline-flex items-center gap-2">
+              <UIcon name="i-heroicons-pencil-20-solid" class="w-4 h-4" />
+              Корректировка формы представления
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-24 bg-[#E7DDCD]/30 dark:bg-[#1a1a1a]">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <div class="inline-block px-4 py-2 bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-full text-xs font-bold uppercase tracking-widest text-[#A0876E] mb-6">
+            Частые вопросы
+          </div>
+          <h2 class="text-5xl md:text-6xl font-black mb-4 tracking-tight">
+            Всё, что вы хотели <span class="italic text-[#A0876E]">спросить</span>
+          </h2>
+          <p class="text-xl text-[#3F4245] dark:text-[#E7DDCD]/70 max-w-3xl mx-auto">
+            Отвечаем честно и на основании законов
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <div v-for="(item, i) in adminFaq" :key="i"
+               class="bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl border border-[#E7DDCD] dark:border-[#3F4245] overflow-hidden hover:border-[#A0876E] transition-colors duration-300">
+            <button @click="toggleAdminFaq(i)" class="w-full p-6 flex justify-between items-center gap-4 text-left">
+              <span class="font-bold text-lg text-[#2B2B2B] dark:text-[#FFFFFF]">{{ item.q }}</span>
+              <UIcon :name="openAdminFaq === i ? 'i-heroicons-minus-20-solid' : 'i-heroicons-plus-20-solid'"
+                     class="w-6 h-6 text-[#A0876E] flex-shrink-0 transition-transform duration-500" />
+            </button>
+            <div class="faq-content" :class="{ 'faq-open': openAdminFaq === i }">
+              <div class="px-6 pb-6">
+                <div class="pt-4 border-t border-[#E7DDCD] dark:border-[#3F4245]">
+                  <p class="text-[#3F4245] dark:text-[#E7DDCD]/80 leading-relaxed">{{ item.a }}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -323,10 +392,10 @@
             <div class="font-bold">Telegram</div>
             <div class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/70">@RomanTroshinRF</div>
           </a>
-          <a href="https://max.ru" class="bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl p-6 border border-[#E7DDCD] dark:border-[#3F4245] hover:border-[#A0876E] transition-all group">
+          <a href="tel:89885951161" class="bg-[#FFFFFF] dark:bg-[#2B2B2B] rounded-2xl p-6 border border-[#E7DDCD] dark:border-[#3F4245] hover:border-[#A0876E] transition-all group">
             <UIcon name="i-heroicons-phone-20-solid" class="w-10 h-10 text-[#A0876E] mx-auto mb-3" />
-            <div class="font-bold">Мессенджер Max</div>
-            <div class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/70">+7 917 176 6746</div>
+            <div class="font-bold">Телефон</div>
+            <div class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/70">8 (988) 595-11-61</div>
           </a>
         </div>
         <p class="text-sm text-[#3F4245] dark:text-[#E7DDCD]/60 mt-8">Часы ответа: 9:00 – 20:00 по Самаре</p>
@@ -334,3 +403,71 @@
     </section>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const openAdminFaq = ref<number | null>(null)
+
+const toggleAdminFaq = (index: number) => {
+  openAdminFaq.value = openAdminFaq.value === index ? null : index
+}
+
+const adminFaq = [
+  { 
+    q: 'На каком основании вы вообще ходите по магазинам и проверяете товары?', 
+    a: 'Мы действуем как обычные покупатели. Основания: 1) Статья 29 Конституции РФ — право искать и получать информацию. 2) Постановление Правительства № 2463 (п. 2) — запрет ограничивать потребителей в фотографировании товара. 3) Закон о защите прав потребителей (ст. 7, 8-10, 18). Никакого специального разрешения не требуется.' 
+  },
+  { 
+    q: 'Может ли магазин запретить мне снимать?', 
+    a: 'Нет. Постановление Правительства № 2463 (п. 2) прямо запрещает ограничивать потребителей в фотографировании товаров и ценников. Вы вправе снимать, но мы рекомендуем делать это вежливо, не мешая работе магазина. Если сотрудник препятствует — напомните ему об этом пункте. В случае агрессии вызывайте полицию — защита своих прав законна.' 
+  },
+  { 
+    q: 'Что делать, если участник FreshCheck ведёт себя некорректно?', 
+    a: 'Сообщите нам. Мы строго следим за соблюдением наших внутренних документов. Свяжитесь с основателем проекта: Telegram @RomanTroshinRF, телефон 8 (988) 595-11-61. Мы разберём ситуацию, при необходимости извинимся и примем меры к участнику. Каждый участник подписывает обязательство следовать нашим принципам (уважение, законность, диалог).' 
+  },
+  { 
+    q: 'Вы имеете право требовать что-то от администрации магазина?', 
+    a: 'Нет. Мы не имеем права отдавать приказы или требовать. Мы только информируем, рекомендуем и предлагаем. В 98% случаев администрация идёт навстречу, потому что заинтересована в качестве. Принуждение — прерогатива госорганов.' 
+  },
+  { 
+    q: 'Что будет, если магазин откажется общаться или не исправит недостатки?', 
+    a: 'Мы не применяем санкций. Публикуем честный отчёт с рейтингом, где указываем, что магазин не пошёл на контакт или не устранил недочёты. При систематических грубых нарушениях (три+ визита с 10+ единицами просрочки) переходим к доказательной закупке и помогаем жителям составить обращение в Роспотребнадзор.' 
+  },
+  { 
+    q: 'Вы из Роспотребнадзора или полиции?', 
+    a: 'Нет. FreshCheck — независимая гражданская инициатива. Мы не являемся государственным органом, не выдаём предписаний и не выписываем штрафов. Мы обычные жители Астрахани.' 
+  },
+  { 
+    q: 'Законно ли снимать в магазине?', 
+    a: 'Да. Постановление № 2463 (п. 2) подтверждает право фотографировать товары и ценники. Ст. 152.1 ГК РФ разрешает съёмку в местах открытого доступа без согласия, если человек не главный объект. Мы всегда замазываем лица.' 
+  },
+  { 
+    q: 'Вы штрафуете магазины или берёте деньги?', 
+    a: 'Нет. FreshCheck — некоммерческий волонтёрский проект. Всё бесплатно.' 
+  },
+  { 
+    q: 'Кто вам платит? Вы независимы?', 
+    a: 'Никто. Участники работают добровольно. Рейтинги не продаются и не покупаются. Проект не зарегистрирован как юрлицо.' 
+  }
+]
+</script>
+
+<style scoped>
+html {
+  scroll-behavior: smooth;
+}
+
+.faq-content {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.4s ease;
+}
+
+.faq-content.faq-open {
+  max-height: 500px;
+  opacity: 1;
+}
+</style>
