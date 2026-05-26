@@ -9,7 +9,7 @@
                 <span class="text-sm dark:text-gray-300 text-gray-700">{{ formatDate(post.updatedAt) }}</span>
             </div>
 
-            <MediaGallery v-if="post.cover" class="pointer-events-none" :images="[{
+            <MediaGallery v-if="post.cover" class="pointer-events-none aspect-video" :images="[{
                 id: post.cover.id,
                 photo: post.cover
             }]" />
