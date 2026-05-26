@@ -36,21 +36,25 @@
 <script lang="ts" setup>
 import LexicalRender from '../shared/LexicalRender.vue';
 import { pages } from '~/data/pages.js';
-import { usePostsStore } from '~/stores/posts.js';
+import type { PostDoc } from '~/types/post.types';
 
 const route = useRoute();
-const postsStore = usePostsStore();
 const { buildApiUrl } = useApiBuilder();
 const id = route.params.id as string;
-const {data: post} = await postsStore.fetchPost(id);
 
-if (!post) {
+const { data: post, refresh } = await useFetch<PostDoc>(`/api/posts/${id}`, {
+    key: `post-${id}`
+});
+
+if (!post.value) {
     throw createError({
         statusCode: 404,
         statusMessage: 'Пост не найден',
         fatal: true 
     });
 }
+
+onMounted(refresh())
 
 useSeoMeta({
     title: post.value?.title,
@@ -60,4 +64,5 @@ useSeoMeta({
     ogImage: '/logo.png',
     twitterCard: 'summary_large_image',
 });
+
 </script>

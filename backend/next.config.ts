@@ -15,6 +15,19 @@ const nextConfig: NextConfig = {
     defaultLocale: 'ru',
     localeDetection: false,
   },
+  async headers() {
+    return [
+      {
+        source: '/api/media/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
+  },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],

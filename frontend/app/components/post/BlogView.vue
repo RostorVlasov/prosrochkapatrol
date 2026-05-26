@@ -29,10 +29,8 @@
                 :class="input() + ' w-full'"
             >
         </div>
-
-        <PostsSkeleton v-if="postsStore.pending" />
         
-        <div v-else-if="filteredPosts.length" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div v-if="filteredPosts.length" class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <PostItem v-for="post in filteredPosts" :key="post.id" :post="post" />
         </div>
 
@@ -45,20 +43,29 @@
 </template>
 
 <script lang="ts" setup>
-import { usePostsStore } from '~/stores/posts';
-const postsStore = usePostsStore()
-const searchInput = ref<string>('')
+import type { PostDoc, PostsResponse } from '~/types/post.types';
 
+const searchInput = ref<string>('')
 const debouncedSearch = refDebounced(searchInput, 300)
-await postsStore.fetchPostsData()
+
+const { data: postsResponse, pending, refresh } = await useFetch<PostsResponse>('/api/posts', {
+    key: 'posts-list-isr',
+    query: { limit: 200 }
+})
+
+const allPosts = computed<PostDoc[]>(() => {
+    return postsResponse.value?.docs || []
+})
+
+onMounted(refresh)
 
 const filteredPosts = computed(() => {
-    const posts = postsStore.allPosts || []
+    const posts = allPosts.value
     const query = debouncedSearch.value.toLowerCase().trim()
 
     if (!query) return posts
 
-    return posts.filter((post: any) => {
+    return posts.filter((post: PostDoc) => {
         const title = (post.title || '').toLowerCase()
         const author = (post.admin_panel?.author?.name || '').toLowerCase()
 
