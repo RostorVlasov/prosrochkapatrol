@@ -1,7 +1,5 @@
 <template>
-    <div v-if="!post" class="p-10 text-center">Загрузка...</div>
-
-    <AdaptiveContainer v-else class="dark:bg-surface-base bg-stone-50 rounded-md">
+    <AdaptiveContainer class="dark:bg-surface-base bg-stone-50 rounded-md">
         <div>
             <div class="flex gap-4 mb-6 items-center">
                 <NuxtLink :to="pages.sidebar.news.url" class="flex items-center gap-3">
@@ -42,7 +40,7 @@ const route = useRoute();
 const { buildApiUrl } = useApiBuilder();
 const id = route.params.id as string;
 
-const { data: post, refresh } = await useFetch<PostDoc>(`/api/posts/${id}`, {
+const { data: post, refresh } = await useApiFetch<PostDoc>(`/api/posts/${id}`, {
     key: `post-${id}`
 });
 
@@ -54,7 +52,7 @@ if (!post.value) {
     });
 }
 
-onMounted(refresh())
+onMounted(refresh)
 
 useSeoMeta({
     title: post.value?.title,

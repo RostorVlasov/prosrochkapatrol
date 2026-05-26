@@ -4,7 +4,6 @@ export const useApi = () => {
     const api = $fetch.create({
         baseURL: config.public.API_URL,
         credentials: 'include',
-
     })
 
     return { api }

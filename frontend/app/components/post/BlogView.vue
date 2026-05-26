@@ -48,7 +48,7 @@ import type { PostDoc, PostsResponse } from '~/types/post.types';
 const searchInput = ref<string>('')
 const debouncedSearch = refDebounced(searchInput, 300)
 
-const { data: postsResponse, pending, refresh } = await useFetch<PostsResponse>('/api/posts', {
+const { data: postsResponse, pending, refresh } = await useApiFetch<PostsResponse>('/api/posts', {
     key: 'posts-list-isr',
     query: { limit: 200 }
 })
