@@ -13,11 +13,6 @@ export default defineNuxtConfig({
     '/product-review/**': { isr: 3600 },
     '/report/**': { isr: 3600 },
     '/_error/**': { isr: false },
-    '/api/**': {
-      proxy: {
-        to: 'https://api.test.prosrochkapatrol.ru/api/**'
-      }
-    }
   },
 
   css: ['~/assets/css/main.css'],
