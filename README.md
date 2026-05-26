@@ -27,12 +27,12 @@
 | **Фронтенд / SPA** | Vue.js | 3.5.27 |
 | **Бэкенд / CMS** | Payload CMS | 3.84.1 |
 | **Сервер приложений** | Next.js | 15.2.9 |
-| **База данных** | SQLite | — |
-| **ORM** | Payload DB (SQLite адаптер) | 3.84.1 |
+| **База данных** | MongoDB | — |
+| **ORM** | Mongoose (Payload DB адаптер) | 3.84.1 |
 | **UI фреймворк** | Nuxt UI | ^4.7.1 |
 | **Стилизация** | TailwindCSS | ^4.3.0 |
 | **State Management** | Pinia | ^3.0.4 |
-| **Пакетный менеджер** | bun | 1.x |
+| **Пакетный менеджер** | pnpm | ^9 или ^10 |
 | **Node.js** | Node.js | ^18.20.2 или >=20.9.0 |
 | **Язык** | TypeScript | 5.7.3 (backend) / ^5.9.3 (frontend) |
 | **Тестирование** | Vitest | 4.0.18 |
@@ -48,7 +48,17 @@
 prosrochkapatrol/
 ├── backend/              # Payload CMS
 │   ├── src/
-│   │   ├── collections/  # Коллекции данных (Media, Users)
+│   │   ├── collections/  # Коллекции данных
+│   │   │   ├── Users.ts
+│   │   │   ├── Media.ts
+│   │   │   ├── Posts.ts
+│   │   │   ├── Shops.ts
+│   │   │   ├── Complaints.ts
+│   │   │   ├── Rubrics.ts
+│   │   │   └── Badges.ts
+│   │   ├── globals/      # Глобальные настройки
+│   │   │   └── SiteSettings.ts
+│   │   ├── app.ts        # Next.js приложение
 │   │   ├── payload.config.ts
 │   │   └── payload-types.ts (автогенерируется)
 │   └── package.json
@@ -65,13 +75,29 @@ prosrochkapatrol/
 
 ### Основные сервисы:
 
-- **Backend** (Payload CMS): API, админ-панель, управление медиа
+- **Backend** (Payload CMS): API, админ-панель, управление медиа и контентом
 - **Frontend** (Nuxt): Пользовательский интерфейс, SPA
-- **Database**: SQLite для хранения всех данных
+- **Database**: MongoDB для хранения всех данных
+
+### Коллекции данных:
+
+- **Users** — пользователи системы
+- **Media** — медиа-файлы (изображения, видео)
+- **Posts** — статьи/посты
+- **Shops** — информация о торговых точках
+- **Complaints** — жалобы на нарушения
+- **Rubrics** — рубрики/категории
+- **Badges** — значки/награды
 
 ---
 
 ## 🚀 Локальный запуск
+
+### Требования
+
+- Node.js ^18.20.2 или >=20.9.0
+- pnpm ^9 или ^10
+- MongoDB (локально или удалённая база)
 
 ### 1. Клонировать репозиторий
 
@@ -83,7 +109,7 @@ cd prosrochkapatrol
 ### 2. Установить зависимости
 
 ```bash
-bun install
+pnpm install
 ```
 
 Это установит зависимости для обоих приложений (frontend и backend).
@@ -93,14 +119,20 @@ bun install
 #### Backend (`backend/.env`)
 
 ```env
-# Database
-DATABASE_URL=file:./database.sqlite
+# Database (MongoDB)
+DATABASE_URI=mongodb://127.0.0.1/prosrochkapatrol
 
 # Payload CMS
 PAYLOAD_SECRET=your_super_secret_key_here_change_in_production
 
 # Node
 NODE_ENV=development
+
+# SMTP для email (опционально)
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=your_email@example.com
+SMTP_PASS=your_password
 ```
 
 #### Frontend (`frontend/.env`)
@@ -111,6 +143,7 @@ NUXT_PUBLIC_API_URL=http://localhost:3000
 
 # Порт фронтенда (бэкенд занимает 3000)
 NUXT_PORT=3001
+NUXT_HOST=localhost
 ```
 
 ### 4. Запустить приложения
@@ -119,7 +152,7 @@ NUXT_PORT=3001
 
 ```bash
 cd backend
-bun run dev
+pnpm run dev
 ```
 
 Backend будет доступен на: **http://localhost:3000**
@@ -129,7 +162,7 @@ Backend будет доступен на: **http://localhost:3000**
 
 ```bash
 cd frontend
-bun run dev
+pnpm run dev
 ```
 
 Frontend будет доступен на: **http://localhost:3001**
@@ -139,13 +172,13 @@ Frontend будет доступен на: **http://localhost:3001**
 **Терминал 1** — Backend:
 ```bash
 cd backend
-bun run dev
+pnpm run dev
 ```
 
 **Терминал 2** — Frontend:
 ```bash
 cd frontend
-bun run dev
+pnpm run dev
 ```
 
 ### 5. Проверить установку
@@ -164,29 +197,37 @@ prosrochkapatrol/
 ├── backend/
 │   ├── src/
 │   │   ├── collections/
-│   │   │   ├── Users.ts        # Коллекция пользователей
-│   │   │   └── Media.ts        # Коллекция медиа-файлов
-│   │   ├── app.ts              # Next.js приложение
-│   │   └── payload.config.ts   # Конфигурация Payload CMS
+│   │   │   ├── Users.ts          # Коллекция пользователей
+│   │   │   ├── Media.ts          # Коллекция медиа-файлов
+│   │   │   ├── Posts.ts          # Коллекция постов/статей
+│   │   │   ├── Shops.ts          # Коллекция торговых точек
+│   │   │   ├── Complaints.ts     # Коллекция жалоб на нарушения
+│   │   │   ├── Rubrics.ts        # Коллекция рубрик
+│   │   │   └── Badges.ts         # Коллекция значков/наград
+│   │   ├── globals/
+│   │   │   └── SiteSettings.ts   # Глобальные настройки сайта
+│   │   ├── app.ts                # Next.js приложение
+│   │   └── payload.config.ts      # Конфигурация Payload CMS
 │   │
-│   ├── package.json            # Зависимости бэкенда
-│   ├── .env.example            # Пример переменных окружения
-│   ├── next.config.js          # Конфигурация Next.js
-│   ├── tsconfig.json           # TypeScript конфигурация
-│   └── vitest.config.mts       # Конфигурация юнит-тестов
+│   ├── package.json              # Зависимости бэкенда
+│   ├── .env.example              # Пример переменных окружения
+│   ├── next.config.js            # Конфигурация Next.js
+│   ├── tsconfig.json             # TypeScript конфигурация
+│   ├── vitest.config.mts         # Конфигурация юнит-тестов
+│   └── playwright.config.ts       # Конфигурация E2E тестов
 │
 ├── frontend/
-│   ├── app.vue                 # Корневой компонент
-│   ├── pages/                  # Страницы приложения
-│   ├── components/             # Переиспользуемые компоненты
-│   ├── stores/                 # Pinia хранилища состояния
-│   ├── package.json            # Зависимости фронтенда
-│   ├── nuxt.config.ts          # Конфигурация Nuxt
-│   └── tsconfig.json           # TypeScript конфигурация
+│   ├── app.vue                   # Корневой компонент
+│   ├── pages/                    # Страницы приложения
+│   ├── components/               # Переиспользуемые компоненты
+│   ├── stores/                   # Pinia хранилища состояния
+│   ├── package.json              # Зависимости фронтенда
+│   ├── nuxt.config.ts            # Конфигурация Nuxt
+│   └── tsconfig.json             # TypeScript конфигурация
 │
 ├── .gitignore
-├── README.md                   # Этот файл
-└── package.json                # Корневой package.json (если есть)
+├── README.md                     # Этот файл
+└── package.json                  # Корневой package.json (если есть)
 ```
 
 ---
@@ -197,9 +238,13 @@ prosrochkapatrol/
 
 | Переменная | Описание | Пример | Обязательна |
 |---|---|---|---|
-| `DATABASE_URL` | URL базы данных SQLite | `file:./database.sqlite` | ✅ |
+| `DATABASE_URI` | URI MongoDB | `mongodb://127.0.0.1/prosrochkapatrol` | ✅ |
 | `PAYLOAD_SECRET` | Секретный ключ для CMS | `your_secret_key` | ✅ |
 | `NODE_ENV` | Окружение (development/production) | `development` | ❌ |
+| `SMTP_HOST` | Хост SMTP сервера | `smtp.gmail.com` | ❌ |
+| `SMTP_PORT` | Порт SMTP | `587` | ❌ |
+| `SMTP_USER` | Пользователь SMTP | `your_email@gmail.com` | ❌ |
+| `SMTP_PASS` | Пароль SMTP | `your_app_password` | ❌ |
 
 ### Frontend (Nuxt)
 
@@ -216,7 +261,11 @@ prosrochkapatrol/
 ```env
 NODE_ENV=production
 PAYLOAD_SECRET=your_secure_production_secret
-DATABASE_URL=file:/path/to/production/database.sqlite
+DATABASE_URI=mongodb+srv://username:password@cluster.mongodb.net/prosrochkapatrol
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=your_email@example.com
+SMTP_PASS=your_app_password
 ```
 
 ---
@@ -231,18 +280,25 @@ DATABASE_URL=file:/path/to/production/database.sqlite
 cd backend
 
 # Разработка
-bun run dev           # Запуск dev сервера
-bun run devsafe       # Очистка .next и запуск dev сервера
+pnpm run dev           # Запуск dev сервера
+pnpm run devsafe       # Очистка .next и запуск dev сервера
 
 # Production
-bun run build         # Сборка приложения
-bun run start         # Запуск продакшена
+pnpm run build         # Сборка приложения
+pnpm run start         # Запуск продакшена
 
 # CMS
-bun run payload                    # Управление Payload CMS
-bun payload generate:types         # Генерация TypeScript типов
-bun payload generate:importmap     # Генерация import map
-bun payload migrate:create         # Создать миграцию базы данных
+pnpm run payload                    # Управление Payload CMS
+pnpm run generate:types             # Генерация TypeScript типов
+pnpm run generate:importmap         # Генерация import map
+
+# Тестирование
+pnpm run test:int      # Юнит тесты (Vitest)
+pnpm run test:e2e      # E2E тесты (Playwright)
+pnpm run test          # Все тесты
+
+# Линтинг
+pnpm run lint          # Проверка кода ESLint
 ```
 
 #### Frontend
@@ -251,15 +307,13 @@ bun payload migrate:create         # Создать миграцию базы д
 cd frontend
 
 # Разработка
-bun run dev           # Запуск dev сервера
+pnpm run dev           # Запуск dev сервера
 
 # Production
-bun run build         # Сборка для продакшена
-bun run start         # Запуск продакшена (после build — через nuxt start)
-bun run generate      # Статическая генерация сайта
-
-# Тестирование
-bun run preview       # Preview собранного приложения
+pnpm run build         # Сборка для продакшена
+pnpm run start         # Запуск продакшена (после build)
+pnpm run generate      # Статическая генерация сайта
+pnpm run preview       # Preview собранного приложения
 ```
 
 ### Расширение проекта
@@ -292,13 +346,13 @@ export const YourCollection: CollectionConfig = {
 import { YourCollection } from './collections/YourCollection'
 
 // ...
-collections: [Users, Media, YourCollection],
+collections: [Users, Media, Posts, Rubrics, Shops, Complaints, Badges, YourCollection],
 ```
 
 3. Пересоберите типы:
 
 ```bash
-bun run generate:types
+pnpm run generate:types
 ```
 
 #### Добавление новой страницы в Nuxt
@@ -326,7 +380,7 @@ bun run generate:types
 При разработке пожалуйста:
 1. Создавайте отдельные ветки для новых фич
 2. Пишите понятные commit messages
-3. Проходите все тесты перед PR
+3. Проходите все тесты перед PR (`pnpm run test`)
 4. Обновляйте эту документацию при необходимости
 
 ---
@@ -335,7 +389,7 @@ bun run generate:types
 
 Copyright (c) 2026 Roman Troshin, Boris Stepanenko (FreshCheck). All rights reserved.
 
-Все права защищены. Никакая часть данного исходного кода или связанных с ним файлов документации не может быть воспроизведена, распространена или передана в любой форме и любыми средствами без предварительного письменного разрешения правообладателей.
+Все права защищены. Никакая часть данного исходного кода или связанных с ним файлов документации не может быть воспроизведена, распространена или использована в каких-либо целях без письменного разрешения правообладателей.
 
 ---
 
