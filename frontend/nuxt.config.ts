@@ -1,14 +1,21 @@
 export default defineNuxtConfig({
+  compatibilityDate: '2025-01-01',
   ssr: true,
 
   routeRules: {
-    '/**': { isr: 3600 },
-
+    '/': { isr: 3600 },
+    '/badges/**': { isr: 3600 },
+    '/contact/**': { isr: 3600 },
+    '/docs/**': { isr: 3600 },
+    '/faq/**': { isr: 3600 },
+    '/for-stores/**': { isr: 3600 },
+    '/news/**': { isr: 3600 },
+    '/product-review/**': { isr: 3600 },
+    '/report/**': { isr: 3600 },
     '/_error/**': { isr: false },
-    
     '/api/**': {
-      proxy: { 
-        to: 'https://api.test.prosrochkapatrol.ru/api/**' 
+      proxy: {
+        to: 'https://api.test.prosrochkapatrol.ru/api/**'
       }
     }
   },
@@ -18,12 +25,6 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       API_URL: process.env.API_URL || 'https://api.test.prosrochkapatrol.ru',
-    }
-  },
-
-  nitro: {
-    storage: {
-      '/': { driver: 'fs', base: './.cache' }
     }
   },
 
@@ -40,18 +41,18 @@ export default defineNuxtConfig({
     },
   },
 
-  compatibilityDate: '2025-07-15',
   devtools: { enabled: false },
-  
+
   modules: ['@pinia/nuxt', '@nuxt/ui', '@vueuse/nuxt', '@nuxtjs/color-mode'],
-  
   icon: {
-    serverBundle: 'local',
+    serverBundle: {
+      collections: ['ph', 'heroicons']
+    },
     clientBundle: {
       scan: true,
-      includeCustomCollections: true,
     },
     fallbackToApi: false,
+    externalizeIconsJson: true
   },
 
   components: [

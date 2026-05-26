@@ -24,22 +24,9 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@iconify-json/fluent-emoji-high-contrast": "^1.2.5",
-    "@iconify-json/ic": "^1.2.4",
-    "@iconify-json/iconamoon": "^1.2.2",
-    "@iconify-json/material-symbols": "^1.2.74",
-    "@iconify-json/mdi": "^1.2.3",
-    "@iconify-json/mingcute": "^1.2.7",
-    "@iconify-json/solar": "^1.2.5",
-    "@iconify-json/streamline": "^1.2.5",
-    "@iconify-json/tabler": "^1.2.35",
-    "@iconify-json/tdesign": "^1.2.14",
-    "@iconify-json/fluent": "^1.2.48",
-    "@iconify-json/fluent-emoji": "^1.2.7",
     "@iconify-json/heroicons": "^1.2.3",
-    "@iconify-json/maki": "^1.2.5",
-    "@iconify-json/simple-icons": "^1.2.84",
-    "@types/node": "^25.2.3",
+    "@iconify-json/ph": "^1.2.2",
+    "@types/node": "^25.9.1",
     "typescript": "^5.9.3"
   }
 }
