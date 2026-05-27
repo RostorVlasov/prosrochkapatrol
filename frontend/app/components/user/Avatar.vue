@@ -7,6 +7,7 @@
     />
 
     <img
+      ref="imgRef"
       :src="buildApiUrl(avatar.url)"
       alt="avatar"
       class="w-full h-full object-cover transition-opacity duration-300"
@@ -20,6 +21,7 @@
 <script setup lang="ts">
 import type { PhotoMeta } from '~/types/photo.types';
 
+const imgRef = ref<HTMLImageElement | null>(null)
 type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 
 const { buildApiUrl } = useApiBuilder()
@@ -30,6 +32,12 @@ const props = defineProps<{
 }>()
 
 const isLoading = ref(true)
+
+onMounted(() => {
+  if (imgRef.value?.complete) {
+    isLoading.value = false
+  }
+})
 
 const handleLoad = () => {
   isLoading.value = false
