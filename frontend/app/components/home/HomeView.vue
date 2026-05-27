@@ -366,12 +366,11 @@ const homeFaqSlice = getFaqSlice({ about: 3, monitoring: 3 })
 
 const shopsStore = useShopStore()
 
-await Promise.all([
-  shopsStore.fetchShopData({ sort: '-date_checked', limit: 4 }),
-])
+await shopsStore.fetchShopData({ sort: '-date_checked', limit: 4 })
+
 
 const { data: postsResponse, pending, refresh } = await useApiFetch<PostsResponse>('/api/posts', {
-    key: 'posts-list-isr',
+    key: 'home-posts',
     query: { limit: 3 }
 })
 

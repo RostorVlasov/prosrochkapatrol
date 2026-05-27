@@ -49,7 +49,7 @@ const searchInput = ref<string>('')
 const debouncedSearch = refDebounced(searchInput, 300)
 
 const { data: postsResponse, pending, refresh } = await useApiFetch<PostsResponse>('/api/posts', {
-    key: 'posts-list-isr',
+    key: 'posts-list',
     query: { limit: 200 }
 })
 
