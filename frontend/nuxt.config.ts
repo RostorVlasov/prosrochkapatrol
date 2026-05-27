@@ -1,7 +1,12 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
   ssr: true,
-
+  site: {
+    url: 'https://test.prosrochkapatrol.ru',
+    name: 'FreshCheck',
+    description: 'Общественный мониторинг магазинов Астрахани',
+    defaultLocale: 'ru',
+  },
   routeRules: {
     '/': { isr: 3600 },
     '/badges/**': { isr: 3600 },
@@ -39,7 +44,14 @@ export default defineNuxtConfig({
 
   devtools: { enabled: false },
 
-  modules: ['@pinia/nuxt', '@nuxt/ui', '@vueuse/nuxt', '@nuxtjs/color-mode'],
+  modules: [
+    '@pinia/nuxt',
+    '@nuxt/ui',
+    '@vueuse/nuxt',
+    '@nuxtjs/color-mode',
+    '@nuxtjs/seo',
+  ],
+
   icon: {
     serverBundle: {
       collections: ['ph', 'heroicons']
@@ -47,8 +59,7 @@ export default defineNuxtConfig({
     clientBundle: {
       scan: true,
     },
-    fallbackToApi: false,
-    externalizeIconsJson: true
+    fallbackToApi: false
   },
 
   components: [
