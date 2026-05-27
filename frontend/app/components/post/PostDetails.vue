@@ -8,26 +8,28 @@
                 </NuxtLink>
             </div>
         </div>
-        
-        <div class="mb-4 flex gap-2 items-center">
-            <Avatar v-if="post.admin_panel.author?.avatar" size="md" :avatar="post.admin_panel.author?.avatar"/>
-            <span class="font-semibold text-md">{{ post.admin_panel.author?.name }}</span>
-            <span> - </span>
-            <span class="text-sm">{{ formatDate(post.updatedAt) }}</span>
-        </div>
+        <div v-if="post">
+            <div class="mb-4 flex gap-2 items-center">
+                <Avatar v-if="post.admin_panel.author?.avatar" size="md" :avatar="post.admin_panel.author?.avatar" />
+                <span class="font-semibold text-md">{{ post.admin_panel.author?.name }}</span>
+                <span> - </span>
+                <span class="text-sm">{{ formatDate(post.updatedAt) }}</span>
+            </div>
 
-        <div v-if="post.rubrics && post.rubrics.length > 0" class="flex flex-col gap-3">
-            <p class="dark:text-gray-200 text-gray-700 text-sm md:text-lg">Рубрики</p>
-            <RubricList :rubrics="post.rubrics"/>
-        </div>
-        
-        <div>
-            <h1 class="text-2xl mt-4 font-bold">{{ post.title }}</h1>
-            <img v-if="post.cover" :src="buildApiUrl(post.cover.url)" :alt="post.cover.alt ? post.cover.alt : 'обложка'"
-                class="rounded-lg shadow-xl mt-4 w-full object-cover max-h-125" />
-        </div>
+            <div v-if="post.rubrics && post.rubrics.length > 0" class="flex flex-col gap-3">
+                <p class="dark:text-gray-200 text-gray-700 text-sm md:text-lg">Рубрики</p>
+                <RubricList :rubrics="post.rubrics" />
+            </div>
 
-        <LexicalRender v-if="post.body?.root" class="mt-2" :node="post.body.root" />
+            <div>
+                <h1 class="text-2xl mt-4 font-bold">{{ post.title }}</h1>
+                <img v-if="post.cover" :src="buildApiUrl(post.cover.url)"
+                    :alt="post.cover.alt ? post.cover.alt : 'обложка'"
+                    class="rounded-lg shadow-xl mt-4 w-full object-cover max-h-125" />
+            </div>
+
+            <LexicalRender v-if="post.body?.root" class="mt-2" :node="post.body.root" />
+        </div>
     </AdaptiveContainer>
 </template>
 
@@ -40,19 +42,18 @@ const route = useRoute();
 const { buildApiUrl } = useApiBuilder();
 const id = route.params.id as string;
 
-const { data: post, refresh } = await useApiFetch<PostDoc>(`/api/posts/${id}`, {
-    key: `post-${id}`
+const { data: post } = await useApiFetch<PostDoc>(`/api/posts/${id}`, {
+    key: `post-${id}`,
+    timeout: 1000,
 });
 
 if (!post.value) {
     throw createError({
         statusCode: 404,
         statusMessage: 'Пост не найден',
-        fatal: true 
+        fatal: true
     });
 }
-
-onMounted(refresh)
 
 useSeoMeta({
     title: post.value?.title,

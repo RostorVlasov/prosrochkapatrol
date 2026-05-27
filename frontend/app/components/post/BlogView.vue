@@ -48,7 +48,7 @@ import type { PostDoc, PostsResponse } from '~/types/post.types';
 const searchInput = ref<string>('')
 const debouncedSearch = refDebounced(searchInput, 300)
 
-const { data: postsResponse, pending, refresh } = await useApiFetch<PostsResponse>('/api/posts', {
+const { data: postsResponse } = await useApiFetch<PostsResponse>('/api/posts', {
     key: 'posts-list',
     query: { limit: 200 },
     timeout: 1000
@@ -57,8 +57,6 @@ const { data: postsResponse, pending, refresh } = await useApiFetch<PostsRespons
 const allPosts = computed<PostDoc[]>(() => {
     return postsResponse.value?.docs || []
 })
-
-onMounted(refresh)
 
 const filteredPosts = computed(() => {
     const posts = allPosts.value
