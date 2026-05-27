@@ -1,12 +1,11 @@
-import type { UseFetchOptions } from 'nuxt/app'
+import type { UseFetchOptions } from "#app"
 
 export function useApiFetch<T>(url: string | (() => string), options: UseFetchOptions<T> = {}) {
-    const config = useRuntimeConfig()
+  const config = useRuntimeConfig()
 
-    const defaults: UseFetchOptions<T> = {
-        baseURL: config.public.API_URL
+  const baseURL = import.meta.server
+    ? (config.apiUrl as string)
+    : config.public.API_URL
 
-    }
-
-    return useFetch(url, { ...defaults, ...options })
+  return useFetch(url, { baseURL, ...options })
 }

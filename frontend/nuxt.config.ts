@@ -18,8 +18,9 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
+    apiUrl: 'http://127.0.0.1:3333',
     public: {
-      API_URL: process.env.API_URL || 'https://api.test.prosrochkapatrol.ru',
+      API_URL: 'https://api.test.prosrochkapatrol.ru',
     }
   },
 
