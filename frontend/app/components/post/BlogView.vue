@@ -50,7 +50,8 @@ const debouncedSearch = refDebounced(searchInput, 300)
 
 const { data: postsResponse, pending, refresh } = await useApiFetch<PostsResponse>('/api/posts', {
     key: 'posts-list',
-    query: { limit: 200 }
+    query: { limit: 200 },
+    timeout: 1000
 })
 
 const allPosts = computed<PostDoc[]>(() => {

@@ -371,7 +371,8 @@ await shopsStore.fetchShopData({ sort: '-date_checked', limit: 4 })
 
 const { data: postsResponse, pending, refresh } = await useApiFetch<PostsResponse>('/api/posts', {
     key: 'home-posts',
-    query: { limit: 3 }
+    query: { limit: 3 },
+    timeout: 1000
 })
 
 const newsUpdates = computed<PostDoc[]>(() => {
