@@ -4,7 +4,7 @@
         <div class="flex gap-1 mb-6">
             <AppIcon v-for="i in 5" :key="i" name="starFilled" class="w-5 h-5 text-beige-500" />
         </div>
-        <p class="text-lg leading-relaxed mb-6 font-medium italic">«{{ text }}»</p>
+        <p class="sm:text-lg text-md leading-relaxed mb-6 font-medium italic">«{{ text }}»</p>
         <div class="border-t border-beige-100 dark:border-gray-500 pt-6 flex items-center gap-3">
             <div
                 class="w-12 h-12 bg-beige-500 rounded-full flex items-center justify-center text-white font-bold text-lg">

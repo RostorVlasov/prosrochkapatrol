@@ -3,13 +3,13 @@
         class="faq-item bg-white dark:bg-gray-700 rounded-2xl border border-beige-100 dark:border-gray-500 overflow-hidden hover:border-beige-500 transition-colors duration-300">
         <button @click="$emit('toggle')"
             class="w-full p-6 flex justify-between items-center gap-4 text-left cursor-pointer">
-            <span class="font-bold text-lg text-slate dark:text-white">{{ question }}</span>
+            <span class="font-bold text-sm sm:text-lg text-slate dark:text-white">{{ question }}</span>
             <AppIcon :name="isOpen ? 'isOpen' : 'noOpen'"
                 class="w-6 h-6 text-beige-500 shrink-0 transition-transform duration-500" />
         </button>
 
         <div class="faq-content" :class="{ 'faq-open': isOpen }">
-            <div class="px-6 pb-6">
+            <div class="px-6 pb-6 text-xs">
                 <div class="pt-4 border-t border-beige-100 dark:border-gray-500">
                     <p v-if="!useHtml" class="text-gray-500 dark:text-beige-100/80 leading-relaxed">
                         {{ answer }}

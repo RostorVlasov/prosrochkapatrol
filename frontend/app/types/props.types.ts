@@ -33,6 +33,7 @@ export interface StatCardProps {
   value: string
   title: string
   desc: string
+  disclaimer?: string
 }
 
 export interface StepCardProps {
@@ -78,11 +79,9 @@ export interface SocialLinkProps {
 export interface ContactButtonProps {
   href: string
   icon: IconName
-  label: string
-  bgClass: string
-  textClass: string
+  title: string,
+  value: string,
 }
-
 export interface TeamInfoCardProps {
   icon: IconName
   title: string

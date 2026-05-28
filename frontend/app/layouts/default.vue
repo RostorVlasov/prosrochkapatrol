@@ -51,7 +51,7 @@
         </header>
 
         <main class="transition-colors lg:ml-56" @click="menuActive = false">
-            <div class="pt-16 pb-20 lg:pt-0 lg:pb-0 lg:min-h-screen">
+            <div class="pt-16 pb-14 lg:pt-0 lg:pb-0 lg:min-h-screen">
                 <slot />
             </div>
         </main>

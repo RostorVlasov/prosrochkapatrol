@@ -18,5 +18,5 @@ const props = withDefaults(defineProps<Props>(), {
     singleOpen: true
 })
 
-const { toggle, isOpen } = useFaqAccordion(props.singleOpen)
+const { toggle, isOpen } = useFaqAccordion()
 </script>

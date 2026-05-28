@@ -8,16 +8,13 @@
         <div class="text-5xl font-black text-beige-500 mb-3 tracking-tight">{{ value }}</div>
         <div class="font-bold text-lg mb-2">{{ title }}</div>
         <p class="text-sm text-gray-500 dark:text-beige-100/60">{{ desc }}</p>
+        <p class="mt-6 text-gray-400">{{ disclaimer }}</p>
     </div>
 </template>
 
 <script setup lang="ts">
 import type { IconName } from '../ui/AppIcon.vue';
+import type { StatCardProps } from '../../types/props.types.js';
 
-defineProps<{
-    icon: IconName
-    value: string
-    title: string
-    desc: string
-}>()
+defineProps<StatCardProps>()
 </script>

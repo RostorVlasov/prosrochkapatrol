@@ -1,11 +1,12 @@
+import type { IconName } from '~/components/ui/AppIcon.vue'
 import {
   TELEGRAM_CHANNEL,
   TELEGRAM_FOUNDER,
   VK_GROUP,
   VK_FOUNDER,
-  INSTAGRAM,
   TIKTOK,
   EMAIL,
+  PHONE,
 } from '~/data/social'
 
 import type {
@@ -21,6 +22,19 @@ import type {
   FaqItem,
 } from '~/types/props.types'
 
+interface LegalItem {
+    label: string | null
+    text: string
+}
+
+interface LegalBlock {
+    icon: IconName
+    title: string
+    note: string
+    items: LegalItem[]
+}
+
+
 export const processSteps = [
   { icon: 'userPlus' as const, title: 'Визит', desc: 'Заходим в магазин как обычные покупатели. При возможности представляемся администрации.' },
   { icon: 'cameraHero' as const, title: 'Наблюдение', desc: 'Осматриваем полки, фиксируем сроки годности и условия хранения. Делаем фото для отчёта.' },
@@ -29,16 +43,16 @@ export const processSteps = [
 ]
 
 export const principles: PrincipleProps[] = [
-  { icon: 'scale' as const,                title: 'Законность',         desc: 'Строго в рамках Конституции РФ и закона о защите прав потребителей' },
-  { icon: 'checkCircle' as const,          title: 'Честность',          desc: 'Публикуем только то, что видели своими глазами — без домыслов' },
-  { icon: 'eye' as const,                  title: 'Прозрачность',       desc: 'Все отчёты, методика и документы открыты для всех желающих' },
-  { icon: 'handRaised' as const,           title: 'Безопасность',       desc: 'Здоровье семей — главный приоритет каждого нашего визита' },
-  { icon: 'chatBubbleLeft' as const,       title: 'Партнёрство',        desc: 'Сначала диалог с администрацией, а не жалобы и конфликты' },
-  { icon: 'arrowPath' as const,            title: 'Соразмерность',      desc: 'Реакция соответствует серьёзности нарушения — без лишней эскалации' },
-  { icon: 'userHero' as const,             title: 'Уважение',           desc: 'Не снимаем и не публикуем лица сотрудников без их согласия' },
-  { icon: 'bolt' as const,                 title: 'Независимость',      desc: 'Не принимаем финансирования, которое влияло бы на оценки' },
-  { icon: 'chatBubble' as const,           title: 'Диалог',             desc: 'Открыты к обратной связи и готовы исправлять собственные ошибки' },
-  { icon: 'globeAlt' as const,             title: 'Общественная польза', desc: 'Цель — среда безопасных и честных магазинов для всей Астрахани' },
+  { icon: 'scale' as const, title: 'Законность', desc: 'Строго в рамках Конституции РФ и закона о защите прав потребителей' },
+  { icon: 'checkCircle' as const, title: 'Честность', desc: 'Публикуем только то, что видели своими глазами — без домыслов' },
+  { icon: 'eye' as const, title: 'Прозрачность', desc: 'Все отчёты, методика и документы открыты для всех желающих' },
+  { icon: 'handRaised' as const, title: 'Безопасность', desc: 'Здоровье семей — главный приоритет каждого нашего визита' },
+  { icon: 'chatBubbleLeft' as const, title: 'Партнёрство', desc: 'Сначала диалог с администрацией, а не жалобы и конфликты' },
+  { icon: 'arrowPath' as const, title: 'Соразмерность', desc: 'Реакция соответствует серьёзности нарушения — без лишней эскалации' },
+  { icon: 'userHero' as const, title: 'Уважение', desc: 'Не снимаем и не публикуем лица сотрудников без их согласия' },
+  { icon: 'bolt' as const, title: 'Независимость', desc: 'Не принимаем финансирования, которое влияло бы на оценки' },
+  { icon: 'chatBubble' as const, title: 'Диалог', desc: 'Открыты к обратной связи и готовы исправлять собственные ошибки' },
+  { icon: 'globeAlt' as const, title: 'Общественная польза', desc: 'Цель — среда безопасных и честных магазинов для всей Астрахани' },
 ]
 
 export const testimonials: TestimonialCardProps[] = [
@@ -56,9 +70,9 @@ export const faq: FaqItem[] = [
 ]
 
 export const stats: StatCardProps[] = [
-  { icon: 'shoppingBag' as const, value: '2760+', title: 'Единиц товара убрано', desc: 'С полок магазинов в ходе совместной работы с администрацией' },
+  { icon: 'shoppingBag' as const, value: '2760+', title: 'Единиц товара убрано', desc: 'С полок магазинов в ходе совместной работы с администрацией', disclaimer: '*по мнению участников проекта' },
   { icon: 'buildingStorefront' as const, value: '11', title: 'Магазинов в мониторинге', desc: 'Регулярно посещаем торговые точки в разных районах Астрахани' },
-  { icon: 'handThumbUp' as const, value: '98%', title: 'Решено на месте', desc: 'Недочёты устраняются в диалоге с сотрудниками, без эскалации' },
+  { icon: 'handThumbUp' as const, value: '98%', title: 'Решено на месте', desc: 'Недочёты устраняются в диалоге с сотрудниками, без эскалации', disclaimer: '*по мнению участников проекта' },
 ]
 
 export const reportSteps: StepCardProps[] = [
@@ -152,12 +166,50 @@ export const badgePerks: string[] = [
 export const socialLinks: SocialLinkProps[] = [
   { href: TELEGRAM_CHANNEL, icon: 'telegram' as const, name: 'Telegram', handle: '@prosrochka_patrol', desc: 'Оперативные новости и обзоры', iconBgClass: 'bg-telegram', hoverBorderClass: 'hover:border-telegram' },
   { href: VK_GROUP, icon: 'vk' as const, name: 'ВКонтакте', handle: 'prosrochka_patrol_astrakhan', desc: 'Сообщество проекта', iconBgClass: 'bg-vk', hoverBorderClass: 'hover:border-vk' },
-  { href: INSTAGRAM, icon: 'instagram' as const, name: 'Instagram*', handle: '@freshcheckastra', desc: 'Визуальный контент', iconBgClass: 'bg-instagram', hoverBorderClass: 'hover:border-pink-500' },
   { href: TIKTOK, icon: 'tiktok' as const, name: 'TikTok', handle: '@freshcheckastra', desc: 'Познавательный контент', iconBgClass: 'bg-black', hoverBorderClass: 'hover:border-black' },
 ]
 
 export const contactButtons: ContactButtonProps[] = [
-  { href: TELEGRAM_FOUNDER, icon: 'telegram' as const, label: 'Telegram', bgClass: 'bg-white hover:bg-beige-100', textClass: 'text-slate' },
-  { href: VK_FOUNDER, icon: 'vk' as const, label: 'ВКонтакте', bgClass: 'bg-vk hover:bg-vk/80', textClass: 'text-white' },
-  { href: EMAIL, icon: 'envelope' as const, label: 'Email', bgClass: 'bg-slate hover:bg-gray-700 border border-white/20', textClass: 'text-white' },
+  { href: TELEGRAM_FOUNDER, icon: 'telegram' as const, title: 'Telegram', value: '@RomanTroshinRF' },
+  { href: VK_FOUNDER, icon: 'vk' as const, title: 'ВКонтакте', value: '@romantroshinastra' },
+  { href: EMAIL, icon: 'envelope' as const, title: 'Email', value: 'none@prosrochkapatrol.ru' },
+  { icon: "phone", title: "Телефон", value: "+7 (917) 176-67-46", href: PHONE }
+]
+
+
+export const goals: string[] = [
+    'Защитить покупателей от некачественных товаров',
+    'Помочь магазину оперативно выявить и устранить любые дефекты',
+    'Способствовать формированию культуры качества',
+]
+
+export const notDoing: string[] = [
+    'Не выписываем штрафы',
+    'Не составляем официальные протоколы и акты',
+    'Не имеем права закрывать магазин',
+    'Не являемся представителями госорганов',
+    'Не передаём материалы в Роспотребнадзор без диалога',
+]
+
+export const legalBlocks: LegalBlock[] = [
+    {
+        icon: 'camera',
+        title: 'Что мы можем фиксировать (фото/видео)',
+        note: 'Мы всегда замазываем лица людей, случайно попавших в кадр.',
+        items: [
+            { label: 'Статья 29 Конституции РФ', text: ' — право искать информацию.' },
+            { label: 'Постановление № 2463 (п. 2)', text: ' — запрет ограничивать фотосъёмку товара.' },
+            { label: 'Статья 152.1 ГК РФ', text: ' — съёмка в местах открытого доступа.' },
+        ],
+    },
+    {
+        icon: 'scale',
+        title: 'Почему общественный мониторинг законен',
+        note: 'Наши внутренние документы открыты и не налагают на вас обязательств.',
+        items: [
+            { label: 'Ст. 29 Конституции РФ', text: ' — право распространять информацию.' },
+            { label: 'Закон о защите прав потребителей', text: ' (ст. 7, 8–10, 18).' },
+            { label: null, text: 'Никакого специального разрешения не требуется.' },
+        ],
+    },
 ]

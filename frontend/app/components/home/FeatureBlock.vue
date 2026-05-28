@@ -1,6 +1,5 @@
 <template>
-  <div
-    :class="['group lg:col-span-1 p-12 rounded-3xl relative hover:shadow-2xl transition-shadow duration-500', bgClass]">
+<div :class="['group lg:col-span-1 p-6 sm:p-12 rounded-3xl relative overflow-hidden hover:shadow-2xl transition-shadow duration-500', bgClass]">
     <div class="absolute w-64 h-64 rounded-full blur-3xl pointer-events-none" :class="glowClass" />
     <div class="relative z-10">
       <div
@@ -8,8 +7,8 @@
                  iconBgClass, iconBgHoverClass]">
         <AppIcon :name="icon" :class="`w-8 h-8 ${iconClass}`" />
       </div>
-      <h3 class="text-3xl font-bold mb-4">{{ title }}</h3>
-      <p :class="['text-lg leading-relaxed', bodyClass]">
+      <h3 class="text-lg sm:text-3xl font-bold mb-4">{{ title }}</h3>
+      <p :class="['text-sm sm:text-lg leading-relaxed', bodyClass]">
         <slot />
       </p>
     </div>

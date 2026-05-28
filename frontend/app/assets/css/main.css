@@ -39,6 +39,10 @@
     --color-slate: #2B2B2B;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Unbounded', sans-serif;
+}
+
 body {
     font-family: "Golos Text", sans-serif;
     background-color: var(--color-beige-50);

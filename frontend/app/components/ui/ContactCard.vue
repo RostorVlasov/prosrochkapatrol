@@ -14,9 +14,10 @@
 
 <script setup lang="ts">
 import { tv } from 'tailwind-variants'
+import type { IconName } from './AppIcon.vue';
 
 const props = defineProps<{
-    icon: string
+    icon: IconName
     title: string
     value: string
     href: string
@@ -24,7 +25,7 @@ const props = defineProps<{
 }>()
 
 const cardClasses = tv({
-    base: 'bg-white dark:bg-gray-700 rounded-2xl p-6 border border-beige-100 dark:border-gray-500 transition-all duration-300',
+    base: 'bg-white w-full flex gap-4 text-start dark:bg-gray-700 rounded-2xl p-4 sm:p-6 border border-beige-100 dark:border-gray-500 transition-all duration-300',
     variants: {
         hover: {
             true: 'hover:border-beige-500 hover:-translate-y-1 hover:shadow-lg'

@@ -1,7 +1,7 @@
 <template>
-    <section class="py-24 bg-beige-100/30 dark:bg-gray-900">
-        <div class="max-w-4xl mx-auto px-6">
-            <SectionHeader :pill="pill" :title-before="titleBefore" :title-italic="titleItalic" :subtitle="subtitle"
+    <section class="py-24 dark:bg-gray-900">
+        <div class="max-w-4xl mx-auto">
+            <BaseSectionHeader :pill="pill" :title-before="titleBefore" :title-italic="titleItalic" :subtitle="subtitle"
                 centered />
 
             <FaqList :items="items" />
