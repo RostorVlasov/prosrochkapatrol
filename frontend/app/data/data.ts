@@ -7,6 +7,13 @@ import {
     TIKTOK,
     EMAIL,
     PHONE,
+    TELEGRAM_CHANNEL_PLACEHOLDER,
+    VK_GROUP_PLACEHOLDER,
+    TIKTOK_PLACEHOLDER,
+    TELEGRAM_FOUNDER_PLACEHOLDER,
+    VK_FOUNDER_PLACEHOLDER,
+    EMAIL_PLACEHOLDER,
+    PHONE_PLACEHOLDER,
 } from '~/data/social'
 
 import type {
@@ -329,16 +336,16 @@ export const badgePerks: string[] = [
 // ─────────────────────────────────────────────
 
 export const socialLinks: SocialLinkProps[] = [
-    { href: TELEGRAM_CHANNEL, icon: 'telegram', name: 'Telegram',   handle: '@prosrochka_patrol',            desc: 'Оперативные новости и обзоры', iconBgClass: 'bg-telegram', hoverBorderClass: 'hover:border-telegram' },
-    { href: VK_GROUP,         icon: 'vk',       name: 'ВКонтакте',  handle: 'prosrochka_patrol_astrakhan',   desc: 'Сообщество проекта',           iconBgClass: 'bg-vk',       hoverBorderClass: 'hover:border-vk' },
-    { href: TIKTOK,           icon: 'tiktok',   name: 'TikTok',     handle: '@freshcheckastra',              desc: 'Познавательный контент',        iconBgClass: 'bg-black',    hoverBorderClass: 'hover:border-black' },
+    { href: TELEGRAM_CHANNEL, icon: 'telegram', name: 'Telegram',   handle: TELEGRAM_CHANNEL_PLACEHOLDER,    desc: 'Оперативные новости и обзоры', iconBgClass: 'bg-telegram', hoverBorderClass: 'hover:border-telegram' },
+    { href: VK_GROUP,         icon: 'vk',       name: 'ВКонтакте',  handle: VK_GROUP_PLACEHOLDER,            desc: 'Сообщество проекта',           iconBgClass: 'bg-vk',       hoverBorderClass: 'hover:border-vk' },
+    { href: TIKTOK,           icon: 'tiktok',   name: 'TikTok',     handle: TIKTOK_PLACEHOLDER,              desc: 'Познавательный контент',        iconBgClass: 'bg-black',    hoverBorderClass: 'hover:border-black' },
 ]
 
 export const contactButtons: ContactButtonProps[] = [
-    { href: TELEGRAM_FOUNDER, icon: 'telegram', title: 'Telegram',   value: '@FreshCheckAstraAdmin' },
-    { href: VK_FOUNDER,       icon: 'vk',       title: 'ВКонтакте',  value: 'id1116640119' },
-    { href: EMAIL,            icon: 'envelope', title: 'Email',      value: 'none@prosrochkapatrol.ru' },
-    { href: PHONE,            icon: 'phone',    title: 'Телефон',    value: '+7 (988) 595-11-61' },
+    { href: TELEGRAM_FOUNDER, icon: 'telegram', title: 'Telegram',   value: TELEGRAM_FOUNDER_PLACEHOLDER },
+    { href: VK_FOUNDER,       icon: 'vk',       title: 'ВКонтакте',  value: VK_FOUNDER_PLACEHOLDER },
+    { href: EMAIL,            icon: 'envelope', title: 'Email',      value: EMAIL_PLACEHOLDER },
+    { href: PHONE,            icon: 'phone',    title: 'Телефон',    value: PHONE_PLACEHOLDER },
 ]
 
 // ─────────────────────────────────────────────

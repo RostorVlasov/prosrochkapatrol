@@ -14,8 +14,8 @@
         <div class="mt-12 text-center">
             <button @click="scrollTo('socials')" target="_blank"
                 class="inline-flex items-center gap-2 px-8 py-4 bg-sky-500 hover:bg-sky-600 text-white rounded-xl font-bold text-lg transition-colors duration-300 shadow-lg">
-                <AppIcon name="telegram" class="w-6 h-6" />
-                Написать в канал проекта
+                <AppIcon name="chatBubbleLeft" class="w-6 h-6" />
+                Написать нам
             </button>
         </div>
     </section>
@@ -23,6 +23,5 @@
 
 <script setup lang="ts">
 import { reportSteps, stats } from '~/data/data';
-import { TELEGRAM_CHANNEL } from '~/data/social';
 
 </script>

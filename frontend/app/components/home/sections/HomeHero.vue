@@ -1,12 +1,12 @@
 <template>
-    <section class="flex items-center justify-center relative overflow-hidden py-12">
+    <section class="flex items-center justify-center relative overflow-hidden sm:py-12">
         <div class="w-full px-6 text-center relative z-10">
             <div class="mb-8">
                 <SectionPill>Общественный мониторинг • Астрахань</SectionPill>
             </div>
 
             <h1
-                class="text-5xl sm:text-7xl lg:text-9xl font-black tracking-tighter leading-[0.85] mb-8 text-slate dark:text-white wrap-break-word">
+                class="text-7xl sm:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.85] mb-8 text-slate dark:text-white wrap-break-word">
                 Видим то,
                 <span class="text-beige-500 italic block">что на<br/> полках</span>
             </h1>

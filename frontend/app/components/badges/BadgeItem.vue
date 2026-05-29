@@ -1,5 +1,5 @@
 <template>
-    <div class="p-4 dark:bg-gray-700 bg-stone-100 rounded-xl">
+    <div class="p-4 dark:bg-gray-700 bg-stone-100 h-full rounded-xl">
         
         <div class="flex items-center gap-2 mb-3">
             <span class="font-mono font-semibold text-base tracking-wide">{{ badge.code }}</span>

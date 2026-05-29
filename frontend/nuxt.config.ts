@@ -54,7 +54,7 @@ export default defineNuxtConfig({
 
   icon: {
     serverBundle: {
-      collections: ['ph', 'heroicons']
+      collections: ['ph', 'heroicons', 'mdi']
     },
     clientBundle: {
       scan: true,

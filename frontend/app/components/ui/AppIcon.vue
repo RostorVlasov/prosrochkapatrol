@@ -45,8 +45,7 @@ const icons = {
   image:             'ph:file-image',
   chatBubble:        'ph:chat-fill',
   telegram:          'ph:telegram-logo',
-  //не робит вк
-  vk:                'ph:square-fill',
+  vk:                'mdi:vk',
   instagram:         'ph:instagram-logo',
   tiktok:            'ph:tiktok-logo',
 
@@ -71,7 +70,7 @@ const icons = {
   chatBubbleSingle:       'ph:square-fill',
   globeAlt:               'i-heroicons-globe-alt-20-solid',
   eye:                    'i-heroicons-eye-20-solid',
-  chatBubbleLeft:         'ph:square-fill',
+  chatBubbleLeft:         'mdi:message',
   arrowPath:              'i-heroicons-arrow-path-20-solid',
   userHero:               'i-heroicons-user-20-solid',
   bolt:                   'i-heroicons-bolt-20-solid',
@@ -89,6 +88,7 @@ const icons = {
   arrowTrendingUp:        'i-heroicons-arrow-trending-up-20-solid',
   informationCircle:      'i-heroicons-information-circle-20-solid',
   starHero:               'i-heroicons-star-20-solid',
+  shieldCheck:            'heroicons:shield-check-16-solid'
 } as const
 
 export type IconName = keyof typeof icons
