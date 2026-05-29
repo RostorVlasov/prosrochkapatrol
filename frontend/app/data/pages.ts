@@ -7,7 +7,7 @@ type PageItem = {
 };
 
 type SidebarKeys = 'home' | 'news' | 'productReview' | 'contact';
-type OtherKeys = 'badges' | 'docs' | 'faq' | 'forStores' | 'report';
+type OtherKeys = 'badges' | 'docs' | 'faq' | 'forStores' | 'report' | 'privacy' | 'press';
 
 export const pages: {
     sidebar: Record<SidebarKeys, PageItem>;
@@ -40,6 +40,16 @@ export const pages: {
             url: '/badges',
             name: 'Бейджики участников',
             icon: "badge",
+        },
+        privacy: {
+            url: '/privacy',
+            name: 'Политика конфиденциальности',
+            icon: 'docs',
+        },
+        press: {
+            url: '/press',
+            name: 'Для СМИ',
+            icon: 'docs',
         },
         docs: {
             url: '/docs',

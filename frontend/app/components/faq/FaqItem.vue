@@ -10,7 +10,7 @@
 
         <div class="faq-content" :class="{ 'faq-open': isOpen }">
             <div class="faq-inner">
-                <div class="px-6 pb-6 text-xs">
+                <div class="px-6 pb-6 text-xs sm:text-sm">
                     <div class="pt-4 border-t border-beige-100 dark:border-gray-500">
                         <p v-if="!useHtml" class="text-gray-500 dark:text-beige-100/80 leading-relaxed">
                             {{ answer }}

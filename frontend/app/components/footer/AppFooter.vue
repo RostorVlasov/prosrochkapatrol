@@ -1,62 +1,121 @@
 <template>
-    <footer class="bg-white dark:bg-gray-900 border-t border-beige-100 dark:border-gray-700">
-        <div class="max-w-7xl mx-auto px-6 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
+    <footer class="relative border-t border-beige-100 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-hidden">
+        <div
+            class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(214,180,120,0.06),transparent_35%)]" />
+
+        <div class="relative max-w-7xl mx-auto px-6 py-7">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
                 <div class="flex flex-col gap-4">
-                    <NuxtLink to="/">
+                    <NuxtLink to="/" class="inline-flex w-max">
                         <ClientOnly>
-                            <img :src="isDark ? '/freshcheck-light.png' : '/freshcheck.png'" alt="FreshCheck"
-                                class="h-12 w-auto" />
+                            <img
+                                :src="isDark ? '/freshcheck-light.png' : '/freshcheck.png'"
+                                alt="FreshCheck"
+                                class="h-10 w-auto"
+                            />
+
                             <template #fallback>
-                                <img src="/freshcheck.png" alt="FreshCheck" class="h-12 w-auto" />
+                                <img
+                                    src="/freshcheck.png"
+                                    alt="FreshCheck"
+                                    class="h-10 w-auto"
+                                />
                             </template>
                         </ClientOnly>
                     </NuxtLink>
-                    <p class="text-sm font-semibold italic text-beige-500 leading-snug max-w-[220px]">
-                        Безопасные продукты — это право каждого, а не привилегия.
-                    </p>
-                </div>
-                <div class="flex flex-col items-start md:items-center gap-4">
-                    <h3 class="text-lg font-black tracking-tight text-slate dark:text-white">Контакты</h3>
-                    <div class="flex items-center gap-4">
-                        <a v-for="link in contactIcons" :key="link.href" :href="link.href" target="_blank"
+
+                    <div class="flex flex-col gap-1.5">
+                        <a
+                            v-for="detail in contactDetails"
+                            :key="detail.value"
+                            :href="detail.href"
+                            target="_blank"
                             rel="noopener noreferrer"
-                            class="text-beige-500 hover:text-beige-600 transition-colors duration-200"
-                            :aria-label="link.label">
-                            <AppIcon :name="link.icon" class="w-6 h-6" />
+                            class="group text-xs transition-colors duration-300"
+                        >
+                            <span
+                                class="font-semibold text-slate dark:text-white"
+                            >
+                                {{ detail.label }}:
+                            </span>
+
+                            <span
+                                class="ml-1 text-gray-500 dark:text-beige-100/60 group-hover:text-beige-500"
+                            >
+                                {{ detail.value }}
+                            </span>
                         </a>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2 md:items-end">
-                    <a v-for="detail in contactDetails" :key="detail.value" :href="detail.href" target="_blank"
+
+                <div class="flex flex-col gap-2 items-start">
+                    <div
+                        class="text-[10px] uppercase tracking-[0.2em] text-gray-400 dark:text-beige-100/40"
+                    >
+                        Документы
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <a
+                            v-for="doc in documents"
+                            :key="doc.href"
+                            :href="doc.href"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="group text-xs transition-colors duration-300"
+                        >
+                            <span
+                                class="text-gray-500 dark:text-beige-100/60 group-hover:text-beige-500"
+                            >
+                                {{ doc.label }}
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 md:justify-end">
+                    <a
+                        v-for="link in contactIcons"
+                        :key="link.href"
+                        :href="link.href"
+                        target="_blank"
                         rel="noopener noreferrer"
-                        class="text-sm text-gray-500 dark:text-beige-100/70 hover:text-beige-500 dark:hover:text-beige-400 transition-colors duration-200">
-                        <span class="font-medium text-slate dark:text-white">{{ detail.label }}:</span>
-                        {{ detail.value }}
+                        :aria-label="link.label"
+                        class="group flex h-9 w-9 items-center justify-center rounded-lg border border-beige-100 dark:border-gray-700 bg-white/70 dark:bg-gray-800/40 hover:border-beige-300 dark:hover:border-beige-500/40 transition-all duration-300"
+                    >
+                        <AppIcon
+                            :name="link.icon"
+                            class="w-4 h-4 text-beige-500 group-hover:scale-110 transition-transform duration-300"
+                        />
                     </a>
                 </div>
             </div>
-        </div>
-        <div class="border-t border-beige-100 dark:border-gray-700">
-            <div class="max-w-7xl mx-auto px-6 py-4">
-                <div class="w-max my-4">
+
+            <div
+                class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 pt-5 mt-5 border-t border-beige-100 dark:border-gray-700"
+            >
+                <div class="w-max">
                     <Mervik />
                 </div>
-                <p class="text-xs text-gray-400 dark:text-beige-100/40 leading-relaxed">
-                    © 2025–{{ currentYear }} «FreshCheck». Деятельность проекта
-                    <span class="font-bold text-slate dark:text-white">FreshCheck</span>
-                    является
-                    <span class="font-bold text-slate dark:text-white">независимой гражданской инициативой</span>
-                    и не подменяет собой работу официальных государственных контролирующих органов.
+
+                <p
+                    class="max-w-4xl text-[11px] leading-relaxed text-gray-400 dark:text-beige-100/40 md:text-right"
+                >
+                    © 2025–{{ currentYear }}
+                    <span class="font-bold text-slate dark:text-white">
+                        FreshCheck
+                    </span>
+                    — независимая гражданская инициатива и не подменяет работу
+                    официальных государственных контролирующих органов.
                     Основатель проекта: Роман Трошин.
                 </p>
             </div>
         </div>
-
     </footer>
 </template>
 
 <script lang="ts" setup>
+import { BADGES_DOC_URL, DECLARATION_DOC_URL, PUBLIC_POLICY_DOC_URL, REGULATION_DOC_URL } from '~/data/docs'
 import {
     TELEGRAM_FOUNDER,
     TELEGRAM_FOUNDER_PLACEHOLDER,
@@ -67,22 +126,42 @@ import {
     PHONE,
     PHONE_PLACEHOLDER,
 } from '~/data/social'
- 
+
+
+const documents = [
+    {
+        label: 'Публичная политика',
+        href: PUBLIC_POLICY_DOC_URL,
+    },
+    {
+        label: 'Бейджи',
+        href: BADGES_DOC_URL,
+    },
+    {
+        label: 'Декларация',
+        href: DECLARATION_DOC_URL,
+    },
+    {
+        label: 'Положение',
+        href: REGULATION_DOC_URL,
+    },
+]
+
 const mode = useColorMode()
 const isDark = computed(() => mode.value === 'dark')
 const currentYear = new Date().getFullYear()
- 
+
 const contactIcons = [
     { href: TELEGRAM_FOUNDER, icon: 'telegram' as const, label: 'Telegram' },
-    { href: EMAIL,            icon: 'envelope' as const, label: 'Email' },
-    { href: VK_FOUNDER,       icon: 'vk' as const,       label: 'ВКонтакте' },
+    { href: EMAIL, icon: 'envelope' as const, label: 'Email' },
+    { href: VK_FOUNDER, icon: 'vk' as const, label: 'ВКонтакте' },
 ]
- 
+
 const contactDetails = [
-    { label: 'ТГ',             value: TELEGRAM_FOUNDER_PLACEHOLDER, href: TELEGRAM_FOUNDER },
-    { label: 'Почта',          value: EMAIL_PLACEHOLDER,             href: EMAIL },
-    { label: 'Телефон',        value: PHONE_PLACEHOLDER,             href: PHONE },
-    { label: 'ВКонтакте',      value: VK_FOUNDER_PLACEHOLDER,        href: VK_FOUNDER },
+    { label: 'ТГ', value: TELEGRAM_FOUNDER_PLACEHOLDER, href: TELEGRAM_FOUNDER },
+    { label: 'Почта', value: EMAIL_PLACEHOLDER, href: EMAIL },
+    { label: 'Телефон', value: PHONE_PLACEHOLDER, href: PHONE },
+    { label: 'ВКонтакте', value: VK_FOUNDER_PLACEHOLDER, href: VK_FOUNDER },
 ]
+
 </script>
- 

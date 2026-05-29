@@ -1,3 +1,3 @@
 <template>
-    <develop></develop>
+  <DocsView />
 </template>

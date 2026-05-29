@@ -13,7 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import type { IconName } from '../ui/AppIcon.vue';
 import type { StatCardProps } from '../../types/props.types.js';
 
 defineProps<StatCardProps>()
