@@ -6,7 +6,7 @@
             </div>
             <div>
                 <div class="font-bold text-slate dark:text-white">{{ title }}</div>
-                <div class="text-sm text-gray-500 dark:text-beige-100/70">{{ value }}</div>
+                <div class="text-xs sm:text-sm text-gray-500 dark:text-beige-100/70">{{ value }}</div>
             </div>
         </div>
     </a>

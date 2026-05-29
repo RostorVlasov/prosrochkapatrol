@@ -23,7 +23,7 @@
         <div>
             <h1 class="text-2xl mt-4 font-bold">{{ post.title }}</h1>
             <img v-if="post.cover" :src="buildApiUrl(post.cover.url)" :alt="post.cover.alt ? post.cover.alt : 'обложка'"
-                class="rounded-lg shadow-xl mt-4 w-full object-cover max-h-125" />
+                class="rounded-lg shadow-xl aspect-video mt-4 w-full" />
         </div>
 
         <LexicalRender v-if="post.body?.root" class="mt-2" :node="post.body.root" />

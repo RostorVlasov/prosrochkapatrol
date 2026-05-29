@@ -1,5 +1,5 @@
 <template>
-    <AdaptiveContainer class="dark:bg-surface-base bg-stone-100 rounded-md p-4 md:p-8">
+    <AdaptiveContainer class="dark:bg-surface-base bg-stone-100 rounded-md mt-5 p-4 md:p-8">
         <div class="mx-auto">
             <div class="mb-8">
                 <h1 class="text-4xl font-bold leading-tight text-stone-900 dark:text-stone-100 mb-4">

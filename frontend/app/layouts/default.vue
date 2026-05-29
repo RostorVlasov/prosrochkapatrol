@@ -56,29 +56,7 @@
             </div>
         </main>
 
-        <nav class="lg:hidden fixed bottom-0 right-0 left-0 z-50
-                dark:bg-surface-base bg-beige-500 rounded-tr-2xl rounded-tl-2xl">
-            <MenuSlide>
-                <div v-if="menuActive" class="p-5 flex flex-col gap-4">
-                    <MobileMenuItem v-for="page in pages.other" @click="menuActive = false" :to="page.url">{{ page.name
-                    }}
-                    </MobileMenuItem>
-                </div>
-            </MenuSlide>
-            <div class="py-3 pb-6 px-8">
-                <div class="flex justify-between items-center mobile-navbar">
-                    <MobileNavItem v-for="page in pages.sidebar" @click="menuActive = false" :icon="page.icon"
-                        :to="page.url"></MobileNavItem>
-
-                    <div class="flex items-center cursor-pointer" @click.stop="menuActive = !menuActive">
-                        <AppIcon :class="` size-8 ${menuActive
-                            ? 'dark:text-surface-brown text-white'
-                            : 'dark:text-white text-beige-100'}
-                        `" name="hamburger" />
-                    </div>
-                </div>
-            </div>
-        </nav>
+        <MobileNav v-model="menuActive"/>
 
     </div>
 </template>
@@ -107,3 +85,4 @@ useHead({
     meta: [{ name: 'theme-color', content: themeColor }]
 })
 </script>
+

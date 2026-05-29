@@ -23,24 +23,7 @@
             </div>
 
             <div class="mt-16">
-                <GradientCta icon="chatBubble" title="Не нашли ответ?"
-                    subtitle="Свяжитесь с основателем проекта напрямую — он ответит быстро и по существу.">
-                    <a :href="TELEGRAM_FOUNDER"
-                        class="inline-flex items-center gap-2 px-6 py-3 bg-sky-500 text-white rounded-xl font-bold hover:bg-sky-600 transition-colors">
-                        <AppIcon name="telegram" class="w-5 h-5" />
-                        Telegram
-                    </a>
-                    <a :href="PHONE"
-                        class="inline-flex items-center gap-2 px-6 py-3 bg-slate dark:bg-white text-white dark:text-slate rounded-xl font-bold hover:bg-gray-500 dark:hover:bg-beige-100 transition-colors">
-                        <AppIcon name="phone" class="w-5 h-5" />
-                        +7 (917) 176-67-46
-                    </a>
-                    <a :href="EMAIL"
-                        class="inline-flex items-center gap-2 px-6 py-3 bg-beige-500 text-white rounded-xl font-bold hover:bg-beige-600 transition-colors">
-                        <AppIcon name="envelope" class="w-5 h-5" />
-                        Email
-                    </a>
-                </GradientCta>
+                <HomeCta/>
             </div>
         </section>
 
@@ -49,5 +32,4 @@
 
 <script setup lang="ts">
 import { faqData } from '~/data/faq'
-import { EMAIL, PHONE, TELEGRAM_FOUNDER } from '~/data/social';
 </script>

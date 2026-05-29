@@ -9,13 +9,15 @@
         </button>
 
         <div class="faq-content" :class="{ 'faq-open': isOpen }">
-            <div class="px-6 pb-6 text-xs">
-                <div class="pt-4 border-t border-beige-100 dark:border-gray-500">
-                    <p v-if="!useHtml" class="text-gray-500 dark:text-beige-100/80 leading-relaxed">
-                        {{ answer }}
-                    </p>
-                    <div v-else class="text-gray-500 dark:text-beige-100/80 leading-relaxed faq-html-content"
-                        v-html="answer" />
+            <div class="faq-inner">
+                <div class="px-6 pb-6 text-xs">
+                    <div class="pt-4 border-t border-beige-100 dark:border-gray-500">
+                        <p v-if="!useHtml" class="text-gray-500 dark:text-beige-100/80 leading-relaxed">
+                            {{ answer }}
+                        </p>
+                        <div v-else class="text-gray-500 dark:text-beige-100/80 leading-relaxed faq-html-content"
+                            v-html="answer" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -41,15 +43,20 @@ defineEmits<{
 
 <style scoped>
 .faq-content {
-    max-height: 0;
+    display: grid;
+    grid-template-rows: 0fr;
     opacity: 0;
-    overflow: hidden;
-    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.35s ease;
 }
 
 .faq-content.faq-open {
-    max-height: 1200px;
+    grid-template-rows: 1fr;
     opacity: 1;
+}
+
+.faq-inner {
+    overflow: hidden;
 }
 
 .faq-html-content :deep(a) {
