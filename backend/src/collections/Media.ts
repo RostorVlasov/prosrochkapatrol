@@ -3,6 +3,7 @@ import { getIP } from '../utils/getIP'
 import sharp from 'sharp'
 
 const DAILY_MEDIA_LIMIT = 20
+const IMAGE_EXTS = ['jpg', 'jpeg', 'png', 'webp', 'avif']
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -13,26 +14,7 @@ export const Media: CollectionConfig = {
   admin: {
     hidden: ({ user }) => user?.role !== 'admin',
   },
-  upload: {
-    handlers: [
-      async (req) => {
-        if (!req.file) return
-
-        const now = new Date()
-        const timestamp = now.toISOString().replace(/[:.]/g, '-').slice(0, 19)
-        const random = Math.random().toString(36).slice(2, 7)
-        const ext = req.file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
-
-        req.file.name = `${timestamp}-${random}.${ext}`
-
-        if (['jpg', 'jpeg', 'png', 'webp', 'avif'].includes(ext)) {
-          req.file.data = await sharp(req.file.data)
-            .withMetadata({})
-            .toBuffer()
-        }
-      },
-    ],
-  },
+  upload: true,
   access: {
     create: () => true,
     read: () => true,
@@ -77,28 +59,42 @@ export const Media: CollectionConfig = {
     beforeOperation: [
       async ({ operation, req, args }) => {
         if (operation !== 'create') return args
-        if (req.user) return args
 
-        const ip = getIP(req)
+        if (!req.user) {
+          const ip = getIP(req)
+          const startOfDay = new Date()
+          startOfDay.setHours(0, 0, 0, 0)
 
-        const startOfDay = new Date()
-        startOfDay.setHours(0, 0, 0, 0)
+          const result = await req.payload.find({
+            collection: 'media',
+            where: {
+              and: [
+                { ip_address: { equals: ip } },
+                { createdAt: { greater_than: startOfDay.toISOString() } },
+              ],
+            },
+            limit: 0,
+          })
 
-        const result = await req.payload.find({
-          collection: 'media',
-          where: {
-            and: [
-              { ip_address: { equals: ip } },
-              { createdAt: { greater_than: startOfDay.toISOString() } },
-            ],
-          },
-          limit: 0,
-        })
+          if (result.totalDocs >= DAILY_MEDIA_LIMIT) {
+            const err = new Error('Достигнут лимит загрузок медиа на сегодня') as any
+            err.status = 429
+            throw err
+          }
+        }
 
-        if (result.totalDocs >= DAILY_MEDIA_LIMIT) {
-          const err = new Error('Достигнут лимит загрузок медиа на сегодня') as any
-          err.status = 429
-          throw err
+        const file = req.file
+        if (!file) return args
+
+        const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19)
+        const random = Math.random().toString(36).slice(2, 7)
+
+        file.name = `${timestamp}-${random}.${ext}`
+        if (IMAGE_EXTS.includes(ext)) {
+          file.data = await sharp(file.data)
+            .withMetadata({})
+            .toBuffer()
         }
 
         return args
@@ -109,9 +105,7 @@ export const Media: CollectionConfig = {
         if (req.user) {
           data.uploaded_by = req.user.id
         }
-
         data.ip_address = getIP(req)
-
         return data
       },
     ],
