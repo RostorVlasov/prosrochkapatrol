@@ -1,5 +1,5 @@
 <template>
-    <section class="py-24">
+    <section id="socials" class="py-24">
         <BaseSectionHeader pill="Контакты проекта" title-before="Наши" title-italic="каналы"
             subtitle="Подписывайтесь, чтобы быть в курсе всех новостей и обзоров" centered />
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">

@@ -33,8 +33,8 @@ const statusMap = {
     active: { label: 'Активен', dot: 'bg-emerald-500' },
     lost: { label: 'Потерян', dot: 'bg-red-500' },
     revoked: { label: 'Отозван', dot: 'bg-gray-400' },
+    notUse: { label: 'Не используется', dot: 'bg-gray-400' },
 }
-
 
 const statusLabel = computed(() => statusMap[props.badge.status]?.label ?? props.badge.status)
 const statusDotClass = computed(() => statusMap[props.badge.status]?.dot ?? 'bg-gray-400')

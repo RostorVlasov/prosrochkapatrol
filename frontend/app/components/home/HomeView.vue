@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-beige-50 dark:bg-gray-900 text-slate dark:text-beige-100 overflow-x-hidden">
+  <div class="bg-beige-50 dark:bg-gray-900 py-18 text-slate dark:text-beige-100 overflow-x-hidden">
     <BlobsBg/>
     <AdaptiveContainer class="p-0!">
 

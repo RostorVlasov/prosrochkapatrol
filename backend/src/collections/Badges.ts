@@ -59,6 +59,7 @@ export const Badges: CollectionConfig = {
                 { label: 'Активен', value: 'active' },
                 { label: 'Отозван', value: 'revoked' },
                 { label: 'Утерян', value: 'lost' },
+                { label: 'Не используется', value: 'notUse' },
             ],
         },
 

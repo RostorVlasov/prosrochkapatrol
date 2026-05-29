@@ -8,7 +8,7 @@
             <h1
                 class="text-5xl sm:text-7xl lg:text-9xl font-black tracking-tighter leading-[0.85] mb-8 text-slate dark:text-white wrap-break-word">
                 Видим то,
-                <span class="text-beige-500 italic block">что<br/> на полках</span>
+                <span class="text-beige-500 italic block">что на<br/> полках</span>
             </h1>
 
             <p
@@ -20,7 +20,7 @@
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button @click="scrollToWhat"
+                <button @click="scrollTo('what')"
                     class="group px-8 py-4 bg-slate dark:bg-white text-white dark:text-slate rounded-xl font-bold text-lg hover:bg-gray-500 dark:hover:bg-beige-100 transition-colors duration-300 flex items-center justify-center gap-2 shadow-xl shadow-slate/20">
                     <AppIcon name="arrowDown"
                         class="w-5 h-5 transition-transform duration-300 group-hover:translate-y-0.5" />
@@ -35,13 +35,3 @@
         </div>
     </section>
 </template>
-
-<script lang="ts" setup>
-
-const scrollToWhat = () => {
-    if (import.meta.client) {
-        document.getElementById('what')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-}
-
-</script>

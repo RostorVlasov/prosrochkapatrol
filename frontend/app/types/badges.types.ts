@@ -5,7 +5,7 @@ export interface BadgeDoc {
     updatedAt: string,
     code: string,
     type: 'P' | 'YOU',
-    status: 'lost' | 'revoked' | 'active',
+    status: 'lost' | 'revoked' | 'active' | 'notUse',
     ownerName?: Author,
     comment?: string,
 }

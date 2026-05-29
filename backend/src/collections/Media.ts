@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload'
 import { getIP } from '../utils/getIP'
+import sharp from 'sharp'
 
 const DAILY_MEDIA_LIMIT = 20
 
@@ -12,7 +13,26 @@ export const Media: CollectionConfig = {
   admin: {
     hidden: ({ user }) => user?.role !== 'admin',
   },
-  upload: true,
+  upload: {
+    handlers: [
+      async (req) => {
+        if (!req.file) return
+
+        const now = new Date()
+        const timestamp = now.toISOString().replace(/[:.]/g, '-').slice(0, 19)
+        const random = Math.random().toString(36).slice(2, 7)
+        const ext = req.file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
+
+        req.file.name = `${timestamp}-${random}.${ext}`
+
+        if (['jpg', 'jpeg', 'png', 'webp', 'avif'].includes(ext)) {
+          req.file.data = await sharp(req.file.data)
+            .withMetadata({})
+            .toBuffer()
+        }
+      },
+    ],
+  },
   access: {
     create: () => true,
     read: () => true,
@@ -76,9 +96,7 @@ export const Media: CollectionConfig = {
         })
 
         if (result.totalDocs >= DAILY_MEDIA_LIMIT) {
-          const err = new Error(
-            `Достигнут лимит загрузок медиа на сегодня`,
-          ) as any
+          const err = new Error('Достигнут лимит загрузок медиа на сегодня') as any
           err.status = 429
           throw err
         }
