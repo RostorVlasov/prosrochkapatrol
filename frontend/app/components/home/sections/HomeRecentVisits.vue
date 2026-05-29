@@ -14,10 +14,13 @@
                 <AppIcon name="arrowRight" class="w-5 h-5" />
             </NuxtLink>
         </div>
-        <ShopsSkeleton v-if="loadingShops" />
-        <div v-else-if="latestShops?.docs.length" class="grid grid-cols-1 sm:grid-cols-3 items-stretch gap-6">
-            <ShopItem v-for="shop in latestShops.docs" :key="shop.id" :shop="shop" />
+
+        <ShopsSkeleton v-if="status === 'pending'" />
+
+        <div v-else-if="latestShops?.length" class="grid grid-cols-1 sm:grid-cols-3 items-stretch gap-6">
+            <ShopItem v-for="shop in latestShops" :key="shop.id" :shop="shop" />
         </div>
+
         <div v-else class="text-center py-12">
             <AppIcon name="exclamationCircle" class="w-16 h-16 text-beige-500 mx-auto mb-4" />
             <p class="text-xl font-bold text-slate dark:text-white mb-2">Ошибка подключения к API</p>
@@ -27,11 +30,12 @@
 </template>
 
 <script lang="ts" setup>
-import { useShopStore } from '~/stores/shops';
+import type { ShopsResponse } from '~/types/shops.types';
 
-const shopsStore = useShopStore()
+const { data, status } = await useApiFetch<ShopsResponse>('/api/shops', {
+    key: 'home-latest-shops',
+    query: { sort: '-date_checked', limit: 4 },
+})
 
-await shopsStore.fetchShopData({ sort: '-date_checked', limit: 4 })
-const { shops: latestShops, isLoading: loadingShops } = storeToRefs(shopsStore)
-
+const latestShops = computed(() => data.value?.docs ?? [])
 </script>

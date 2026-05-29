@@ -210,4 +210,5 @@ const reasonTypeMapping = computed(() => {
     class: 'bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300'
   }
 })
+
 </script>
