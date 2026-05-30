@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload'
+import { DISTRICTS } from '@/data/districts'
 
 export const Shops: CollectionConfig = {
   slug: 'shops',
@@ -156,9 +157,11 @@ export const Shops: CollectionConfig = {
     {
       name: 'district',
       label: 'Район',
-      type: 'text',
+      type: 'select',
+      required: true,
+      options: DISTRICTS,
       admin: {
-        description: 'Заполняется автоматически при выборе адреса',
+        description: 'Выберите район из списка. После выбора появится список микрорайонов.',
       },
     },
 
@@ -167,7 +170,10 @@ export const Shops: CollectionConfig = {
       label: 'Микрорайон',
       type: 'text',
       admin: {
-        description: 'Заполняется автоматически при выборе адреса (если определяется)',
+        description: 'Заполняется автоматически при выборе адреса (если определяется) или вручную',
+        components: {
+          Field: '@/app/components/CalculatedFields/MicrodistrictSelect',
+        },
       },
     },
 

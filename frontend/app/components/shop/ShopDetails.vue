@@ -1,38 +1,46 @@
 <template>
   <AdaptiveContainer class="dark:bg-surface-base bg-stone-100 rounded-md pb-10">
 
+    <!-- Хедер -->
     <div class="flex items-center gap-3 py-4">
-      <NuxtLink :to="pages.sidebar.productReview.url" class="size-9 rounded-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700
-               flex items-center justify-center">
+      <NuxtLink :to="pages.sidebar.productReview.url"
+        class="size-9 rounded-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 flex items-center justify-center">
         <AppIcon name="left" class="size-5" />
       </NuxtLink>
       <span class="text-base font-semibold">Детали инспекции</span>
     </div>
 
+    <!-- Инфобаннер -->
     <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 mt-3 flex gap-3 items-start">
       <img src="/logo.png" alt="logo" class="size-5 shrink-0 mt-0.5">
       <p class="text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
-        Проверка проведена в рамках общественной инициативы
-        <strong>FreshCheck</strong>.
+        Проверка проведена в рамках общественной инициативы <strong>FreshCheck</strong>.
         Цель — объективная оценка качества товаров, условий хранения, чистоты и работы персонала.
         <strong>Не является проверкой официального органа!</strong>
       </p>
     </div>
 
-    <div class="w-full rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700">
+    <!-- Фото обложки -->
+    <div class="w-full rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700 mt-3">
       <img :src="buildApiUrl(shop.shop_photo?.url as string)" :alt="shop.store_name"
         class="w-full aspect-video object-cover" />
     </div>
 
+    <!-- Основная информация -->
     <div class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3">
       <div class="flex items-start justify-between gap-3">
-        <div>
+        <div class="flex-1 min-w-0">
           <h4 class="text-lg font-semibold leading-snug">{{ shop.store_name }}</h4>
-          <div class="flex items-center gap-1.5 mt-1.5 text-sm text-gray-500 dark:text-gray-50">
-            <AppIcon name="location" class="size-4 shrink-0" />
+          <div class="flex items-start gap-1.5 mt-1.5 text-sm text-gray-500 dark:text-gray-300">
+            <AppIcon name="location" class="size-4 shrink-0 mt-0.5" />
             <span>{{ shop.address }}</span>
           </div>
-          <div class="flex items-center gap-1.5 mt-1 text-sm text-gray-500 dark:text-gray-50">
+          <div v-if="shop.district || shop.microdistrict"
+            class="flex items-center gap-1.5 mt-1 text-sm text-gray-400 dark:text-gray-400">
+            <AppIcon name="mapPin" class="size-4 shrink-0" />
+            <span>{{ [shop.district, shop.microdistrict].filter(Boolean).join(' · ') }}</span>
+          </div>
+          <div class="flex items-center gap-1.5 mt-1 text-sm text-gray-500 dark:text-gray-300">
             <AppIcon name="calendarMonth" class="size-4 shrink-0" />
             <span>{{ formatDate(shop.date_checked) }}</span>
           </div>
@@ -44,33 +52,38 @@
       </div>
     </div>
 
+    <!-- Оценки -->
     <div class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-xs text-gray-500 dark:text-gray-50 mb-1">Итоговая оценка</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Итоговая оценка</p>
           <p class="text-4xl font-semibold leading-none">
             {{ shop.total_score }}
-            <span class="text-base font-normal text-gray-50">/ 5</span>
+            <span class="text-base font-normal text-gray-400">/ 5</span>
           </p>
           <StarRating :score="shop.total_score" class="mt-2" />
         </div>
         <div class="grid grid-cols-2 gap-2 text-center">
           <div class="bg-gray-50 dark:bg-gray-600 rounded-xl px-3 py-2">
-            <p class="text-xs text-gray-500 dark:text-gray-50">Качество</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Качество</p>
             <p class="text-base font-semibold mt-0.5">{{ shop.quality_final_score.toFixed(1) }}</p>
           </div>
           <div class="bg-gray-50 dark:bg-gray-600 rounded-xl px-3 py-2">
-            <p class="text-xs text-gray-500 dark:text-gray-50">Хранение</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Хранение</p>
             <p class="text-base font-semibold mt-0.5">{{ shop.storage_final_score.toFixed(1) }}</p>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="w-full rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700">
-      <MediaGallery v-if="shop.photos?.length" :images="shop.photos"></MediaGallery>
+
+
+    <!-- Фотогалерея -->
+    <div v-if="shop.photos?.length" class="w-full rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700 mt-3">
+      <MediaGallery :images="shop.photos" />
     </div>
 
+    <!-- Жалоба -->
     <div v-if="shop.complaint_text"
       class="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/30 rounded-2xl p-4 mt-3">
       <div class="flex items-center gap-2 mb-2">
@@ -82,6 +95,7 @@
       </p>
     </div>
 
+    <!-- Качество -->
     <div class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3">
       <div class="flex items-center justify-between mb-3">
         <p class="font-semibold text-base">Качество продукции</p>
@@ -90,9 +104,8 @@
           −{{ shop.quality_total_deduction }}
         </span>
       </div>
-
       <template v-if="shop.quality_violated_articles?.length">
-        <p class="text-xs text-gray-500 dark:text-gray-50 mb-2">Нарушенные статьи</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Нарушенные статьи</p>
         <div class="flex flex-wrap gap-1.5 mb-3">
           <span v-for="(article, idx) in shop.quality_violated_articles" :key="idx"
             class="px-2 py-1 rounded-lg text-xs bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400">
@@ -100,9 +113,8 @@
           </span>
         </div>
       </template>
-
       <template v-if="shop.quality_facts?.length">
-        <p class="text-xs text-gray-500 dark:text-gray-50 mb-2">Факты</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Факты</p>
         <ul class="space-y-1.5">
           <li v-for="(fact, idx) in shop.quality_facts" :key="idx"
             class="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-100">
@@ -111,13 +123,13 @@
           </li>
         </ul>
       </template>
-
       <p v-if="shop.quality_free_text"
         class="text-sm text-gray-600 dark:text-gray-100 mt-3 pt-3 border-t border-gray-100 dark:border-gray-600 whitespace-pre-line leading-relaxed">
         {{ shop.quality_free_text }}
       </p>
     </div>
 
+    <!-- Хранение -->
     <div class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3">
       <div class="flex items-center justify-between mb-3">
         <p class="font-semibold text-base">Условия хранения</p>
@@ -127,9 +139,8 @@
           {{ shop.storage_has_violations ? 'Есть нарушения' : 'Без нарушений' }}
         </span>
       </div>
-
       <template v-if="shop.storage_violated_articles?.length">
-        <p class="text-xs text-gray-500 dark:text-gray-50 mb-2">Нарушенные статьи</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Нарушенные статьи</p>
         <div class="flex flex-wrap gap-1.5 mb-3">
           <span v-for="(article, idx) in shop.storage_violated_articles" :key="idx"
             class="px-2 py-1 rounded-lg text-xs bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400">
@@ -137,9 +148,8 @@
           </span>
         </div>
       </template>
-
       <template v-if="shop.storage_facts?.length">
-        <p class="text-xs text-gray-500 dark:text-gray-50 mb-2">Факты</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Факты</p>
         <ul class="space-y-1.5">
           <li v-for="(fact, idx) in shop.storage_facts" :key="idx"
             class="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-100">
@@ -148,13 +158,13 @@
           </li>
         </ul>
       </template>
-
       <p v-if="shop.storage_free_text"
         class="text-sm text-gray-600 dark:text-gray-100 mt-3 pt-3 border-t border-gray-100 dark:border-gray-600 whitespace-pre-line leading-relaxed">
         {{ shop.storage_free_text }}
       </p>
     </div>
 
+    <!-- Преимущества / недостатки -->
     <div class="grid md:grid-cols-2 gap-3 mt-3">
       <div class="bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800/30 rounded-2xl p-4">
         <p class="text-sm font-semibold text-green-800 dark:text-green-400 mb-2">Преимущества</p>
@@ -180,10 +190,11 @@
       </div>
     </div>
 
+    <!-- Комментарий инспектора -->
     <div v-if="shop.inspector_comment"
       class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3 flex gap-3 items-start">
       <div class="size-9 rounded-full bg-gray-100 dark:bg-gray-600 flex items-center justify-center shrink-0">
-        <AppIcon name="user" class="size-5 text-gray-500 dark:text-gray-50" />
+        <AppIcon name="user" class="size-5 text-gray-500 dark:text-gray-400" />
       </div>
       <div>
         <p class="text-sm font-semibold mb-1">Комментарий инспектора</p>
@@ -193,10 +204,11 @@
       </div>
     </div>
 
+    <!-- Финальный комментарий -->
     <div v-if="shop.admin_panel.final_comment"
       class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3 flex gap-3 items-start">
-      <div class="size-9 rounded-full bg-gray-100 dark:bg-gray-600 flex items-center justify-center shrink-0">
-        <AppIcon name="user" class="size-5 text-gray-500 dark:text-gray-50" />
+      <div class="size-9 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center shrink-0">
+        <AppIcon name="user" class="size-5 text-blue-600 dark:text-blue-400" />
       </div>
       <div>
         <p class="text-sm font-semibold mb-1">Финальный комментарий</p>
@@ -206,16 +218,45 @@
       </div>
     </div>
 
-    <div v-if="shop.admin_panel.author_badge?.code">
-      <span>Бейджик проверяющего</span>
-      <span class="font-mono font-semibold text-base tracking-wide">{{ shop.admin_panel.author_badge?.code }}</span>
+    <!-- Участники проверки -->
+    <div v-if="hasParticipants"
+      class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3">
+      <p class="text-sm font-semibold mb-3">Участники проверки</p>
+      <div class="space-y-3">
+
+        <!-- Основной проверяющий -->
+        <ParticipantRow v-if="shop.main_inspector" role="Основной проверяющий" icon-color="blue"
+          :name="shop.main_inspector.name || shop.main_inspector.email || ''"
+          :badge="shop.admin_panel.main_inspector_badge" />
+
+        <!-- Составитель -->
+        <ParticipantRow v-if="shop.compiler" role="Составитель акта" icon-color="purple" icon="edit"
+          :name="shop.compiler.name || shop.compiler.email || ''" :badge="shop.admin_panel.compiler_badge" />
+
+        <!-- Другие проверяющие -->
+        <ParticipantRow v-for="(item, idx) in shop.other_inspectors" :key="idx" role="Проверяющий" icon-color="gray"
+          :name="item.inspector.name || item.inspector.email || ''"
+          :badge="shop.admin_panel.other_inspector_badges?.[idx]" />
+
+        <!-- Оператор (без бейджика) -->
+        <div v-if="shop.operator" class="flex items-center gap-2.5">
+          <div class="size-8 rounded-full bg-green-100 dark:bg-green-900/40 flex items-center justify-center shrink-0">
+            <AppIcon name="settings" class="size-4 text-green-600 dark:text-green-400" />
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Оператор</p>
+            <p class="text-sm font-medium">{{ shop.operator.name || shop.operator.email }}</p>
+          </div>
+        </div>
+
+      </div>
     </div>
 
   </AdaptiveContainer>
 </template>
 
 <script lang="ts" setup>
-import { pages } from '~/data/pages';
+import { pages } from '~/data/pages'
 import type { ShopDoc } from '~/types/shops.types'
 
 const props = defineProps<{ shop: ShopDoc }>()
@@ -225,13 +266,17 @@ const reasonTypeMapping = computed(() => {
   if (props.shop.reason_type === 'planned') {
     return {
       text: 'Плановая',
-      class: 'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300'
+      class: 'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
     }
   }
   return {
     text: 'По жалобе',
-    class: 'bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300'
+    class: 'bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300',
   }
 })
 
+const hasParticipants = computed(() => {
+  const s = props.shop
+  return s.main_inspector || s.compiler || s.operator || s.other_inspectors?.length
+})
 </script>

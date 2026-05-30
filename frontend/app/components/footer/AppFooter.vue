@@ -4,7 +4,7 @@
             class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(214,180,120,0.06),transparent_35%)]" />
 
         <div class="relative max-w-7xl mx-auto px-6 py-7">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 items-start">
                 <div class="flex flex-col gap-4">
                     <NuxtLink to="/" class="inline-flex w-max">
                         <ClientOnly>
@@ -69,9 +69,12 @@
                             >
                                 {{ doc.label }}
                             </span>
+                            
                         </a>
+                        <NuxtLink class="text-gray-500 text-xs transition-colors duration-300 dark:text-beige-100/60 hover:text-beige-500" to="/privacy">Политика конфидициальности</NuxtLink>
                     </div>
                 </div>
+                <h3 class="text-4xl">Раздел какой-то, а то пустовато</h3>
 
                 <div class="flex items-center gap-2 md:justify-end">
                     <a
@@ -89,6 +92,8 @@
                         />
                     </a>
                 </div>
+
+                
             </div>
 
             <div
@@ -97,7 +102,7 @@
                 <div class="w-max">
                     <Mervik />
                 </div>
-
+                <p class="max-w-4xl text-[11px] text-gray-400 dark:text-beige-100/40 md:text-right">*Слова «проверка» и «проверяющий» означают «общественный мониторинг» и «участник общественного мониторинга» соответственно</p>
                 <p
                     class="max-w-4xl text-[11px] leading-relaxed text-gray-400 dark:text-beige-100/40 md:text-right"
                 >

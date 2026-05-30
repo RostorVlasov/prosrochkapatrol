@@ -88,7 +88,8 @@ const icons = {
   informationCircle: 'i-heroicons-information-circle-20-solid',
   starHero: 'i-heroicons-star-20-solid',
   shieldCheck: 'heroicons:shield-check-16-solid',
-
+  edit: 'ph:pencil-bold',
+  mapPin: 'ph:map-pin',
 
   // возможно надо рефактор
   newspaper: 'i-heroicons-newspaper-20-solid',
