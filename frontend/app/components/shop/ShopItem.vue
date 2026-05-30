@@ -23,7 +23,7 @@
 
                 <div class="flex items-center gap-2 mt-1.5 text-sm text-gray-500 dark:text-gray-200">
                     <AppIcon name="location" class="size-4 shrink-0" />
-                    <span class="truncate">{{ shop.address }}</span>
+                    <span>{{ shop.address }}</span>
                 </div>
 
                 <div class="flex items-center gap-2.5 mt-3">
