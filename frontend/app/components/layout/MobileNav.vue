@@ -5,7 +5,7 @@
         <div class="menu-slide" :class="{ 'menu-open': menuActive }">
             <div class="menu-inner">
                 <div class="p-5 flex flex-col gap-4">
-                    <MobileMenuItem v-for="page in pages.other" @click="menuActive = false" :to="page.url">
+                    <MobileMenuItem v-for="page in pages.other" :icon="page.icon" @click="menuActive = false" :to="page.url">
                         {{ page.name }}
                     </MobileMenuItem>
                 </div>
