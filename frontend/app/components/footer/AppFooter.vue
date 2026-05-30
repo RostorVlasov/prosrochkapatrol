@@ -11,14 +11,14 @@
                             <img
                                 :src="isDark ? '/freshcheck-light.png' : '/freshcheck.png'"
                                 alt="FreshCheck"
-                                class="h-10 w-auto"
+                                class="h-14 w-auto"
                             />
 
                             <template #fallback>
                                 <img
                                     src="/freshcheck.png"
                                     alt="FreshCheck"
-                                    class="h-10 w-auto"
+                                    class="h-14 w-auto"
                                 />
                             </template>
                         </ClientOnly>
@@ -125,6 +125,9 @@ import {
     VK_FOUNDER_PLACEHOLDER,
     PHONE,
     PHONE_PLACEHOLDER,
+    TELEGRAM_CHANNEL,
+    TIKTOK,
+    VK_GROUP
 } from '~/data/social'
 
 
@@ -152,9 +155,9 @@ const isDark = computed(() => mode.value === 'dark')
 const currentYear = new Date().getFullYear()
 
 const contactIcons = [
-    { href: TELEGRAM_FOUNDER, icon: 'telegram' as const, label: 'Telegram' },
-    { href: EMAIL, icon: 'envelope' as const, label: 'Email' },
-    { href: VK_FOUNDER, icon: 'vk' as const, label: 'ВКонтакте' },
+    { href: TELEGRAM_CHANNEL, icon: 'telegram' as const, label: 'Telegram' },
+    { href: TIKTOK, icon: 'tiktok' as const, label: 'TikTok' },
+    { href: VK_GROUP, icon: 'vk' as const, label: 'ВКонтакте' },
 ]
 
 const contactDetails = [

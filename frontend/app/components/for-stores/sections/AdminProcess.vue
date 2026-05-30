@@ -1,5 +1,5 @@
 <template>
-    <section id="how-visit" class="px-6 py-24">
+    <section id="how-visit" class="py-24">
         <BaseSectionHeader pill="Процесс" title-before="Как проходит" title-italic="наш визит" centered />
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
             <div v-for="(step, idx) in processSteps" :key="step.title" class="text-center group min-w-0">

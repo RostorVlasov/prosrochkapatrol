@@ -1,5 +1,5 @@
 <template>
-    <section class="flex items-center justify-center py-20 px-6 relative">
+    <section class="flex items-center justify-center py-20 relative">
         <div class="w-full text-center relative z-10">
             <div class="mb-8">
                 <SectionPill>Для руководителей и сотрудников магазинов</SectionPill>

@@ -1,5 +1,5 @@
 <template>
-  <section id="partners" class="max-w-7xl mx-auto px-6 py-24">
+  <section id="partners" class="max-w-7xl mx-auto py-24">
     <div class="text-center mb-20">
       <div class="mb-6">
         <SectionPill>Партнёрство</SectionPill>
@@ -12,13 +12,13 @@
       </p>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+    <div class="grid grid-cols-1 text-base sm:text-lg lg:grid-cols-2 gap-12 mb-16">
       <div class="space-y-6">
-        <p class="text-lg text-gray-500 dark:text-off-white/80 leading-relaxed">
+        <p class="text-gray-500 dark:text-off-white/80 leading-relaxed">
           <span class="font-bold text-slate dark:text-white">FreshCheck</span> сотрудничает с историческими пабликами,
           городскими сообществами, местными СМИ, коммерческими структурами и политическими партиями.
         </p>
-        <p class="text-lg text-gray-500 dark:text-off-white/80 leading-relaxed">
+        <p class="text-gray-500 dark:text-off-white/80 leading-relaxed">
           Упоминание партнёров осуществляется в любом формате: сквозные баннеры на сайте, репосты, отдельные подразделы
           <span class="italic">«Наши друзья и партнёры»</span>, совместные материалы, публикации в социальных сетях.
         </p>
@@ -27,7 +27,7 @@
             <AppIcon name="shieldCheck" class="w-6 h-6 text-beige-500" />
             Главное условие
           </h3>
-          <p class="text-gray-500 dark:text-off-white/80 leading-relaxed">
+          <p class="text-gray-500 text-sm sm:text-base dark:text-off-white/80 leading-relaxed">
             Партнёрство <span class="font-bold">не влияет на объективность</span> наших оценок и публикаций. Проект
             оставляет за собой право публиковать любые материалы, включая критические отчёты, независимо от наличия
             партнёрских отношений.
@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <div class="bg-white dark:bg-slate rounded-3xl p-8 border border-off-white dark:border-gray-500">
+      <div class="bg-white dark:bg-slate rounded-3xl p-6 sm:p-8 border border-off-white dark:border-gray-500">
         <h3 class="font-bold text-xl mb-6 flex items-center gap-2">
           <AppIcon name="listBullet" class="w-6 h-6 text-beige-500" />
           Форматы взаимодействия
@@ -43,7 +43,7 @@
         <ul class="space-y-4">
           <li v-for="(item, i) in formatsList" :key="i" class="flex gap-3">
             <AppIcon name="check" class="w-5 h-5 text-beige-500 shrink-0 mt-0.5" />
-            <span class="text-gray-500 dark:text-off-white/80">{{ item }}</span>
+            <span class="text-gray-500 text-sm sm:text-base dark:text-off-white/80">{{ item }}</span>
           </li>
         </ul>
       </div>

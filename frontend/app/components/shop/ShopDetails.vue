@@ -2,26 +2,26 @@
   <AdaptiveContainer class="dark:bg-surface-base bg-stone-100 rounded-md pb-10">
 
     <div class="flex items-center gap-3 py-4">
-      <NuxtLink :to="pages.sidebar.productReview.url"
-        class="size-9 rounded-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700
+      <NuxtLink :to="pages.sidebar.productReview.url" class="size-9 rounded-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700
                flex items-center justify-center">
         <AppIcon name="left" class="size-5" />
       </NuxtLink>
       <span class="text-base font-semibold">Детали инспекции</span>
     </div>
 
-    <div class="w-full rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700">
-      <MediaGallery v-if="shop.photos?.length" :images="shop.photos"></MediaGallery>
-    </div>
-
     <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 mt-3 flex gap-3 items-start">
-       <img src="/logo.png" alt="logo" class="size-5 shrink-0 mt-0.5">
+      <img src="/logo.png" alt="logo" class="size-5 shrink-0 mt-0.5">
       <p class="text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
         Проверка проведена в рамках общественной инициативы
         <strong>FreshCheck</strong>.
         Цель — объективная оценка качества товаров, условий хранения, чистоты и работы персонала.
         <strong>Не является проверкой официального органа!</strong>
       </p>
+    </div>
+
+    <div class="w-full rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700">
+      <img :src="buildApiUrl(shop.shop_photo?.url as string)" :alt="shop.store_name"
+        class="w-full aspect-video object-cover" />
     </div>
 
     <div class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3">
@@ -67,6 +67,10 @@
       </div>
     </div>
 
+    <div class="w-full rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700">
+      <MediaGallery v-if="shop.photos?.length" :images="shop.photos"></MediaGallery>
+    </div>
+
     <div v-if="shop.complaint_text"
       class="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/30 rounded-2xl p-4 mt-3">
       <div class="flex items-center gap-2 mb-2">
@@ -81,7 +85,8 @@
     <div class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3">
       <div class="flex items-center justify-between mb-3">
         <p class="font-semibold text-base">Качество продукции</p>
-        <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400">
+        <span
+          class="px-2.5 py-1 rounded-full text-xs font-semibold bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400">
           −{{ shop.quality_total_deduction }}
         </span>
       </div>
@@ -116,10 +121,9 @@
     <div class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3">
       <div class="flex items-center justify-between mb-3">
         <p class="font-semibold text-base">Условия хранения</p>
-        <span class="px-2.5 py-1 rounded-full text-xs font-semibold"
-          :class="shop.storage_has_violations
-            ? 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400'
-            : 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400'">
+        <span class="px-2.5 py-1 rounded-full text-xs font-semibold" :class="shop.storage_has_violations
+          ? 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+          : 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400'">
           {{ shop.storage_has_violations ? 'Есть нарушения' : 'Без нарушений' }}
         </span>
       </div>
@@ -189,6 +193,24 @@
       </div>
     </div>
 
+    <div v-if="shop.admin_panel.final_comment"
+      class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3 flex gap-3 items-start">
+      <div class="size-9 rounded-full bg-gray-100 dark:bg-gray-600 flex items-center justify-center shrink-0">
+        <AppIcon name="user" class="size-5 text-gray-500 dark:text-gray-50" />
+      </div>
+      <div>
+        <p class="text-sm font-semibold mb-1">Финальный комментарий</p>
+        <p class="text-sm text-gray-600 dark:text-gray-100 whitespace-pre-line leading-relaxed">
+          {{ shop.admin_panel.final_comment }}
+        </p>
+      </div>
+    </div>
+
+    <div v-if="shop.admin_panel.author_badge?.code">
+      <span>Бейджик проверяющего</span>
+      <span class="font-mono font-semibold text-base tracking-wide">{{ shop.admin_panel.author_badge?.code }}</span>
+    </div>
+
   </AdaptiveContainer>
 </template>
 
@@ -197,6 +219,7 @@ import { pages } from '~/data/pages';
 import type { ShopDoc } from '~/types/shops.types'
 
 const props = defineProps<{ shop: ShopDoc }>()
+const { buildApiUrl } = useApiBuilder()
 
 const reasonTypeMapping = computed(() => {
   if (props.shop.reason_type === 'planned') {

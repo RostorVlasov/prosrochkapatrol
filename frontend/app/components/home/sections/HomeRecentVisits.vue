@@ -1,13 +1,9 @@
 <template>
     <section class="py-24">
+        <BaseSectionHeader pill="Актуально" title-before="Недавние" title-italic="визиты"
+            subtitle="Свежие обзоры магазинов Астрахани" />
         <div class="flex flex-col sm:flex-row justify-between sm:items-end mb-16 gap-6">
-            <div>
-                <SectionPill>Актуально</SectionPill>
-                <h2 class="text-5xl md:text-6xl font-black mb-4 tracking-tight">
-                    Недавние <span class="italic text-beige-500">визиты</span>
-                </h2>
-                <p class="text-xl text-gray-500 dark:text-beige-100/70">Свежие обзоры магазинов Астрахани</p>
-            </div>
+
             <NuxtLink to="/product-review"
                 class="inline-flex items-center gap-2 text-beige-500 font-bold hover:text-beige-600 transition-colors duration-300">
                 Все магазины

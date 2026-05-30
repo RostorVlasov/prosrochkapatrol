@@ -13,7 +13,7 @@
                     «Одобрено
                     <span class="italic text-beige-100 drop-shadow-md block">FreshCheck»</span>
                 </h2>
-                <p class="text-sm sm:text-lg text-beige-100/80 mb-8 leading-relaxed">
+                <p class="text-xs sm:text-lg text-beige-100/80 mb-8 leading-relaxed">
                     Магазины с рейтингом <strong class="text-white">5/5</strong> получают право использовать
                     видимый знак качества на входе. Это не государственный сертификат — это мнение жителей,
                     основанное на реальных наблюдениях.
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <NuxtLink to="/badges"
-                    class="inline-flex items-center gap-2 px-8 py-4 bg-beige-500 hover:bg-beige-600 text-white rounded-xl font-bold shadow-xl transition-colors duration-300">
+                    class="inline-flex text-xs sm:text-base items-center gap-2 px-8 py-4 bg-beige-500 hover:bg-beige-600 text-white rounded-xl font-bold shadow-xl transition-colors duration-300">
                     Как получить наклейку
                     <AppIcon name="arrowRight" class="w-5 h-5" />
                 </NuxtLink>

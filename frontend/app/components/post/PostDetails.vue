@@ -1,5 +1,5 @@
 <template>
-    <AdaptiveContainer class="dark:bg-surface-base bg-stone-50 rounded-md">
+    <AdaptiveContainer class="dark:bg-surface-base mt-5 bg-stone-50 rounded-md">
         <div>
             <div class="flex gap-4 mb-6 items-center">
                 <NuxtLink :to="pages.sidebar.news.url" class="flex items-center gap-3">

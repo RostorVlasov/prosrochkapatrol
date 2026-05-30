@@ -34,7 +34,7 @@ const cardClasses = tv({
 })({ hover: true })
 
 const iconWrapperClasses = tv({
-    base: 'w-12 h-12 rounded-xl flex items-center justify-center shrink-0 mb-3 sm:mb-0 sm:mr-4 transition-colors',
+    base: 'size-10 sm:size-12 rounded-xl flex items-center justify-center shrink-0 mb-3 sm:mb-0 sm:mr-4 transition-colors',
     variants: {
         color: {
             beige: 'bg-beige-100 dark:bg-gray-500 text-beige-500',

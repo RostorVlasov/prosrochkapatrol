@@ -1,5 +1,5 @@
 <template>
-    <section class="px-6 py-24">
+    <section class="py-24">
         <BaseSectionHeader pill="О проекте" title-before="Кто мы и" title-italic="зачем приходим" centered />
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">

@@ -1,9 +1,8 @@
 <template>
-    <div class="min-h-screen bg-beige-50 dark:bg-gray-900 text-slate dark:text-beige-100 font-sans">
+    <LandingContainer class="px-6">
 
         <section class="min-h-[40vh] flex items-center justify-center px-6 py-20 relative overflow-hidden">
-            <BlobsBg />
-            <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="mx-auto text-center relative z-10">
                 <div class="mb-8">
                     <SectionPill>Часто задаваемые вопросы</SectionPill>
                 </div>
@@ -17,17 +16,17 @@
             </div>
         </section>
 
-        <section class="max-w-4xl mx-auto px-6 py-16">
+        <section class="mx-auto py-16">
             <div class="space-y-12">
                 <FaqCategory v-for="(category, key) in faqData" :key="key" v-bind="category" />
             </div>
-
-            <div class="mt-16">
-                <HomeCta/>
-            </div>
         </section>
 
-    </div>
+        <section class="mt-16">
+            <HomeCta />
+        </section>
+
+    </LandingContainer>
 </template>
 
 <script setup lang="ts">

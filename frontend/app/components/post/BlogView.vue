@@ -9,7 +9,7 @@
 
         <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 mb-8 shadow-sm">
             <h2 class="font-semibold text-zinc-900 dark:text-white mb-3">О разделе</h2>
-            <div class="text-sm text-zinc-600 dark:text-zinc-300 space-y-3 leading-relaxed">
+            <div class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 space-y-3 leading-relaxed">
                 <p>
                     Этот раздел посвящен просветительской работе проекта FreshCheck. Здесь публикуются обзоры законодательства в сфере пищевой безопасности, 
                     полезные советы по защите прав потребителей и актуальные новости нашего движения.

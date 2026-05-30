@@ -18,7 +18,4 @@
 <script lang="ts" setup>
 import { featureBlocksBottom, featureBlocksTop } from '~/data/data';
 
-
-
-
 </script>

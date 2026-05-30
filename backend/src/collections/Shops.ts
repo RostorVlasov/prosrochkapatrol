@@ -35,13 +35,36 @@ export const Shops: CollectionConfig = {
   },
   hooks: {
     beforeChange: [
-      ({ req, data, operation }) => {
+      // Сделали функцию async, чтобы можно было делать запрос к БД
+      async ({ req, data, operation }) => {
         if (!data.admin_panel) {
           data.admin_panel = {}
         }
 
         if (operation === 'create' && req.user) {
           data.admin_panel.created_by = req.user.id
+
+          try {
+            const badgesResult = await req.payload.find({
+              collection: 'badges',
+              where: {
+                ownerName: {
+                  equals: req.user.id,
+                },
+              },
+              depth: 0,
+              limit: 1,
+            })
+
+            if (badgesResult.totalDocs > 0 && badgesResult.docs[0]) {
+              data.admin_panel.author_badge = badgesResult.docs[0].id
+            } else {
+              data.admin_panel.author_badge = null
+            }
+          } catch (error) {
+            console.error('Ошибка при поиске бейджа:', error)
+            data.admin_panel.author_badge = null
+          }
         }
 
         if (req.user?.role === 'inspector' || req.user?.role === 'editor') {
@@ -306,13 +329,6 @@ export const Shops: CollectionConfig = {
           admin: { description: 'Итоговый комментарий инспектора по результатам проверки' },
         },
         {
-          name: 'final_comment',
-          label: 'Финальный комментарий',
-          type: 'textarea',
-          access: { read: ({ req: { user } }) => user?.role === 'admin' },
-          admin: { description: 'Комментарий администратора, публикуемый вместе с отчётом' },
-        },
-        {
           name: 'shop_photo',
           label: 'Обложка магазина',
           type: 'upload',
@@ -352,6 +368,15 @@ export const Shops: CollectionConfig = {
       },
       fields: [
         {
+          name: 'final_comment',
+          label: 'Финальный комментарий',
+          type: 'textarea',
+          access: {
+            update: ({ req: { user } }) => user?.role === 'admin',
+          },
+          admin: { description: 'Комментарий администратора, публикуемый вместе с отчётом' },
+        },
+        {
           name: 'status',
           label: 'Статус',
           type: 'select',
@@ -368,6 +393,19 @@ export const Shops: CollectionConfig = {
           ],
           admin: {
             description: 'Статус проверки отчёта администратором',
+            position: 'sidebar',
+          },
+        },
+        {
+          name: 'author_badge',
+          label: 'Бейджик испектора',
+          type: 'relationship',
+          relationTo: 'badges',
+          access: {
+            update: ({ req: { user } }) => user?.role === 'admin',
+          },
+          admin: {
+            description: 'Бейджик проверяющего инспектора',
             position: 'sidebar',
           },
         },

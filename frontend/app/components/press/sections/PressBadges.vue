@@ -1,6 +1,6 @@
 <template>
   <section class="bg-off-white/30 dark:bg-gray-900 py-24">
-    <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-7xl mx-auto">
       <div class="text-center mb-16">
         <div class="mb-6">
           <SectionPill>Идентификация</SectionPill>
@@ -8,24 +8,24 @@
         <h2 class="text-5xl md:text-6xl font-black mb-6 tracking-tight">
           Система <span class="italic text-beige-500">бейджей</span>
         </h2>
-        <p class="text-xl text-gray-500 dark:text-off-white/70 max-w-3xl mx-auto">
+        <p class="text-lg sm:text-xl text-gray-500 dark:text-off-white/70 max-w-3xl mx-auto">
           Каждый участник имеет персональный код. Проверить подлинность можно онлайн.
         </p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div class="bg-white dark:bg-slate rounded-3xl p-8 border border-off-white dark:border-gray-500">
-          <h3 class="text-2xl font-bold mb-4">Формат кода</h3>
+          <h3 class="text-xl sm:text-2xl font-bold mb-4">Формат кода</h3>
           <code
-            class="block bg-off-white dark:bg-gray-500 p-4 rounded-xl font-mono text-lg mb-6 text-center">#[ТИП][НОМЕР]-AST[БУКВА]</code>
+            class="block bg-off-white dark:bg-gray-500 p-4 rounded-xl font-mono text-sm sm:text-lg mb-6 text-center">#[ТИП][НОМЕР]-AST[БУКВА]</code>
 
-          <ul class="space-y-3 text-gray-500 dark:text-off-white/80">
+          <ul class="space-y-3 text-sm sm:text-base text-gray-500 dark:text-off-white/80">
             <li v-for="item in codeExplanation" :key="item.label">
               <span class="font-bold">{{ item.label }}</span> — {{ item.desc }}
             </li>
           </ul>
 
-          <div class="mt-6 p-4 bg-off-white/30 dark:bg-gray-500/30 rounded-xl">
+          <div class="mt-6 p-4 text-sm sm:text-base bg-off-white/30 dark:bg-gray-500/30 rounded-xl">
             <p class="text-sm font-mono text-gray-500 dark:text-off-white/80">Примеры: #P01-ASTR (Роман Трошин),
               #P04-AST (неперсональный), #YOU1-ASTA (Артём)</p>
           </div>

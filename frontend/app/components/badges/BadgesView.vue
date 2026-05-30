@@ -12,7 +12,7 @@
         <div
             class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 mb-8 shadow-sm">
             <h2 class="font-semibold text-zinc-900 dark:text-white mb-3">О системе идентификации</h2>
-            <div class="text-sm text-zinc-600 dark:text-zinc-300 space-y-3 leading-relaxed">
+            <div class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 space-y-3 leading-relaxed">
                 <p>
                     Бейдж является внутренним средством идентификации участника FreshCheck. Его наличие необходимо для
                     прозрачности нашей деятельности и защиты от самозванства.

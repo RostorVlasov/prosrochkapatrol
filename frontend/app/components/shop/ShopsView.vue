@@ -12,7 +12,7 @@
                 <img src="/logo.png" alt="logo" class="size-6 shrink-0 mt-0.5">
                 <div class="space-y-2">
                     <h2 class="font-semibold text-zinc-900 dark:text-white">О странице</h2>
-                    <p class="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                    <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
                         Здесь публикуются результаты независимых проверок торговых точек Астрахани, проведённых участниками проекта FreshCheck.
                         Все данные являются личными наблюдениями и носят ознакомительный характер. FreshCheck не является государственным органом, информация не заменяет официальные акты и не является юридически значимой для торговых организаций.
                     </p>

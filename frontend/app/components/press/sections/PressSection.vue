@@ -1,5 +1,5 @@
 <template>
-    <section id="press" class="max-w-7xl mx-auto px-6 py-24">
+    <section id="press" class="py-24">
         <div class="text-center mb-20">
             <SectionPill>Пресс-центр</SectionPill>
             <h2 class="text-5xl md:text-6xl font-black mb-6 tracking-tight">
@@ -13,12 +13,12 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div class="space-y-6">
                 <div class="bg-off-white/20 dark:bg-gray-500/20 rounded-2xl p-6 border border-beige-500/20">
-                    <h3 class="font-bold text-xl mb-3 flex items-center gap-2">
+                    <h3 class="font-bold text-lg sm:text-xl mb-3 flex items-center gap-2">
                         <AppIcon name="identification" class="w-6 h-6 text-beige-500" />
                         Кто мы (по документам)
                     </h3>
                     <ul class="space-y-3 text-gray-500 dark:text-off-white/80">
-                        <li v-for="(item, i) in whoWeAreList" :key="i" class="flex gap-2">
+                        <li v-for="(item, i) in whoWeAreList" :key="i" class="flex gap-2 text-sm sm:text-base">
                             <AppIcon name="checkCircle" class="w-5 h-5 text-beige-500 shrink-0 mt-0.5" />
                             <span v-html="item"></span>
                         </li>
@@ -26,11 +26,11 @@
                 </div>
 
                 <div class="bg-white dark:bg-slate rounded-3xl p-8 border border-off-white dark:border-gray-500">
-                    <h3 class="font-bold text-xl mb-4 flex items-center gap-2">
+                    <h3 class="font-bold text-lg sm:text-xl mb-4 flex items-center gap-2">
                         <AppIcon name="cameraHero" class="w-6 h-6 text-beige-500" />
                         Чем занимаемся
                     </h3>
-                    <ul class="space-y-3 text-gray-500 dark:text-off-white/80">
+                    <ul class="space-y-3 text-gray-500 text-sm sm:text-base dark:text-off-white/80">
                         <li v-for="(item, i) in whatWeDoList" :key="i" class="flex gap-2">
                             <AppIcon name="arrowRight" class="w-5 h-5 text-beige-500 shrink-0 mt-0.5" />
                             {{ item }}
@@ -41,12 +41,12 @@
 
             <div class="space-y-6">
                 <div class="bg-white dark:bg-slate rounded-3xl p-8 border border-off-white dark:border-gray-500">
-                    <h3 class="font-bold text-xl mb-4 flex items-center gap-2">
+                    <h3 class="font-bold text-base sm:text-xl mb-4 flex items-center gap-2">
                         <AppIcon name="userCircle" class="w-6 h-6 text-beige-500" />
                         Контакт для комментариев
                     </h3>
                     <div class="flex items-start gap-4 mb-6">
-                        <div class="w-14 h-14 bg-beige-500 rounded-2xl flex items-center justify-center shrink-0">
+                        <div class="size-12 sm:size-14 bg-beige-500 rounded-2xl flex items-center justify-center shrink-0">
                             <span class="text-xl font-bold text-white">РТ</span>
                         </div>
                         <div>
@@ -55,7 +55,7 @@
                         </div>
                     </div>
 
-                    <div class="space-y-3 text-gray-500 dark:text-off-white/80">
+                    <div class="space-y-3 text-sm sm:text-base text-gray-500 dark:text-off-white/80">
                         <a v-for="(contact, i) in contactList" :key="i" :href="contact.link"
                             class="flex items-center gap-2 group hover:text-beige-500 transition-colors">
                             <AppIcon :name="contact.icon" class="w-5 h-5 text-beige-500" />

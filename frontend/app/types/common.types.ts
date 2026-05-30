@@ -1,3 +1,4 @@
+import type { BadgeDoc } from "./badges.types";
 import type { PhotoMeta } from "./photo.types";
 
 export interface Pagination {
@@ -22,5 +23,7 @@ export interface Author {
 export interface AdminPanel {
   status: "published" | "draft" | "archived" | string;
   published_at?: string;
+  final_comment? : string;
+  author_badge?: BadgeDoc;
   author?: Author;
 }
