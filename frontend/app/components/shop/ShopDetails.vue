@@ -1,4 +1,4 @@
-<template>
+<<template>
   <AdaptiveContainer class="dark:bg-surface-base bg-stone-100 rounded-md pb-10">
 
     <!-- Хедер -->
@@ -7,17 +7,27 @@
         class="size-9 rounded-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 flex items-center justify-center">
         <AppIcon name="left" class="size-5" />
       </NuxtLink>
-      <span class="text-base font-semibold">Детали инспекции</span>
+      <div>
+        <span class="text-base font-semibold">Отчёт о визите</span>
+        <p class="text-xs text-gray-400 mt-0.5">Общественный мониторинг, не является актом госоргана</p>
+      </div>
     </div>
 
     <!-- Инфобаннер -->
     <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 mt-3 flex gap-3 items-start">
       <img src="/logo.png" alt="logo" class="size-5 shrink-0 mt-0.5">
-      <p class="text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
-        Проверка проведена в рамках общественной инициативы <strong>FreshCheck</strong>.
-        Цель — объективная оценка качества товаров, условий хранения, чистоты и работы персонала.
-        <strong>Не является проверкой официального органа!</strong>
-      </p>
+      <div class="text-sm text-blue-800 dark:text-blue-300 leading-relaxed space-y-2">
+        <p>
+          Проверка проведена в рамках гражданской инициативы <strong>FreshCheck</strong>.
+          Цель — объективная оценка качества товаров, условий хранения, чистоты и работы персонала.
+          <strong>Не является проверкой официального органа!</strong>
+        </p>
+        <p class="text-xs text-blue-600 dark:text-blue-400">
+          Правовые основания: ст. 29 Конституции РФ, Закон о защите прав потребителей (ст. 7, 8–10),
+          Постановление Правительства РФ № 2463 (п. 2). Все документы проекта открыты:
+          <NuxtLink to="/docs" class="underline">prosrochkapatrol.ru/docs</NuxtLink>.
+        </p>
+      </div>
     </div>
 
     <!-- Фото обложки -->
@@ -42,7 +52,7 @@
           </div>
           <div class="flex items-center gap-1.5 mt-1 text-sm text-gray-500 dark:text-gray-300">
             <AppIcon name="calendarMonth" class="size-4 shrink-0" />
-            <span>{{ formatDate(shop.date_checked) }}</span>
+            <span>Дата визита: {{ formatDate(shop.date_checked) }}</span>
           </div>
         </div>
         <span class="px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap shrink-0"
@@ -76,11 +86,40 @@
       </div>
     </div>
 
-
+    
+    <!-- Преимущества / недостатки -->
+    <div class="grid md:grid-cols-2 gap-3 mt-3">
+      <div class="bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800/30 rounded-2xl p-4">
+        <p class="text-sm font-semibold text-green-800 dark:text-green-400 mb-2">Преимущества</p>
+        <ul v-if="shop.advantages?.length" class="space-y-1.5">
+          <li v-for="(adv, idx) in shop.advantages" :key="idx"
+            class="flex items-start gap-1.5 text-sm text-green-900 dark:text-green-300">
+            <AppIcon name="checkMark" class="size-4 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
+            {{ adv }}
+          </li>
+        </ul>
+        <p v-else class="text-sm text-green-700 dark:text-green-500">Не указаны</p>
+      </div>
+      <div class="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/30 rounded-2xl p-4">
+        <p class="text-sm font-semibold text-red-800 dark:text-red-400 mb-2">Недостатки</p>
+        <ul v-if="shop.disadvantages?.length" class="space-y-1.5">
+          <li v-for="(dis, idx) in shop.disadvantages" :key="idx"
+            class="flex items-start gap-1.5 text-sm text-red-900 dark:text-red-300">
+            <AppIcon name="cross" class="size-4 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
+            {{ dis }}
+          </li>
+        </ul>
+        <p v-else class="text-sm text-red-700 dark:text-red-500">Не указаны</p>
+      </div>
+    </div>
 
     <!-- Фотогалерея -->
     <div v-if="shop.photos?.length" class="w-full rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700 mt-3">
       <MediaGallery :images="shop.photos" />
+      <p class="text-xs text-gray-400 px-1 pt-2 pb-1">
+        Лица сотрудников и посетителей, случайно попавших в кадр, обезличены по умолчанию
+        (ст. 152.1 ГК РФ, Положение о деятельности FC-PD-2026-02).
+      </p>
     </div>
 
     <!-- Жалоба -->
@@ -88,7 +127,7 @@
       class="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/30 rounded-2xl p-4 mt-3">
       <div class="flex items-center gap-2 mb-2">
         <AppIcon name="square" class="size-4 text-red-500" />
-        <p class="text-sm font-semibold text-red-700 dark:text-red-400">Текст жалобы</p>
+        <p class="text-sm font-semibold text-red-700 dark:text-red-400">Жалоба, послужившая основанием для визита</p>
       </div>
       <p class="text-sm text-red-800 dark:text-red-300 whitespace-pre-line leading-relaxed">
         {{ shop.complaint_text }}
@@ -164,40 +203,14 @@
       </p>
     </div>
 
-    <!-- Преимущества / недостатки -->
-    <div class="grid md:grid-cols-2 gap-3 mt-3">
-      <div class="bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800/30 rounded-2xl p-4">
-        <p class="text-sm font-semibold text-green-800 dark:text-green-400 mb-2">Преимущества</p>
-        <ul v-if="shop.advantages?.length" class="space-y-1.5">
-          <li v-for="(adv, idx) in shop.advantages" :key="idx"
-            class="flex items-start gap-1.5 text-sm text-green-900 dark:text-green-300">
-            <AppIcon name="checkMark" class="size-4 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
-            {{ adv }}
-          </li>
-        </ul>
-        <p v-else class="text-sm text-green-700 dark:text-green-500">Не указаны</p>
-      </div>
-      <div class="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/30 rounded-2xl p-4">
-        <p class="text-sm font-semibold text-red-800 dark:text-red-400 mb-2">Недостатки</p>
-        <ul v-if="shop.disadvantages?.length" class="space-y-1.5">
-          <li v-for="(dis, idx) in shop.disadvantages" :key="idx"
-            class="flex items-start gap-1.5 text-sm text-red-900 dark:text-red-300">
-            <AppIcon name="cross" class="size-4 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
-            {{ dis }}
-          </li>
-        </ul>
-        <p v-else class="text-sm text-red-700 dark:text-red-500">Не указаны</p>
-      </div>
-    </div>
-
-    <!-- Комментарий инспектора -->
+    <!-- Комментарий проверяющего -->
     <div v-if="shop.inspector_comment"
       class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3 flex gap-3 items-start">
       <div class="size-9 rounded-full bg-gray-100 dark:bg-gray-600 flex items-center justify-center shrink-0">
         <AppIcon name="user" class="size-5 text-gray-500 dark:text-gray-400" />
       </div>
       <div>
-        <p class="text-sm font-semibold mb-1">Комментарий инспектора</p>
+        <p class="text-sm font-semibold mb-1">Комментарий участника визита</p>
         <p class="text-sm text-gray-600 dark:text-gray-100 whitespace-pre-line leading-relaxed">
           {{ shop.inspector_comment }}
         </p>
@@ -205,7 +218,7 @@
     </div>
 
     <!-- Финальный комментарий -->
-    <div v-if="shop.admin_panel.final_comment"
+    <div v-if="shop.admin_panel?.final_comment"
       class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3 flex gap-3 items-start">
       <div class="size-9 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center shrink-0">
         <AppIcon name="user" class="size-5 text-blue-600 dark:text-blue-400" />
@@ -221,22 +234,22 @@
     <!-- Участники проверки -->
     <div v-if="hasParticipants"
       class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3">
-      <p class="text-sm font-semibold mb-3">Участники проверки</p>
+      <p class="text-sm font-semibold mb-3">Участники визита</p>
       <div class="space-y-3">
 
         <!-- Основной проверяющий -->
         <ParticipantRow v-if="shop.main_inspector" role="Основной проверяющий" icon-color="blue"
           :name="shop.main_inspector.name || shop.main_inspector.email || ''"
-          :badge="shop.admin_panel.main_inspector_badge" />
+          :badge="shop.admin_panel?.main_inspector_badge" />
 
         <!-- Составитель -->
-        <ParticipantRow v-if="shop.compiler" role="Составитель акта" icon-color="purple" icon="edit"
-          :name="shop.compiler.name || shop.compiler.email || ''" :badge="shop.admin_panel.compiler_badge" />
+        <ParticipantRow v-if="shop.compiler" role="Составитель отчёта" icon-color="purple" icon="edit"
+          :name="shop.compiler.name || shop.compiler.email || ''" :badge="shop.admin_panel?.compiler_badge" />
 
         <!-- Другие проверяющие -->
         <ParticipantRow v-for="(item, idx) in shop.other_inspectors" :key="idx" role="Проверяющий" icon-color="gray"
-          :name="item.inspector.name || item.inspector.email || ''"
-          :badge="shop.admin_panel.other_inspector_badges?.[idx]" />
+          :name="item.inspector?.name || item.inspector?.email || ''"
+          :badge="shop.admin_panel?.other_inspector_badges?.[idx]" />
 
         <!-- Оператор (без бейджика) -->
         <div v-if="shop.operator" class="flex items-center gap-2.5">
@@ -250,6 +263,26 @@
         </div>
 
       </div>
+      <p class="text-xs text-gray-400 mt-3 leading-relaxed">
+        Бейджи — внутренняя система идентификации проекта. Проверить подлинность:
+        <a href="https://prosrochkapatrol.ru/badges" target="_blank" class="underline">prosrochkapatrol.ru/badges</a>.
+        Бейдж не является документом государственного образца и не наделяет властными полномочиями
+        (Положение о бейджах FC-BB-2026-04).
+      </p>
+    </div>
+
+    <!-- Юридическая оговорка -->
+    <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-4 mt-3">
+      <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+        <strong>Юридическая оговорка.</strong>
+        Материалы носят исключительно информационный характер и подготовлены на основе открытых источников.
+        Это не юридическая консультация, не акт государственного органа и не экспертное заключение.
+        Термины «проверка» и «проверяющий» обозначают исключительно общественный мониторинг
+        (Публичная политика FC-PP-2026-01, п. 5).
+        FreshCheck не несёт ответственности за решения третьих лиц, принятые на основании данной публикации.
+        При цитировании сохраняйте ссылку на источник (ст. 1274 ГК РФ).
+        Вся документация проекта: <NuxtLink to="/docs" class="underline">prosrochkapatrol.ru/docs</NuxtLink>.
+      </p>
     </div>
 
   </AdaptiveContainer>

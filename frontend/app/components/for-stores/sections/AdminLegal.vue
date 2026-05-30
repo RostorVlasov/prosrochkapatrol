@@ -1,5 +1,5 @@
 <template>
-    <section class="bg-beige-100/30 dark:bg-gray-900 py-24">
+    <section class="dark:bg-gray-900 py-24">
         <div>
             <BaseSectionHeader pill="Правовые основания" title-before="Почему наша работа"
                 title-italic="полностью законна" centered />

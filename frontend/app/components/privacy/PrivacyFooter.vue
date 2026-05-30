@@ -6,16 +6,15 @@
             <p class="text-sm text-gray-500/60 dark:text-off-white/50">Свяжитесь с администрацией для официальных
                 разъяснений</p>
         </div>
-        <a :href="`mailto:${email}`"
+        <a :href="EMAIL"
             class="inline-flex items-center gap-2 px-5 py-3 bg-slate dark:bg-white text-white dark:text-slate rounded-xl font-bold text-sm hover:bg-gray-600 dark:hover:bg-off-white transition-colors shadow-md">
             <AppIcon name="envelope" class="w-4 h-4" />
-            {{ email }}
+            {{ EMAIL_PLACEHOLDER }}
         </a>
     </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
-    email: string
-}>()
+import { EMAIL, EMAIL_PLACEHOLDER } from '~/data/social';
+
 </script>

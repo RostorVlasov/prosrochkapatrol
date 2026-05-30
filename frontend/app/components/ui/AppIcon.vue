@@ -90,6 +90,8 @@ const icons = {
   shieldCheck: 'heroicons:shield-check-16-solid',
   edit: 'ph:pencil-bold',
   mapPin: 'ph:map-pin',
+  megaphone: 'ph:megaphone',
+  tv: 'ph:television',
 
   // возможно надо рефактор
   newspaper: 'i-heroicons-newspaper-20-solid',

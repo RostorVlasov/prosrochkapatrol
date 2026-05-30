@@ -26,7 +26,7 @@
             </div>
           </section>
 
-          <PrivacyFooter :email="EMAIL" />
+          <PrivacyFooter />
         </main>
       </div>
     </LandingContainer>
@@ -34,8 +34,6 @@
 </template>
 
 <script setup lang="ts">
-import { EMAIL } from '~/data/social'
-
 const textSections = [
   {
     id: 'general-provisions',

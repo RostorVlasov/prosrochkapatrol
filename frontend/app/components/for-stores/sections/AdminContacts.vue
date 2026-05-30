@@ -1,5 +1,5 @@
 <template>
-    <section id="contacts" class="bg-beige-100/30 dark:bg-gray-900 py-24">
+    <section id="contacts" class="dark:bg-gray-900 py-24">
         <div class="text-center">
             <BaseSectionHeader pill="Связь" title-before="Остались вопросы?" title-italic="Пишите"
                 subtitle="Основатель проекта отвечает быстро и по-честному" centered />

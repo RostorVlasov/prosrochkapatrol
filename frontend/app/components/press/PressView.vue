@@ -26,7 +26,7 @@
         <PressFaq />
 
         <!-- Контакты -->
-        <AdminContacts />
+        <PressContacts />
 
     </LandingContainer>
 </template>

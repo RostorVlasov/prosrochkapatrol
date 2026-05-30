@@ -1,5 +1,5 @@
 <template>
-    <section class="py-24 bg-off-white/30 dark:bg-gray-900">
+    <section class="py-24">
         <div class="max-w-4xl mx-auto">
             <FaqSection pill="FAQ" title-before="Всё, что спрашивают" title-italic="пресса и партнёры"
                 subtitle="Ответы на основании внутренних документов проекта" :items="mediaFaqItems" />

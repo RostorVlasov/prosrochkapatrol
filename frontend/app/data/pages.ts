@@ -32,29 +32,24 @@ export const pages: {
         contact: {
             url: '/contact',
             name: 'Сообщить о нарушении',
-            icon: 'report',
+            icon: 'megaphone',
         },
     },
     other: {
-        badges: {
-            url: '/badges',
-            name: 'Бейджики участников',
-            icon: "badge",
-        },
-        privacy: {
-            url: '/privacy',
-            name: 'Политика конфиденциальности',
-            icon: 'docs',
-        },
-        press: {
-            url: '/press',
-            name: 'Для СМИ',
-            icon: 'docs',
-        },
         docs: {
             url: '/docs',
             name: 'Документы проекта',
             icon: 'docs',
+        },
+        press: {
+            url: '/press',
+            name: 'Для партнеров и СМИ',
+            icon: 'tv',
+        },
+        badges: {
+            url: '/badges',
+            name: 'Бейджи участников',
+            icon: "badge",
         },
         faq: {
             url: '/faq',
@@ -63,13 +58,18 @@ export const pages: {
         },
         forStores: {
             url: '/for-stores',
-            name: 'Для администраций магазинов',
+            name: 'Для магазинов',
             icon: 'question',
         },
         report: {
             url: '/report',
             name: 'Ошибка в отчёте',
             icon: 'error',
-        }
+        },
+        privacy: {
+            url: '/privacy',
+            name: 'Политика конфиденциальности',
+            icon: 'docs',
+        },
     }
 };

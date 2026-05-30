@@ -56,24 +56,40 @@
             </div>
         </main>
 
-        <MobileNav v-model="menuActive"/>
+        <MobileNav v-model="menuActive" />
 
     </div>
 </template>
 
 <script lang="ts" setup>
 import { pages } from '~/data/pages'
+import { TELEGRAM_CHANNEL } from '~/data/social'
 
 const menuActive = ref(false)
 const mode = useColorMode()
-
 const isDark = computed(() => mode.value === 'dark')
-
+const toast = useToast()
 const isMounted = ref(false)
 
 onMounted(() => {
     isMounted.value = true
+    toast.add({
+        title: 'Подпишись на наш телеграмм канал',
+        description: 'Там публикуются все самые свежие новости',
+        icon: 'ph:telegram-logo',
+        color: 'neutral',
+        type: 'background',
+        duration: 0,
+        actions: [{
+            label: 'Подписаться',
+            onClick: () => {
+                navigateTo(TELEGRAM_CHANNEL, { external: true })
+            }
+        }]
+    })
 })
+
+
 
 function toggleColorMode() {
     mode.preference = isDark.value ? 'light' : 'dark'
@@ -85,4 +101,3 @@ useHead({
     meta: [{ name: 'theme-color', content: themeColor }]
 })
 </script>
-

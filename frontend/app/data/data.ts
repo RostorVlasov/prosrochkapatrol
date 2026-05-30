@@ -338,7 +338,7 @@ export const badgePerks: string[] = [
 export const socialLinks: SocialLinkProps[] = [
     { href: TELEGRAM_CHANNEL, icon: 'telegram', name: 'Telegram',   handle: TELEGRAM_CHANNEL_PLACEHOLDER,    desc: 'Оперативные новости и обзоры', iconBgClass: 'bg-telegram', hoverBorderClass: 'hover:border-telegram' },
     { href: VK_GROUP,         icon: 'vk',       name: 'ВКонтакте',  handle: VK_GROUP_PLACEHOLDER,            desc: 'Сообщество проекта',           iconBgClass: 'bg-vk',       hoverBorderClass: 'hover:border-vk' },
-    { href: TIKTOK,           icon: 'tiktok',   name: 'TikTok',     handle: TIKTOK_PLACEHOLDER,              desc: 'Познавательный контент',        iconBgClass: 'bg-black',    hoverBorderClass: 'hover:border-black' },
+    { href: TIKTOK,           icon: 'tiktok',   name: 'TikTok',     handle: TIKTOK_PLACEHOLDER,              desc: 'Познавательный контент',        iconBgClass: '',    hoverBorderClass: 'hover:border-black' },
 ]
 
 export const contactButtons: ContactButtonProps[] = [

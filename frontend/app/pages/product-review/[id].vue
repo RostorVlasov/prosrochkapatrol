@@ -1,8 +1,6 @@
 <template>
     <ShopDetails v-if="shop" :shop="shop" />
-    <div v-else>
-        Магазин не найден!
-    </div>
+    <NotFound v-else/>
 </template>
 
 <script setup lang="ts">

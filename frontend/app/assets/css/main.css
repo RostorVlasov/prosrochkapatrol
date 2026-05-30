@@ -39,7 +39,12 @@
     --color-slate: #2B2B2B;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     @apply font-sans;
     font-weight: 900;
 }
@@ -61,5 +66,13 @@ body {
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
+}
+
+.my-custom-toast li {
+    padding: 25px;
+}
+
+.my-custom-toast li button {
+    font-size: 15px
 }
