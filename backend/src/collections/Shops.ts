@@ -108,7 +108,6 @@ export const Shops: CollectionConfig = {
           }
         }
 
-        // Расчёт оценок (без изменений)
         const qualityDeduction =
           typeof data.quality_total_deduction === 'number' ? data.quality_total_deduction : 0
         data.quality_final_score = Math.max(0, Math.min(5, 5 - qualityDeduction))
