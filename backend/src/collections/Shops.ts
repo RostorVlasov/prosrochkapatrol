@@ -18,10 +18,8 @@ export const Shops: CollectionConfig = {
       return user.role === 'admin' || user.role === 'editor' || user.role === 'inspector'
     },
     read: ({ req: { user } }) => {
-      if (user?.role === 'admin' || user?.role === 'editor' || user?.role === 'inspector') return true;
-      return {
-        'admin_panel.status': { equals: 'published' }
-      };
+      if (user?.role === 'admin' || user?.role === 'editor' || user?.role === 'inspector') return true
+      return { 'admin_panel.status': { equals: 'published' } }
     },
     update: ({ req: { user } }) => {
       if (!user) return false
@@ -35,7 +33,6 @@ export const Shops: CollectionConfig = {
   },
   hooks: {
     beforeChange: [
-      // Сделали функцию async, чтобы можно было делать запрос к БД
       async ({ req, data, operation }) => {
         if (!data.admin_panel) {
           data.admin_panel = {}
@@ -44,51 +41,92 @@ export const Shops: CollectionConfig = {
         if (operation === 'create' && req.user) {
           data.admin_panel.created_by = req.user.id
 
+          const inspectorId = data.admin_panel.main_inspector || req.user.id
+
           try {
             const badgesResult = await req.payload.find({
               collection: 'badges',
-              where: {
-                ownerName: {
-                  equals: req.user.id,
-                },
-              },
+              where: { ownerName: { equals: inspectorId } },
               depth: 0,
               limit: 1,
             })
 
-            if (badgesResult.totalDocs > 0 && badgesResult.docs[0]) {
-              data.admin_panel.author_badge = badgesResult.docs[0].id
-            } else {
-              data.admin_panel.author_badge = null
-            }
+            data.admin_panel.main_inspector_badge =
+              badgesResult.totalDocs > 0 && badgesResult.docs[0]
+                ? String(badgesResult.docs[0].id)
+                : null
           } catch (error) {
-            console.error('Ошибка при поиске бейджа:', error)
-            data.admin_panel.author_badge = null
+            console.error('Ошибка при поиске бейджа основного проверяющего:', error)
+            data.admin_panel.main_inspector_badge = null
+          }
+
+          if (data.admin_panel.compiler) {
+            try {
+              const compilerBadge = await req.payload.find({
+                collection: 'badges',
+                where: { ownerName: { equals: data.admin_panel.compiler } },
+                depth: 0,
+                limit: 1,
+              })
+              data.admin_panel.compiler_badge =
+                compilerBadge.totalDocs > 0 && compilerBadge.docs[0]
+                  ? String(compilerBadge.docs[0].id)
+                  : null
+            } catch {
+              data.admin_panel.compiler_badge = null
+            }
+          }
+
+          if (Array.isArray(data.admin_panel.other_inspectors) && data.admin_panel.other_inspectors.length > 0) {
+            const otherBadges: (string | null)[] = []
+            for (const inspector of data.admin_panel.other_inspectors) {
+              const inspId = typeof inspector === 'object' ? inspector.id : inspector
+              try {
+                const badge = await req.payload.find({
+                  collection: 'badges',
+                  where: { ownerName: { equals: inspId } },
+                  depth: 0,
+                  limit: 1,
+                })
+                otherBadges.push(
+                  badge.totalDocs > 0 && badge.docs[0] ? String(badge.docs[0].id) : null
+                )
+              } catch {
+                otherBadges.push(null)
+              }
+            }
+            data.admin_panel.other_inspector_badges = otherBadges
           }
         }
 
         if (req.user?.role === 'inspector' || req.user?.role === 'editor') {
-          if (data.admin_panel.status === 'published' || data.admin_panel.status === 'rejected') {
+          if (
+            data.admin_panel.status === 'published' ||
+            data.admin_panel.status === 'rejected'
+          ) {
             data.admin_panel.status = 'pending'
           }
         }
 
-        const qualityDeduction = typeof data.quality_total_deduction === 'number' ? data.quality_total_deduction : 0
+        // Расчёт оценок (без изменений)
+        const qualityDeduction =
+          typeof data.quality_total_deduction === 'number' ? data.quality_total_deduction : 0
         data.quality_final_score = Math.max(0, Math.min(5, 5 - qualityDeduction))
 
         if (data.storage_has_violations) {
-          const storageDeduction = typeof data.storage_total_deduction === 'number' ? data.storage_total_deduction : 0
+          const storageDeduction =
+            typeof data.storage_total_deduction === 'number' ? data.storage_total_deduction : 0
           data.storage_final_score = Math.max(0, Math.min(5, 5 - storageDeduction))
         } else {
           data.storage_final_score = 5
           data.storage_total_deduction = 0
         }
 
-        const quality = typeof data.quality_final_score === 'number' ? data.quality_final_score : 0
-        const storage = typeof data.storage_final_score === 'number' ? data.storage_final_score : 0
-        const totalScore = Math.round(((quality + storage) / 2) * 10) / 10
-
-        data.total_score = totalScore
+        const quality =
+          typeof data.quality_final_score === 'number' ? data.quality_final_score : 0
+        const storage =
+          typeof data.storage_final_score === 'number' ? data.storage_final_score : 0
+        data.total_score = Math.round(((quality + storage) / 2) * 10) / 10
 
         return data
       },
@@ -100,19 +138,59 @@ export const Shops: CollectionConfig = {
       label: 'Название магазина',
       type: 'text',
       required: true,
-      admin: {
-        description: 'Официальное название торговой точки',
-      },
+      admin: { description: 'Официальное название торговой точки' },
     },
+
     {
       name: 'address',
       label: 'Адрес',
       type: 'textarea',
       required: true,
       admin: {
-        description: 'Полный адрес магазина включая город и улицу',
+        description: 'Полный адрес магазина — начните вводить, выберите из подсказок',
+        components: {
+          Field: '@/app/components/CalculatedFields/AddressSuggestField',
+        },
       },
     },
+
+    {
+      name: 'district',
+      label: 'Район',
+      type: 'text',
+      admin: {
+        description: 'Заполняется автоматически при выборе адреса',
+      },
+    },
+
+    {
+      name: 'microdistrict',
+      label: 'Микрорайон',
+      type: 'text',
+      admin: {
+        description: 'Заполняется автоматически при выборе адреса (если определяется)',
+      },
+    },
+
+    {
+      name: 'geo_lat',
+      label: 'Широта',
+      type: 'text',
+      admin: {
+        description: 'Заполняется автоматически',
+        readOnly: true,
+      },
+    },
+    {
+      name: 'geo_lon',
+      label: 'Долгота',
+      type: 'text',
+      admin: {
+        description: 'Заполняется автоматически',
+        readOnly: true,
+      },
+    },
+
     {
       name: 'date_checked',
       label: 'Дата проверки',
@@ -140,6 +218,59 @@ export const Shops: CollectionConfig = {
         condition: (data) => data?.reason_type === 'complaint',
       },
     },
+
+    {
+      label: 'Участники проверки',
+      type: 'collapsible',
+      fields: [
+        {
+          name: 'main_inspector',
+          label: 'Основной проверяющий',
+          type: 'relationship',
+          relationTo: 'users',
+          required: true,
+          admin: {
+            description: 'Главный инспектор, проводивший проверку',
+          },
+        },
+        {
+          name: 'compiler',
+          label: 'Составитель акта',
+          type: 'relationship',
+          relationTo: 'users',
+          admin: {
+            description: 'Сотрудник, составивший акт проверки',
+          },
+        },
+        {
+          name: 'other_inspectors',
+          label: 'Другие проверяющие',
+          type: 'array',
+          admin: {
+            description: 'Дополнительные инспекторы, участвовавшие в проверке',
+          },
+          fields: [
+            {
+              name: 'inspector',
+              label: 'Проверяющий',
+              type: 'relationship',
+              relationTo: 'users',
+              required: true,
+            },
+          ],
+        },
+        {
+          name: 'operator',
+          label: 'Оператор',
+          type: 'relationship',
+          relationTo: 'users',
+          admin: {
+            description: 'Оператор, ответственный за данную проверку',
+          },
+        },
+      ],
+    },
+
     {
       label: 'Оценка качества',
       type: 'collapsible',
@@ -158,17 +289,18 @@ export const Shops: CollectionConfig = {
             if (num > 5) return 'Штраф не может быть больше 5'
             return true
           },
-          admin: { description: 'Сумма баллов, снятых за нарушения качества (от 0 до 5). Итоговая оценка рассчитается автоматически.' },
+          admin: {
+            description:
+              'Сумма баллов, снятых за нарушения качества (от 0 до 5). Итоговая оценка рассчитается автоматически.',
+          },
         },
         {
           name: 'quality_facts',
           label: 'Факты нарушений качества',
           type: 'json',
-          admin: { 
+          admin: {
             description: 'Зафиксированные факты нарушений в формате JSON-массива',
-            components: {
-              Field: '@/app/components/CalculatedFields/TagInputField'
-            }
+            components: { Field: '@/app/components/CalculatedFields/TagInputField' },
           },
         },
         {
@@ -181,11 +313,9 @@ export const Shops: CollectionConfig = {
           name: 'quality_violated_articles',
           label: 'Нарушенные статьи (качество)',
           type: 'json',
-          admin: { 
+          admin: {
             description: 'Список нарушенных нормативных статей в формате JSON-массива',
-            components: {
-              Field: '@/app/components/CalculatedFields/TagInputField'
-            }
+            components: { Field: '@/app/components/CalculatedFields/TagInputField' },
           },
         },
         {
@@ -197,13 +327,12 @@ export const Shops: CollectionConfig = {
           admin: {
             description: 'Вычисляется автоматически: 5 - штраф',
             readOnly: true,
-            components: {
-              Field: '@/app/components/CalculatedFields/QualityFinalScore'
-            }
+            components: { Field: '@/app/components/CalculatedFields/QualityFinalScore' },
           },
         },
       ],
     },
+
     {
       label: 'Оценка хранения',
       type: 'collapsible',
@@ -229,7 +358,8 @@ export const Shops: CollectionConfig = {
             return true
           },
           admin: {
-            description: 'Сумма баллов, снятых за нарушения хранения (от 0 до 5). Итоговая оценка рассчитается автоматически.',
+            description:
+              'Сумма баллов, снятых за нарушения хранения (от 0 до 5). Итоговая оценка рассчитается автоматически.',
             condition: (data) => data?.storage_has_violations === true,
           },
         },
@@ -238,9 +368,7 @@ export const Shops: CollectionConfig = {
           label: 'Факты нарушений хранения',
           type: 'json',
           admin: {
-            components: {
-              Field: '@/app/components/CalculatedFields/TagInputField'
-            },
+            components: { Field: '@/app/components/CalculatedFields/TagInputField' },
             description: 'Зафиксированные факты нарушений хранения в формате JSON-массива',
             condition: (data) => data?.storage_has_violations === true,
           },
@@ -259,9 +387,7 @@ export const Shops: CollectionConfig = {
           label: 'Нарушенные статьи (хранение)',
           type: 'json',
           admin: {
-            components: {
-              Field: '@/app/components/CalculatedFields/TagInputField',
-            },
+            components: { Field: '@/app/components/CalculatedFields/TagInputField' },
             description: 'Список нарушенных нормативных статей в формате JSON-массива',
             condition: (data) => data?.storage_has_violations === true,
           },
@@ -275,13 +401,12 @@ export const Shops: CollectionConfig = {
           admin: {
             description: 'Вычисляется автоматически: 5 - штраф (если нет нарушений, автоматически 5)',
             readOnly: true,
-            components: {
-              Field: '@/app/components/CalculatedFields/StorageFinalScore'
-            }
+            components: { Field: '@/app/components/CalculatedFields/StorageFinalScore' },
           },
         },
       ],
     },
+
     {
       label: 'Итоги и медиа',
       type: 'collapsible',
@@ -295,31 +420,25 @@ export const Shops: CollectionConfig = {
           admin: {
             description: 'Вычисляется автоматически',
             readOnly: true,
-            components: {
-              Field: '@/app/components/CalculatedFields/TotalScore'
-            }
+            components: { Field: '@/app/components/CalculatedFields/TotalScore' },
           },
         },
         {
           name: 'advantages',
           label: 'Преимущества',
           type: 'json',
-          admin: { 
-            components: {
-              Field: '@/app/components/CalculatedFields/TagInputField'
-            },
-            description: 'Список выявленных преимуществ в формате JSON-массива строк' 
+          admin: {
+            components: { Field: '@/app/components/CalculatedFields/TagInputField' },
+            description: 'Список выявленных преимуществ в формате JSON-массива строк',
           },
         },
         {
           name: 'disadvantages',
           label: 'Недостатки',
           type: 'json',
-          admin: { 
-            components: {
-              Field: '@/app/components/CalculatedFields/TagInputField'
-            },
-            description: 'Список выявленных недостатков в формате JSON-массива строк' 
+          admin: {
+            components: { Field: '@/app/components/CalculatedFields/TagInputField' },
+            description: 'Список выявленных недостатков в формате JSON-массива строк',
           },
         },
         {
@@ -344,7 +463,7 @@ export const Shops: CollectionConfig = {
           fields: [
             {
               name: 'photo',
-              label: 'Фотографии с проверки',
+              label: 'Фотография с проверки',
               type: 'upload',
               relationTo: 'media',
               required: true,
@@ -359,6 +478,7 @@ export const Shops: CollectionConfig = {
         },
       ],
     },
+
     {
       type: 'group',
       name: 'admin_panel',
@@ -396,19 +516,48 @@ export const Shops: CollectionConfig = {
             position: 'sidebar',
           },
         },
+
         {
-          name: 'author_badge',
-          label: 'Бейджик испектора',
+          name: 'main_inspector_badge',
+          label: 'Бейджик основного проверяющего',
           type: 'relationship',
           relationTo: 'badges',
           access: {
             update: ({ req: { user } }) => user?.role === 'admin',
           },
           admin: {
-            description: 'Бейджик проверяющего инспектора',
+            description: 'Заполняется автоматически при создании записи',
             position: 'sidebar',
           },
         },
+        {
+          name: 'compiler_badge',
+          label: 'Бейджик составителя',
+          type: 'relationship',
+          relationTo: 'badges',
+          access: {
+            update: ({ req: { user } }) => user?.role === 'admin',
+          },
+          admin: {
+            description: 'Заполняется автоматически при создании записи',
+            position: 'sidebar',
+          },
+        },
+        {
+          name: 'other_inspector_badges',
+          label: 'Бейджики других проверяющих',
+          type: 'relationship',
+          relationTo: 'badges',
+          hasMany: true,
+          access: {
+            update: ({ req: { user } }) => user?.role === 'admin',
+          },
+          admin: {
+            description: 'Заполняется автоматически при создании записи',
+            position: 'sidebar',
+          },
+        },
+
         {
           name: 'created_by',
           label: 'Автор отчёта',

@@ -20,7 +20,7 @@ backend/public/sitemap*.xml
 
 # ===== NODE MODULES =====
 node_modules/
-
+changes.txt
 # ===== ENV FILES =====
 .env
 .env.*
