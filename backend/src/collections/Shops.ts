@@ -1,5 +1,33 @@
-import { CollectionConfig } from 'payload'
+import type { CollectionConfig, CollectionBeforeChangeHook } from 'payload'
 import { DISTRICTS } from '@/data/districts'
+
+type HookPayload = Parameters<CollectionBeforeChangeHook>[0]['req']['payload']
+
+async function findBadgeId(
+  payload: HookPayload,
+  userId: string | number | null | undefined,
+): Promise<string | null> {
+  if (!userId) return null
+  try {
+    const result = await payload.find({
+      collection: 'badges',
+      where: { ownerName: { equals: String(userId) } },
+      depth: 0,
+      limit: 1,
+    })
+    return result.totalDocs > 0 && result.docs[0] ? String(result.docs[0].id) : null
+  } catch {
+    return null
+  }
+}
+
+function resolveId(value: unknown): string | null {
+  if (!value) return null
+  if (typeof value === 'object' && value !== null && 'id' in value) {
+    return String((value as { id: unknown }).id)
+  }
+  return String(value)
+}
 
 export const Shops: CollectionConfig = {
   slug: 'shops',
@@ -35,69 +63,47 @@ export const Shops: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ req, data, operation }) => {
-        if (!data.admin_panel) {
-          data.admin_panel = {}
-        }
+        if (!data.admin_panel) data.admin_panel = {}
 
         if (operation === 'create' && req.user) {
           data.admin_panel.created_by = req.user.id
+        }
 
-          const inspectorId = data.admin_panel.main_inspector || req.user.id
+        const mainInspectorId = resolveId(
+          data.admin_panel?.main_inspector ?? data.main_inspector ?? req.user?.id,
+        )
+        const compilerId = resolveId(data.admin_panel?.compiler ?? data.compiler)
+        const operatorId = resolveId(data.admin_panel?.operator ?? data.operator)
 
-          try {
-            const badgesResult = await req.payload.find({
-              collection: 'badges',
-              where: { ownerName: { equals: inspectorId } },
-              depth: 0,
-              limit: 1,
-            })
+        const [mainBadge, compilerBadge, operatorBadge] = await Promise.all([
+          findBadgeId(req.payload, mainInspectorId),
+          findBadgeId(req.payload, compilerId),
+          findBadgeId(req.payload, operatorId),
+        ])
 
-            data.admin_panel.main_inspector_badge =
-              badgesResult.totalDocs > 0 && badgesResult.docs[0]
-                ? String(badgesResult.docs[0].id)
-                : null
-          } catch (error) {
-            console.error('Ошибка при поиске бейджа основного проверяющего:', error)
-            data.admin_panel.main_inspector_badge = null
-          }
+        data.admin_panel.main_inspector_badge = mainBadge
+        data.admin_panel.compiler_badge = compilerBadge
+        data.admin_panel.operator_badge = operatorBadge
 
-          if (data.admin_panel.compiler) {
-            try {
-              const compilerBadge = await req.payload.find({
-                collection: 'badges',
-                where: { ownerName: { equals: data.admin_panel.compiler } },
-                depth: 0,
-                limit: 1,
-              })
-              data.admin_panel.compiler_badge =
-                compilerBadge.totalDocs > 0 && compilerBadge.docs[0]
-                  ? String(compilerBadge.docs[0].id)
-                  : null
-            } catch {
-              data.admin_panel.compiler_badge = null
+        const otherInspectors: unknown[] = Array.isArray(data.admin_panel?.other_inspectors)
+          ? data.admin_panel.other_inspectors
+          : Array.isArray(data.other_inspectors)
+            ? data.other_inspectors
+            : []
+
+        if (otherInspectors.length > 0) {
+          const ids = otherInspectors.map((entry) => {
+            if (typeof entry === 'object' && entry !== null) {
+              const obj = entry as Record<string, unknown>
+              return resolveId(obj.inspector ?? obj.id ?? obj)
             }
-          }
+            return resolveId(entry)
+          })
 
-          if (Array.isArray(data.admin_panel.other_inspectors) && data.admin_panel.other_inspectors.length > 0) {
-            const otherBadges: (string | null)[] = []
-            for (const inspector of data.admin_panel.other_inspectors) {
-              const inspId = typeof inspector === 'object' ? inspector.id : inspector
-              try {
-                const badge = await req.payload.find({
-                  collection: 'badges',
-                  where: { ownerName: { equals: inspId } },
-                  depth: 0,
-                  limit: 1,
-                })
-                otherBadges.push(
-                  badge.totalDocs > 0 && badge.docs[0] ? String(badge.docs[0].id) : null
-                )
-              } catch {
-                otherBadges.push(null)
-              }
-            }
-            data.admin_panel.other_inspector_badges = otherBadges
-          }
+          const otherBadges = await Promise.all(ids.map((id) => findBadgeId(req.payload, id)))
+          data.admin_panel.other_inspector_badges = otherBadges
+        } else {
+          data.admin_panel.other_inspector_badges = []
         }
 
         if (req.user?.role === 'inspector' || req.user?.role === 'editor') {
@@ -122,10 +128,8 @@ export const Shops: CollectionConfig = {
           data.storage_total_deduction = 0
         }
 
-        const quality =
-          typeof data.quality_final_score === 'number' ? data.quality_final_score : 0
-        const storage =
-          typeof data.storage_final_score === 'number' ? data.storage_final_score : 0
+        const quality = typeof data.quality_final_score === 'number' ? data.quality_final_score : 0
+        const storage = typeof data.storage_final_score === 'number' ? data.storage_final_score : 0
         data.total_score = Math.round(((quality + storage) / 2) * 10) / 10
 
         return data
@@ -140,7 +144,6 @@ export const Shops: CollectionConfig = {
       required: true,
       admin: { description: 'Официальное название торговой точки' },
     },
-
     {
       name: 'address',
       label: 'Адрес',
@@ -153,7 +156,6 @@ export const Shops: CollectionConfig = {
         },
       },
     },
-
     {
       name: 'district',
       label: 'Район',
@@ -164,36 +166,28 @@ export const Shops: CollectionConfig = {
         description: 'Выберите район из списка. После выбора появится список микрорайонов.',
       },
     },
-
     {
       name: 'microdistrict',
       label: 'Микрорайон',
       type: 'text',
       admin: {
-        description: 'Заполняется автоматически при выборе адреса (если определяется) или вручную',
+        description: 'Заполняется автоматически при выборе адреса или вручную',
         components: {
           Field: '@/app/components/CalculatedFields/MicrodistrictSelect',
         },
       },
     },
-
     {
       name: 'geo_lat',
       label: 'Широта',
       type: 'text',
-      admin: {
-        description: 'Заполняется автоматически',
-        readOnly: true,
-      },
+      admin: { description: 'Заполняется автоматически', readOnly: true },
     },
     {
       name: 'geo_lon',
       label: 'Долгота',
       type: 'text',
-      admin: {
-        description: 'Заполняется автоматически',
-        readOnly: true,
-      },
+      admin: { description: 'Заполняется автоматически', readOnly: true },
     },
 
     {
@@ -234,26 +228,20 @@ export const Shops: CollectionConfig = {
           type: 'relationship',
           relationTo: 'users',
           required: true,
-          admin: {
-            description: 'Главный инспектор, проводивший проверку',
-          },
+          admin: { description: 'Главный инспектор, проводивший проверку' },
         },
         {
           name: 'compiler',
           label: 'Составитель акта',
           type: 'relationship',
           relationTo: 'users',
-          admin: {
-            description: 'Сотрудник, составивший акт проверки',
-          },
+          admin: { description: 'Сотрудник, составивший акт проверки' },
         },
         {
           name: 'other_inspectors',
           label: 'Другие проверяющие',
           type: 'array',
-          admin: {
-            description: 'Дополнительные инспекторы, участвовавшие в проверке',
-          },
+          admin: { description: 'Дополнительные инспекторы, участвовавшие в проверке' },
           fields: [
             {
               name: 'inspector',
@@ -269,9 +257,7 @@ export const Shops: CollectionConfig = {
           label: 'Оператор',
           type: 'relationship',
           relationTo: 'users',
-          admin: {
-            description: 'Оператор, ответственный за данную проверку',
-          },
+          admin: { description: 'Оператор, ответственный за данную проверку' },
         },
       ],
     },
@@ -296,7 +282,7 @@ export const Shops: CollectionConfig = {
           },
           admin: {
             description:
-              'Сумма баллов, снятых за нарушения качества (от 0 до 5). Итоговая оценка рассчитается автоматически.',
+              'Сумма баллов, снятых за нарушения качества (0–5). Итоговая оценка рассчитается автоматически.',
           },
         },
         {
@@ -330,7 +316,7 @@ export const Shops: CollectionConfig = {
           min: 0,
           max: 5,
           admin: {
-            description: 'Вычисляется автоматически: 5 - штраф',
+            description: 'Вычисляется автоматически: 5 − штраф',
             readOnly: true,
             components: { Field: '@/app/components/CalculatedFields/QualityFinalScore' },
           },
@@ -364,7 +350,7 @@ export const Shops: CollectionConfig = {
           },
           admin: {
             description:
-              'Сумма баллов, снятых за нарушения хранения (от 0 до 5). Итоговая оценка рассчитается автоматически.',
+              'Сумма баллов, снятых за нарушения хранения (0–5). Итоговая оценка рассчитается автоматически.',
             condition: (data) => data?.storage_has_violations === true,
           },
         },
@@ -373,8 +359,8 @@ export const Shops: CollectionConfig = {
           label: 'Факты нарушений хранения',
           type: 'json',
           admin: {
-            components: { Field: '@/app/components/CalculatedFields/TagInputField' },
             description: 'Зафиксированные факты нарушений хранения в формате JSON-массива',
+            components: { Field: '@/app/components/CalculatedFields/TagInputField' },
             condition: (data) => data?.storage_has_violations === true,
           },
         },
@@ -392,8 +378,8 @@ export const Shops: CollectionConfig = {
           label: 'Нарушенные статьи (хранение)',
           type: 'json',
           admin: {
-            components: { Field: '@/app/components/CalculatedFields/TagInputField' },
             description: 'Список нарушенных нормативных статей в формате JSON-массива',
+            components: { Field: '@/app/components/CalculatedFields/TagInputField' },
             condition: (data) => data?.storage_has_violations === true,
           },
         },
@@ -404,7 +390,8 @@ export const Shops: CollectionConfig = {
           min: 0,
           max: 5,
           admin: {
-            description: 'Вычисляется автоматически: 5 - штраф (если нет нарушений, автоматически 5)',
+            description:
+              'Вычисляется автоматически: 5 − штраф (если нет нарушений — автоматически 5)',
             readOnly: true,
             components: { Field: '@/app/components/CalculatedFields/StorageFinalScore' },
           },
@@ -423,7 +410,7 @@ export const Shops: CollectionConfig = {
           min: 0,
           max: 5,
           admin: {
-            description: 'Вычисляется автоматически',
+            description: 'Вычисляется автоматически: среднее между качеством и хранением',
             readOnly: true,
             components: { Field: '@/app/components/CalculatedFields/TotalScore' },
           },
@@ -433,8 +420,8 @@ export const Shops: CollectionConfig = {
           label: 'Преимущества',
           type: 'json',
           admin: {
-            components: { Field: '@/app/components/CalculatedFields/TagInputField' },
             description: 'Список выявленных преимуществ в формате JSON-массива строк',
+            components: { Field: '@/app/components/CalculatedFields/TagInputField' },
           },
         },
         {
@@ -442,8 +429,8 @@ export const Shops: CollectionConfig = {
           label: 'Недостатки',
           type: 'json',
           admin: {
-            components: { Field: '@/app/components/CalculatedFields/TagInputField' },
             description: 'Список выявленных недостатков в формате JSON-массива строк',
+            components: { Field: '@/app/components/CalculatedFields/TagInputField' },
           },
         },
         {
@@ -464,7 +451,7 @@ export const Shops: CollectionConfig = {
           name: 'photos',
           label: 'Фотографии проверки',
           type: 'array',
-          admin: { description: 'Фотографии сделанные в ходе проверки магазина' },
+          admin: { description: 'Фотографии, сделанные в ходе проверки магазина' },
           fields: [
             {
               name: 'photo',
@@ -477,7 +464,7 @@ export const Shops: CollectionConfig = {
               name: 'caption',
               label: 'Подпись к фото',
               type: 'text',
-              admin: { description: 'Краткое описание того что изображено на фото' },
+              admin: { description: 'Краткое описание того, что изображено на фото' },
             },
           ],
         },
@@ -487,20 +474,11 @@ export const Shops: CollectionConfig = {
     {
       type: 'group',
       name: 'admin_panel',
-      label: 'Админ панель',
+      label: 'Админ-панель',
       admin: {
-        condition: (_, siblingData, { user }) => user?.role === 'admin',
+        condition: (_, _siblingData, { user }) => user?.role === 'admin',
       },
       fields: [
-        {
-          name: 'final_comment',
-          label: 'Финальный комментарий',
-          type: 'textarea',
-          access: {
-            update: ({ req: { user } }) => user?.role === 'admin',
-          },
-          admin: { description: 'Комментарий администратора, публикуемый вместе с отчётом' },
-        },
         {
           name: 'status',
           label: 'Статус',
@@ -531,8 +509,9 @@ export const Shops: CollectionConfig = {
             update: ({ req: { user } }) => user?.role === 'admin',
           },
           admin: {
-            description: 'Заполняется автоматически при создании записи',
+            description: 'Заполняется автоматически',
             position: 'sidebar',
+            readOnly: true,
           },
         },
         {
@@ -544,8 +523,23 @@ export const Shops: CollectionConfig = {
             update: ({ req: { user } }) => user?.role === 'admin',
           },
           admin: {
-            description: 'Заполняется автоматически при создании записи',
+            description: 'Заполняется автоматически',
             position: 'sidebar',
+            readOnly: true,
+          },
+        },
+        {
+          name: 'operator_badge',
+          label: 'Бейджик оператора',
+          type: 'relationship',
+          relationTo: 'badges',
+          access: {
+            update: ({ req: { user } }) => user?.role === 'admin',
+          },
+          admin: {
+            description: 'Заполняется автоматически',
+            position: 'sidebar',
+            readOnly: true,
           },
         },
         {
@@ -558,8 +552,9 @@ export const Shops: CollectionConfig = {
             update: ({ req: { user } }) => user?.role === 'admin',
           },
           admin: {
-            description: 'Заполняется автоматически при создании записи',
+            description: 'Заполняется автоматически',
             position: 'sidebar',
+            readOnly: true,
           },
         },
 
@@ -577,6 +572,7 @@ export const Shops: CollectionConfig = {
             position: 'sidebar',
           },
         },
+
         {
           label: 'Детали проверки',
           type: 'collapsible',

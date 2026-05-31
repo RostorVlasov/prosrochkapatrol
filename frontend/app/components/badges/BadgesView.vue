@@ -66,8 +66,6 @@
 import { refDebounced } from '@vueuse/core'
 import { input } from '~/utils/atoms'
 import type { BadgeDoc, BadgesResponse } from '~/types/badges.types'
-import { vAutoAnimate } from '@formkit/auto-animate';
-
 
 const tabs = [
     { label: 'Все', value: 'all' },
@@ -115,5 +113,15 @@ const filteredBadges = computed(() => {
         return getNum(a.code) - getNum(b.code)
     })
 })
+
+
+useSeoMeta({
+    title: 'Бейджи участников FreshCheck',
+    description: `Бейджи участников FreshCheck`,
+    ogTitle: 'Бейджи участников FreshCheck',
+    ogDescription: `Бейджи участников FreshCheck`,
+    ogImage: '/logo.png',
+    twitterCard: 'summary_large_image',
+});
 
 </script>

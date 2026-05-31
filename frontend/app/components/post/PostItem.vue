@@ -9,7 +9,7 @@
                         :avatar="post.admin_panel.author?.avatar" />
                     <span class="font-semibold text-md">{{ post.admin_panel.author?.name }}</span>
                     <span class="dark:text-gray-300 text-gray-700"> - </span>
-                    <span class="text-sm dark:text-gray-300 text-gray-700">{{ formatDate(post.updatedAt) }}</span>
+                    <span class="text-sm dark:text-gray-300 text-gray-700">{{ formatDate(post.admin_panel.published_at) }}</span>
                 </div>
 
                 <MediaGallery v-if="post.cover" class="pointer-events-none aspect-video" :images="[{

@@ -12,7 +12,7 @@
             <Avatar v-if="post.admin_panel.author?.avatar" size="md" :avatar="post.admin_panel.author?.avatar" />
             <span class="font-semibold text-md">{{ post.admin_panel.author?.name }}</span>
             <span> - </span>
-            <span class="text-sm">{{ formatDate(post.updatedAt) }}</span>
+            <span class="text-sm">{{ formatDate(post.admin_panel.published_at) }}</span>
         </div>
 
         <div v-if="post.rubrics && post.rubrics.length > 0" class="flex flex-col gap-3">

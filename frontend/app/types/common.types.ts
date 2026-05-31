@@ -20,11 +20,19 @@ export interface Author {
   role: string;
 }
 
-export interface AdminPanel {
+export interface PostsAdminPanel {
+  author: Author
+  published_at: string,
   status: 'published' | 'pending' | 'rejected' | string
-  final_comment?: string
+}
+
+export interface AdminPanel {
+  author?: Author
+  published_at?: string,
+  status: 'published' | 'pending' | 'rejected' | string
   main_inspector_badge?: BadgeDoc
   compiler_badge?: BadgeDoc
+  operator_badge?: BadgeDoc
   other_inspector_badges?: BadgeDoc[]
   created_by?: Author
   prev_check_status?: 'never' | 'done'

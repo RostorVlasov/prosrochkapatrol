@@ -13,5 +13,4 @@ const { data: post } = await useApiFetch<PostDoc>(`/api/posts/${id}`, {
     key: `post-${id}`,
 })
 
-
 </script>

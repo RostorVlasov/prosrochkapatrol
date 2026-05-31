@@ -31,4 +31,16 @@
 
 <script setup lang="ts">
 import { faqData } from '~/data/faq'
+
+
+useSeoMeta({
+    title: 'FAQ FreshCheck',
+    description: `FAQ FreshCheck`,
+    ogTitle: 'FAQ FreshCheck',
+    ogDescription: `FAQ FreshCheck`,
+    ogImage: '/logo.png',
+    twitterCard: 'summary_large_image',
+});
+
+
 </script>

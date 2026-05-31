@@ -33,4 +33,14 @@
 import { getFaqSlice } from '~/data/faq'
 const adminFaqSlice = getFaqSlice({ monitoring: 4, photo: 2, participation: 3 })
 
+
+useSeoMeta({
+    title: 'Для магазинов',
+    description: `Раздел для администрации и руководителей магазинов на сайте FreshCheck`,
+    ogTitle: 'Для магазинов на FreshCheck',
+    ogDescription: `Раздел для администрации и руководителей магазинов на сайте FreshCheck`,
+    ogImage: '/logo.png',
+    twitterCard: 'summary_large_image',
+});
+
 </script>

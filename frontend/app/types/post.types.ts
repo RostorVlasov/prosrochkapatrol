@@ -1,4 +1,4 @@
-import type { AdminPanel, Pagination } from "./common.types";
+import type { Pagination, PostsAdminPanel } from "./common.types";
 import type { DocBody } from "./lexical.types";
 import type { PhotoMeta } from "./photo.types";
 import type { Rubric } from "./rubrics.types";
@@ -9,7 +9,7 @@ export interface PostDoc {
   body: DocBody;
   cover?: PhotoMeta;
   rubrics?: Rubric[];
-  admin_panel: AdminPanel;
+  admin_panel: PostsAdminPanel;
   updatedAt: string;
   createdAt: string;
 }

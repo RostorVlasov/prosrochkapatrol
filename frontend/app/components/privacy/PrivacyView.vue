@@ -114,6 +114,17 @@ const textSections = [
 7.3. Актуальность настоящей Политики подтверждается датой последнего обновления, указанной в верхней части документа.`
   }
 ]
+
+useSeoMeta({
+    title: 'Политика конфиденциальности FreshCheck',
+    description: `Раздел о политике конфиденциальности на сайте FreshCheck`,
+    ogTitle: 'Политика конфиденциальности FreshCheck',
+    ogDescription: `Раздел о политике конфиденциальности на сайте FreshCheck`,
+    ogImage: '/logo.png',
+    twitterCard: 'summary_large_image',
+});
+
+
 </script>
 
 <style scoped>

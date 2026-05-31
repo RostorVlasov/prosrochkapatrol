@@ -28,9 +28,6 @@
     <!-- Отзывы -->
     <HomeTestimonials />
 
-    <!-- Знак качества -->
-    <HomeBadge />
-
     <!-- Недавние визиты -->
     <HomeRecentVisits />
 
@@ -54,5 +51,14 @@
 import { getFaqSlice } from '~/data/faq'
 
 const homeFaqSlice = getFaqSlice({ about: 3, monitoring: 3 })
+
+useSeoMeta({
+    title: 'FreshCheck - Главная',
+    description: `FreshCheck - Главная`,
+    ogTitle: 'FreshCheck - Главная',
+    ogDescription: `FreshCheck - Главная`,
+    ogImage: '/logo.png',
+    twitterCard: 'summary_large_image',
+});
 
 </script>

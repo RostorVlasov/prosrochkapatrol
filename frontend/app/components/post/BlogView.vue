@@ -58,7 +58,9 @@ const allPosts = computed<PostDoc[]>(() => {
 })
 
 const filteredPosts = computed(() => {
-    const posts = allPosts.value
+    const posts = [...allPosts.value].sort((a, b) => {
+        return new Date(b.admin_panel.published_at).getTime() - new Date(a.admin_panel.published_at).getTime()
+    })
     const query = debouncedSearch.value.toLowerCase().trim()
 
     if (!query) return posts
@@ -75,4 +77,14 @@ const filteredPosts = computed(() => {
         return title.includes(query) || author.includes(query) || hasRubricMatch
     })
 })
+
+useSeoMeta({
+    title: 'Новости и статьи',
+    description: `Новости и статьи на сайте FreshCheck`,
+    ogTitle: 'Новости и статьи',
+    ogDescription: `Новости и статьи на сайте FreshCheck`,
+    ogImage: '/logo.png',
+    twitterCard: 'summary_large_image',
+});
+
 </script>

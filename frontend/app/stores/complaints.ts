@@ -10,8 +10,7 @@ export const useComplaintsStore = defineStore('complaint', () => {
     async function createReport(body: ComplaintRequest) {
         isLoading.value = true;
         try {
-            const response = await api<unknown>('/api/complaints', { method: 'POST', body })
-            console.log(response)
+            await api<unknown>('/api/complaints', { method: 'POST', body })
         } catch (error) {
             console.error('Ошибка создания жалобы:', error);
         }

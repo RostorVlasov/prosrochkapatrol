@@ -71,7 +71,7 @@
                             </span>
                             
                         </a>
-                        <NuxtLink class="text-gray-500 text-xs transition-colors duration-300 dark:text-beige-100/60 hover:text-beige-500" to="/privacy">Политика конфидициальности</NuxtLink>
+                        <NuxtLink class="text-gray-500 text-xs transition-colors duration-300 dark:text-beige-100/60 hover:text-beige-500" to="/privacy">Политика конфиденциальности</NuxtLink>
                     </div>
                 </div>
 

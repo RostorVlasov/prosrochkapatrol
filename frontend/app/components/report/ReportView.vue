@@ -149,6 +149,15 @@ const {
     handleSubmit,
 } = useReportForm()
 
+useSeoMeta({
+    title: 'Сообщить о нарушении',
+    description: `Раздел чтобы сообщить о нарушении магазинов на сайте FreshCheck`,
+    ogTitle: 'Сообщить о нарушении FreshCheck',
+    ogDescription: `Раздел чтобы сообщить о нарушении магазинов на сайте FreshCheck`,
+    ogImage: '/logo.png',
+    twitterCard: 'summary_large_image',
+});
+
 </script>
 
 <style scoped>

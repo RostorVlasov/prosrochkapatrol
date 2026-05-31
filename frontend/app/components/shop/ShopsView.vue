@@ -177,4 +177,14 @@ const filteredShops = computed(() => {
 
     return sorted
 })
+
+useSeoMeta({
+    title: 'Проверенные магазины',
+    description: `Проверенные магазины на сайте FreshCheck`,
+    ogTitle: 'Проверенные магазины',
+    ogDescription: `Проверенные магазины на сайте FreshCheck`,
+    ogImage: '/logo.png',
+    twitterCard: 'summary_large_image',
+});
+
 </script>

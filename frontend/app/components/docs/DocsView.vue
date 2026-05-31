@@ -18,3 +18,16 @@
 
     </LandingContainer>
 </template>
+
+<script lang="ts" setup>
+
+useSeoMeta({
+    title: 'Документы FreshCheck',
+    description: `Документы FreshCheck`,
+    ogTitle: 'Документы FreshCheck',
+    ogDescription: `Документы FreshCheck`,
+    ogImage: '/logo.png',
+    twitterCard: 'summary_large_image',
+});
+
+</script>

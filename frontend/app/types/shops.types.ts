@@ -1,11 +1,6 @@
 import type { AdminPanel, Author, Pagination } from './common.types'
 import type { Photo, PhotoMeta } from './photo.types'
 
-export interface Inspector {
-  id: number
-  name?: string
-  email?: string
-}
 
 export interface ShopDoc {
   id: number
@@ -20,10 +15,10 @@ export interface ShopDoc {
   reason_type: 'planned' | 'complaint'
   complaint_text?: string | null
 
-  main_inspector?: Inspector
-  compiler?: Inspector
-  other_inspectors?: { inspector: Inspector }[]
-  operator?: Inspector
+  main_inspector?: Author
+  compiler?: Author
+  other_inspectors?: { inspector: Author }[]
+  operator?: Author
 
   quality_total_deduction: number
   quality_facts?: string[]

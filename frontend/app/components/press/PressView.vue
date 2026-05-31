@@ -30,3 +30,16 @@
 
     </LandingContainer>
 </template>
+
+<script lang="ts" setup>
+
+useSeoMeta({
+    title: 'Для СМИ и Партнеров',
+    description: `Раздел для партнеров и СМИ на сайте FreshCheck`,
+    ogTitle: 'Для магазинов на FreshCheck',
+    ogDescription: `Раздел для партнеров и СМИ на сайте FreshCheck`,
+    ogImage: '/logo.png',
+    twitterCard: 'summary_large_image',
+});
+
+</script>

@@ -59,4 +59,15 @@ const partners = [
         link: 'https://t.me/newstransport30'
     }
 ]
+
+
+useSeoMeta({
+    title: 'Партнеры FreshCheck',
+    description: `Раздел о наших партнерах на сайте FreshCheck`,
+    ogTitle: 'Для магазинов на FreshCheck',
+    ogDescription: `Раздел о наших партнерах на сайте FreshCheck`,
+    ogImage: '/logo.png',
+    twitterCard: 'summary_large_image',
+});
+
 </script>

@@ -217,20 +217,6 @@
       </div>
     </div>
 
-    <!-- Финальный комментарий -->
-    <div v-if="shop.admin_panel?.final_comment"
-      class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3 flex gap-3 items-start">
-      <div class="size-9 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center shrink-0">
-        <AppIcon name="user" class="size-5 text-blue-600 dark:text-blue-400" />
-      </div>
-      <div>
-        <p class="text-sm font-semibold mb-1">Финальный комментарий</p>
-        <p class="text-sm text-gray-600 dark:text-gray-100 whitespace-pre-line leading-relaxed">
-          {{ shop.admin_panel.final_comment }}
-        </p>
-      </div>
-    </div>
-
     <!-- Участники проверки -->
     <div v-if="hasParticipants"
       class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3">
@@ -238,29 +224,25 @@
       <div class="space-y-3">
 
         <!-- Основной проверяющий -->
-        <ParticipantRow v-if="shop.main_inspector" role="Основной проверяющий" icon-color="blue"
-          :name="shop.main_inspector.name || shop.main_inspector.email || ''"
+        <ParticipantRow 
+          v-if="shop.main_inspector" role="Основной проверяющий" icon-color="blue"
+          :user="shop.main_inspector"
           :badge="shop.admin_panel?.main_inspector_badge" />
 
         <!-- Составитель -->
-        <ParticipantRow v-if="shop.compiler" role="Составитель отчёта" icon-color="purple" icon="edit"
-          :name="shop.compiler.name || shop.compiler.email || ''" :badge="shop.admin_panel?.compiler_badge" />
+        <ParticipantRow 
+          v-if="shop.compiler" role="Составитель отчёта" icon-color="purple" icon="edit"
+          :user="shop.compiler" :badge="shop.admin_panel?.compiler_badge" />
 
         <!-- Другие проверяющие -->
         <ParticipantRow v-for="(item, idx) in shop.other_inspectors" :key="idx" role="Проверяющий" icon-color="gray"
-          :name="item.inspector?.name || item.inspector?.email || ''"
+          :user="item.inspector"
           :badge="shop.admin_panel?.other_inspector_badges?.[idx]" />
 
-        <!-- Оператор (без бейджика) -->
-        <div v-if="shop.operator" class="flex items-center gap-2.5">
-          <div class="size-8 rounded-full bg-green-100 dark:bg-green-900/40 flex items-center justify-center shrink-0">
-            <AppIcon name="settings" class="size-4 text-green-600 dark:text-green-400" />
-          </div>
-          <div>
-            <p class="text-xs text-gray-400">Оператор</p>
-            <p class="text-sm font-medium">{{ shop.operator.name || shop.operator.email }}</p>
-          </div>
-        </div>
+          <ParticipantRow 
+          v-if="shop.operator" role="Оператор" icon-color="green" icon="settings"
+          :user="shop.operator" 
+          :badge="shop.admin_panel?.operator_badge" />
 
       </div>
       <p class="text-xs text-gray-400 mt-3 leading-relaxed">
@@ -312,4 +294,14 @@ const hasParticipants = computed(() => {
   const s = props.shop
   return s.main_inspector || s.compiler || s.operator || s.other_inspectors?.length
 })
+
+useSeoMeta({
+    title: props.shop?.store_name,
+    description: `Проверка ${props.shop.store_name} по адресу ${props.shop.address} на сайте FreshCheck`,
+    ogTitle: props.shop?.store_name,
+    ogDescription: `${props.shop.store_name} на сайте FreshCheck`,
+    ogImage: '/logo.png',
+    twitterCard: 'summary_large_image',
+});
+
 </script>

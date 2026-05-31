@@ -41,10 +41,6 @@ const images = computed(() => props.images || [])
 const currentPreviewIndex = ref(0)
 const selectedIndex = ref<number | null>(null)
 
-watch(selectedIndex, () => {
-    console.log(selectedIndex)
-})
-
 onMounted(() => {
   if (imgRef.value?.complete) {
     isImageLoading.value = false
