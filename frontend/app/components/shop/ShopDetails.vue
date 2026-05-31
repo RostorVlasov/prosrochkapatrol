@@ -18,7 +18,7 @@
       <img src="/logo.png" alt="logo" class="size-5 shrink-0 mt-0.5">
       <div class="text-sm text-blue-800 dark:text-blue-300 leading-relaxed space-y-2">
         <p>
-          Проверка проведена в рамках гражданской инициативы <strong>FreshCheck</strong>.
+          Проверка* проведена в рамках гражданской инициативы <strong>FreshCheck</strong>.
           Цель — объективная оценка качества товаров, условий хранения, чистоты и работы персонала.
           <strong>Не является проверкой официального органа!</strong>
         </p>
@@ -225,7 +225,7 @@
 
         <!-- Основной проверяющий -->
         <ParticipantRow 
-          v-if="shop.main_inspector" role="Основной проверяющий" icon-color="blue"
+          v-if="shop.main_inspector" role="Основной проверяющий*" icon-color="blue"
           :user="shop.main_inspector"
           :badge="shop.admin_panel?.main_inspector_badge" />
 
@@ -235,7 +235,7 @@
           :user="shop.compiler" :badge="shop.admin_panel?.compiler_badge" />
 
         <!-- Другие проверяющие -->
-        <ParticipantRow v-for="(item, idx) in shop.other_inspectors" :key="idx" role="Проверяющий" icon-color="gray"
+        <ParticipantRow v-for="(item, idx) in shop.other_inspectors" :key="idx" role="Проверяющий*" icon-color="gray"
           :user="item.inspector"
           :badge="shop.admin_panel?.other_inspector_badges?.[idx]" />
 

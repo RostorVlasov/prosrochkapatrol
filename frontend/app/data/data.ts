@@ -441,7 +441,7 @@ export const partners = [
 ]
 
 export const codeExplanation = [
-  { label: '#P', desc: 'Проверяющий (проводит мониторинг)' },
+  { label: '#P', desc: 'Проверяющий* (проводит мониторинг)' },
   { label: '#YOU', desc: 'Блогер (ведёт видеосъёмку для каналов)' },
   { label: 'НОМЕР', desc: 'уникальный номер (01, 02, …)' },
   { label: 'AST', desc: 'код Астрахани' },

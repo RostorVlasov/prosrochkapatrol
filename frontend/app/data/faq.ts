@@ -207,7 +207,7 @@ export const faqData: Record<string, FaqCategory> = {
     title: 'Документы и контакты',
     items: [
       {
-        q: 'Где найти актуальные отчёты о проверках?',
+        q: 'Где найти актуальные отчёты о проверках*?',
         a: 'На официальном сайте: <a href="https://FreshCheckAstra.ru" target="_blank">FreshCheckAstra.ru</a>. Также новости дублируются в Telegram-канале.',
         html: true
       },

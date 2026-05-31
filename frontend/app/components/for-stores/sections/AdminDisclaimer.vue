@@ -1,5 +1,5 @@
 <template>
-    <section class="max-w-7xl mx-auto px-6 py-24">
+    <section class="max-w-7xl mx-auto py-24">
         <div class="
       relative overflow-hidden rounded-3xl p-12
       bg-linear-to-br from-[#F5F0EB] via-[#EDE5D8] to-[#F5F0EB]
@@ -15,16 +15,16 @@
                     Открыты к диалогу
                 </div>
 
-                <h2 class="text-4xl md:text-5xl font-black mb-6">
+                <h2 class="text-2xl sm:text-4xl md:text-5xl font-black mb-6">
                     Мы готовы учитывать особенности вашего магазина
                 </h2>
 
-                <p class="text-lg mb-8 text-[#5C4A35]/80 dark:text-[#E7DDCD]/80">
+                <p class="text-base sm:text-lg mb-8 text-[#5C4A35]/80 dark:text-[#E7DDCD]/80">
                     Предварительное уведомление о визитах, фиксированные дни проверок,
                     любые другие предложения — обсуждаемо.
                 </p>
 
-                <div class="flex flex-wrap justify-center gap-4">
+                <div class="flex flex-wrap justify-center text-sm sm:text-base gap-4">
                     <div
                         class="rounded-full px-6 py-3 backdrop-blur-sm inline-flex items-center gap-2 bg-beige-500/15 text-[#5C4A35] dark:bg-white/10 dark:text-white">
                         <AppIcon name="calendar" class="w-4 h-4" />
