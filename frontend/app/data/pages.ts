@@ -7,7 +7,8 @@ type PageItem = {
 };
 
 type SidebarKeys = 'home' | 'news' | 'productReview' | 'contact';
-type OtherKeys = 'badges' | 'docs' | 'faq' | 'forStores' | 'report' | 'privacy' | 'press' | 'partners';
+type OtherKeys = 'badges' | 'docs' | 'faq' | 'forStores' | 'privacy' | 'press' | 'partners'
+// | 'report'
 
 export const pages: {
     sidebar: Record<SidebarKeys, PageItem>;
@@ -66,11 +67,11 @@ export const pages: {
             name: 'Для магазинов',
             icon: 'question',
         },
-        report: {
-            url: '/report',
-            name: 'Ошибка в отчёте',
-            icon: 'error',
-        },
+        // report: {
+        //     url: '/report',
+        //     name: 'Ошибка в отчёте',
+        //     icon: 'error',
+        // },
         privacy: {
             url: '/privacy',
             name: 'Политика конфиденциальности',

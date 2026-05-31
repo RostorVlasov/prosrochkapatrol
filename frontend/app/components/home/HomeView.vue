@@ -5,7 +5,7 @@
     <HomeHero />
 
     <!-- Статистика -->
-    <HomeStats />
+    <HomeStats :shops-count="shopsCount" />
 
     <!-- Как мы наблюдаем -->
     <HomeApproach />
@@ -29,10 +29,10 @@
     <HomeTestimonials />
 
     <!-- Недавние визиты -->
-    <HomeRecentVisits />
+    <HomeRecentVisits :latest-shops="latestShops" :status="status" />
 
     <!-- FAQ -->
-    <section class="py-24 dark:bg-gray-900">
+    <section class="py-24">
       <FaqSection pill="FAQ" title-before="Частые" title-italic="вопросы" subtitle="Всё, что стоит знать о FreshCheck"
         :items="homeFaqSlice" all-link="/faq" all-link-text="Смотреть все вопросы" />
     </section>
@@ -49,8 +49,17 @@
 <script setup lang="ts">
 
 import { getFaqSlice } from '~/data/faq'
+import type { ShopsResponse } from '~/types/shops.types';
 
 const homeFaqSlice = getFaqSlice({ about: 3, monitoring: 3 })
+
+const { data, status } = await useApiFetch<ShopsResponse>('/api/shops', {
+    key: 'home-latest-shops',
+    query: { sort: '-date_checked', limit: 3 },
+})
+
+const latestShops = computed(() => data.value?.docs ?? [])
+const shopsCount = computed(() => data.value?.totalDocs)
 
 useSeoMeta({
     title: 'FreshCheck - Главная',

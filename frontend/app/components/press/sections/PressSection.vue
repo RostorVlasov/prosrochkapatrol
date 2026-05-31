@@ -85,22 +85,9 @@
 
 <script setup lang="ts">
 import AppIcon, { type IconName } from '@/components/ui/AppIcon.vue'
+import { whatWeDoList, whoWeAreList } from '~/data/data';
 import { EMAIL, EMAIL_PLACEHOLDER, PHONE, PHONE_PLACEHOLDER, TELEGRAM_FOUNDER, TELEGRAM_FOUNDER_PLACEHOLDER } from '~/data/social';
-
-const whoWeAreList = [
-    '<span class="font-bold">FreshCheck</span> — независимая гражданская инициатива жителей Астрахани с августа 2025 года.',
-    'Не зарегистрированы как юрлицо, НКО, ИП или общественное объединение. Участники действуют как обычные граждане — потребители.',
-    'Не являемся представителями Роспотребнадзора, полиции или иных госорганов.',
-    'Деятельность некоммерческая. Рейтинги не продаются и не покупаются.'
-]
-
-const whatWeDoList = [
-    'Общественный мониторинг качества товаров в магазинах Астрахани',
-    'Публикация открытых отчётов с рейтингами и фотофиксацией',
-    'Просвещение: статьи о правах потребителей, разборы законов и технических регламентов',
-    'Новости Астрахани, исторические факты о городе, материалы партнёров',
-    'Помощь жителям в составлении жалоб в Роспотребнадзор'
-]
+  
 
 interface ContactType {
     icon: IconName,

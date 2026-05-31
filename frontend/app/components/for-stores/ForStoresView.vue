@@ -13,8 +13,17 @@
         <!-- Как проходит наш визит -->
         <AdminProcess />
 
+        <!-- Конфиденциальность -->
+        <AdminPrivacy />
+
+        <!-- Идентификация бейджиков -->
+        <PressBadges />
+
+        <!-- Призыв к сотрудничеству -->
+        <AdminDisclaimer/>
+        
         <!-- FAQ -->
-        <section class="py-24 dark:bg-gray-900">
+        <section class="py-24">
             <div>
                 <FaqSection pill="Частые вопросы" title-before="Всё, что вы хотели" title-italic="спросить"
                     subtitle="Отвечаем честно и на основании законов" :items="adminFaqSlice" all-link="/faq"

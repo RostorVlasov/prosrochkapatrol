@@ -25,7 +25,7 @@
         <p class="text-xs text-blue-600 dark:text-blue-400">
           Правовые основания: ст. 29 Конституции РФ, Закон о защите прав потребителей (ст. 7, 8–10),
           Постановление Правительства РФ № 2463 (п. 2). Все документы проекта открыты:
-          <NuxtLink to="/docs" class="underline">prosrochkapatrol.ru/docs</NuxtLink>.
+          <NuxtLink to="/docs" class="underline">FreshCheckAstra.ru/docs</NuxtLink>.
         </p>
       </div>
     </div>
@@ -247,7 +247,7 @@
       </div>
       <p class="text-xs text-gray-400 mt-3 leading-relaxed">
         Бейджи — внутренняя система идентификации проекта. Проверить подлинность:
-        <a href="https://prosrochkapatrol.ru/badges" target="_blank" class="underline">prosrochkapatrol.ru/badges</a>.
+        <a href="https://FreshCheckAstra.ru/badges" target="_blank" class="underline">FreshCheckAstra.ru/badges</a>.
         Бейдж не является документом государственного образца и не наделяет властными полномочиями
         (Положение о бейджах FC-BB-2026-04).
       </p>
@@ -263,7 +263,7 @@
         (Публичная политика FC-PP-2026-01, п. 5).
         FreshCheck не несёт ответственности за решения третьих лиц, принятые на основании данной публикации.
         При цитировании сохраняйте ссылку на источник (ст. 1274 ГК РФ).
-        Вся документация проекта: <NuxtLink to="/docs" class="underline">prosrochkapatrol.ru/docs</NuxtLink>.
+        Вся документация проекта: <NuxtLink to="/docs" class="underline">FreshCheckAstra.ru/docs</NuxtLink>.
       </p>
     </div>
 

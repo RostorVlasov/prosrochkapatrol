@@ -1,5 +1,5 @@
 <template>
-    <section class="py-24 dark:bg-gray-900">
+    <section class="py-24">
         <BaseSectionHeader pill="Отзывы" title-before="Голоса" title-italic="Астрахани"
             subtitle="Слова жителей, которым помогли наши наблюдения" centered />
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">

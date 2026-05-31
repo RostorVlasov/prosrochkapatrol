@@ -2,7 +2,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
   ssr: true,
   site: {
-    url: 'https://test.prosrochkapatrol.ru',
+    url: 'https://FreshCheckAstra.ru',
     name: 'FreshCheck',
     description: 'Общественный мониторинг магазинов Астрахани',
     defaultLocale: 'ru',
@@ -25,7 +25,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiUrl: 'http://127.0.0.1:3333',
     public: {
-      API_URL: 'https://api.test.prosrochkapatrol.ru',
+      API_URL: 'https://api.FreshCheckAstra.ru',
     }
   },
 
@@ -50,7 +50,22 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxtjs/color-mode',
     '@nuxtjs/seo',
+    'nuxt-yandex-metrika',
   ],
+
+  sitemap: {
+    sources: ['/api/__sitemap__/urls'],
+    cacheMaxAgeSeconds: 60 * 60,
+  },
+
+  yandexMetrika: {
+    id: process.env.NUXT_PUBLIC_YM_ID || '104234020',
+    options: {
+      webvisor: true,
+      clickmap: true,
+      trackLinks: true,
+    },
+  },
 
   icon: {
     serverBundle: {

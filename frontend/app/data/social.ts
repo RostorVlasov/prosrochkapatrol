@@ -7,7 +7,7 @@ export const TIKTOK = 'https://www.tiktok.com/@freshcheckastra'
 export const EMAIL = 'mailto:none@prosrochkapatrol.ru'
 export const PRESS_EMAIL = 'mailto:press@prosrochkapatrol.ru'
 export const PHONE = 'tel:+79885951161'
-export const SITE = 'https://prosrochkapatrol.ru'
+export const SITE = 'https://FreshCheckAstra.ru'
 
 export const TELEGRAM_CHANNEL_PLACEHOLDER = '@prosrochka_patrol'
 export const TELEGRAM_FOUNDER_PLACEHOLDER = '@FreshCheckAstraAdmin'

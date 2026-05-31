@@ -38,7 +38,7 @@
 
           <a href="/badges" target="_blank"
             class="inline-flex items-center gap-2 text-beige-500 font-bold hover:underline break-all mb-6">
-            prosrochkapatrol.ru/badges
+            FreshCheckAstra.ru/badges
             <AppIcon name="arrowTopRight" class="w-4 h-4" />
           </a>
 
@@ -59,20 +59,8 @@
 </template>
 
 <script setup lang="ts">
+
 import AppIcon from '@/components/ui/AppIcon.vue'
-
-const codeExplanation = [
-  { label: '#P', desc: 'Проверяющий (проводит мониторинг)' },
-  { label: '#YOU', desc: 'Блогер (ведёт видеосъёмку для каналов)' },
-  { label: 'НОМЕР', desc: 'уникальный номер (01, 02, …)' },
-  { label: 'AST', desc: 'код Астрахани' },
-  { label: 'БУКВА (опционально)', desc: 'именной суффикс (R, D, RK, A)' }
-]
-
-const fakeBadgeSigns = [
-  'Код не содержит # или -AST',
-  'Номер отсутствует в реестре на сайте',
-  'Есть символика госорганов или надзорных структур'
-]
+import { codeExplanation, fakeBadgeSigns } from '~/data/data';
 
 </script>

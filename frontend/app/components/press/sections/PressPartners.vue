@@ -71,37 +71,7 @@
 
 <script setup lang="ts">
 import AppIcon, { type IconName } from '@/components/ui/AppIcon.vue'
+import { formatsList, principlesCards } from '~/data/data';
 
-const formatsList = [
-  'Совместные информационные и просветительские материалы',
-  'Публикации в наших каналах (Telegram, VK, Instagram*, TikTok)',
-  'Размещение в разделе «Наши друзья и партнёры» на сайте',
-  'Сквозные баннеры и репосты в социальных сетях',
-  'Помощь в распространении материалов о правах потребителей',
-  'Гостевые подарки и пожертвования (не влияют на объективность оценок)'
-]
 
-interface principleType {
-  icon: IconName
-  title: string
-  description: string
-}
-
-const principlesCards: principleType[] = [
-  {
-    icon: 'bolt',
-    title: 'Независимость',
-    description: 'Мы независимы от политических структур, коммерческих интересов и конкурентов магазинов. Сотрудничество не меняет этого.'
-  },
-  {
-    icon: 'chatBubbleLeft', // Ключ соответствует mdi:message в вашем AppIcon
-    title: 'Открытость к диалогу',
-    description: 'Готовы обсуждать формат взаимодействия с каждым партнёром индивидуально. Упоминание может быть в любом формате.'
-  },
-  {
-    icon: 'globeAlt',
-    title: 'Общественная польза',
-    description: 'Вся деятельность направлена на формирование среды, где свежие и безопасные продукты — норма для Астрахани.'
-  }
-]
 </script>

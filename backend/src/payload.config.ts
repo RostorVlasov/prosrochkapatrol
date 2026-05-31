@@ -22,7 +22,7 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  cors: ['http://localhost:3000', 'https://test.prosrochkapatrol.ru', 'http://192.168.0.212:3000'],
+  cors: ['http://localhost:3000', 'https://FreshCheckAstra.ru', 'http://192.168.0.212:3000'],
   globals: [SiteSettings],
   admin: {
     components: {

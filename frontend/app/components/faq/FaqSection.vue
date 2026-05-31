@@ -1,5 +1,5 @@
 <template>
-    <section class="py-24 dark:bg-gray-900">
+    <section class="py-24">
         <div class="max-w-4xl mx-auto">
             <BaseSectionHeader :pill="pill" :title-before="titleBefore" :title-italic="titleItalic" :subtitle="subtitle"
                 centered />

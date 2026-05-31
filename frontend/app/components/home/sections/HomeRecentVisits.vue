@@ -26,12 +26,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { ShopsResponse } from '~/types/shops.types';
+import type { ShopDoc, ShopsResponse } from '~/types/shops.types';
 
-const { data, status } = await useApiFetch<ShopsResponse>('/api/shops', {
-    key: 'home-latest-shops',
-    query: { sort: '-date_checked', limit: 3 },
-})
+defineProps<{
+    latestShops: ShopDoc[],
+    status: string
+}>()
 
-const latestShops = computed(() => data.value?.docs ?? [])
 </script>

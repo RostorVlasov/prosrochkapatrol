@@ -56,6 +56,24 @@ body {
     background-image: url('/листья.svg');
 }
 
+select {
+    color: var(--color-gray-800);
+}
+
+.dark select {
+    color: white;
+}
+
+option {
+    color: var(--color-gray-800);
+    background-color: var(--color-beige-50);
+}
+
+.dark option {
+    color: white;
+    background-color: var(--color-gray-700);
+}
+
 .dark body {
     background-color: rgb(33, 33, 33);
     background-image: url('/листья.svg');
