@@ -3,7 +3,7 @@
         <PartnersHero />
 
         <div class="mb-12">
-            <MainPartner v-bind="mainPartner"/>
+            <MainPartner v-bind="mainPartnerBase" :logo="logo"/>
         </div>
         <section class="max-w-7xl mx-auto pb-24">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -18,8 +18,17 @@
 
 <script setup lang="ts">
 const mode = useColorMode()
+const isDark = ref(false)
 
-const isDark = computed(() => mode.value === 'dark')
+onMounted(() => {
+  isDark.value = mode.value === 'dark'
+
+  watch(() => mode.value, (val) => {
+    isDark.value = val === 'dark'
+  })
+})
+
+const logo = computed(() => isDark.value ? '/news_people_white.png' : '/news_people_black.png')
 
 const mainPartnerBase = {
     name: 'Молодёжное движение «Новые»',
@@ -29,11 +38,6 @@ const mainPartnerBase = {
     status: 'Активен',
     link: 'https://t.me/novieastrakhan'
 }
-
-const mainPartner = computed(() => ({
-    ...mainPartnerBase,
-    logo: isDark.value ? '/news_people_white.png' : '/news_people_black.png'
-}))
 
 const partners = [
     {

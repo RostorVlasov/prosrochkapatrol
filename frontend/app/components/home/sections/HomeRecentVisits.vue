@@ -30,7 +30,7 @@ import type { ShopsResponse } from '~/types/shops.types';
 
 const { data, status } = await useApiFetch<ShopsResponse>('/api/shops', {
     key: 'home-latest-shops',
-    query: { sort: '-date_checked', limit: 4 },
+    query: { sort: '-date_checked', limit: 3 },
 })
 
 const latestShops = computed(() => data.value?.docs ?? [])

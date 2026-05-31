@@ -89,8 +89,6 @@ onMounted(() => {
     })
 })
 
-
-
 function toggleColorMode() {
     mode.preference = isDark.value ? 'light' : 'dark'
 }
