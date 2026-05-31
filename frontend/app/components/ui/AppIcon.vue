@@ -92,6 +92,7 @@ const icons = {
   mapPin: 'ph:map-pin',
   megaphone: 'ph:megaphone',
   tv: 'ph:television',
+  partners: 'ph:users',
 
   // возможно надо рефактор
   newspaper: 'i-heroicons-newspaper-20-solid',
