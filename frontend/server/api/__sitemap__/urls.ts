@@ -3,7 +3,11 @@ import { ShopsResponse } from '~/types/shops.types';
 import { PostsResponse } from '~/types/post.types';
 
 export default defineSitemapEventHandler(async () => {
-    const baseURL = 'https://api.FreshCheckAstra.ru'
+  const config = useRuntimeConfig()
+
+  const baseURL = import.meta.server
+    ? (config.apiUrl as string)
+    : config.public.API_URL
 
     const [shops, posts] = await Promise.all([
         $fetch<ShopsResponse>('/api/shops?limit=1000&depth=1', { baseURL }),
