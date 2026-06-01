@@ -70,4 +70,10 @@
 export default {
   name: "NotFoundPage",
 };
+
+if (process.server) {
+  const event = useRequestEvent();
+  setResponseStatus(event, 404);
+}
+
 </script>
