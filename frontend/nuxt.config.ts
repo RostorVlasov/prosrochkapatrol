@@ -1,3 +1,4 @@
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
   ssr: true,
@@ -66,7 +67,6 @@ export default defineNuxtConfig({
       trackLinks: true,
     },
   },
-
   icon: {
     serverBundle: {
       collections: ['ph', 'heroicons', 'mdi']

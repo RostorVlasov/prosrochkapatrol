@@ -1,7 +1,7 @@
 export const useApiBuilder = () => {
     const config = useRuntimeConfig()
     
-    const buildApiUrl = (url: string): string => {
+    const buildApiUrl = (url: string | undefined): string => {
         if (!url) return ''
         if (url.startsWith('http')) return url
     

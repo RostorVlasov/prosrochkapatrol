@@ -27,7 +27,7 @@ export const pages: {
         },
         productReview: {
             url: '/product-review',
-            name: 'Проверенные магазины',
+            name: 'Проверенные* магазины',
             icon: "shops",
         },
         contact: {

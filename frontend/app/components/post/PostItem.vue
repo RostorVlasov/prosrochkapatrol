@@ -9,13 +9,13 @@
                         :avatar="post.admin_panel.author?.avatar" />
                     <span class="font-semibold">{{ post.admin_panel.author?.name }}</span>
                     <span class="dark:text-gray-300 text-gray-700"> - </span>
-                    <span class="text-sm dark:text-gray-300 text-gray-700">{{ formatDate(post.admin_panel.published_at) }}</span>
+                    <span class="text-xs sm:text-sm dark:text-gray-300 text-gray-700">{{
+                        formatDate(post.admin_panel.published_at) }}</span>
                 </div>
 
-                <MediaGallery v-if="post.cover" class="pointer-events-none aspect-video" :images="[{
-                    id: post.cover.id,
-                    photo: post.cover
-                }]" />
+                <img v-if="post.cover" :src="buildApiUrl(post.cover.url)"
+                    :alt="post.cover.alt ? post.cover.alt : 'обложка'"
+                    class="rounded-lg shadow-xl aspect-video mt-4 w-full" />
                 <RubricList class="mt-3" v-if="post.rubrics && post.rubrics.length > 0" :rubrics="post.rubrics" />
             </div>
 
@@ -29,6 +29,8 @@
 <script lang="ts" setup>
 import { pages } from '~/data/pages';
 import type { PostDoc } from '~/types/post.types';
+
+const { buildApiUrl } = useApiBuilder()
 
 const props = defineProps<{
     post: PostDoc

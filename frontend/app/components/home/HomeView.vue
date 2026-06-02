@@ -7,6 +7,9 @@
     <!-- Статистика -->
     <HomeStats :shops-count="shopsCount" />
 
+    <!-- Инструкция -->
+    <HomeManual />
+
     <!-- Как мы наблюдаем -->
     <HomeApproach />
 
