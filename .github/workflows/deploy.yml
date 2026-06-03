@@ -185,7 +185,7 @@ jobs:
             # =========================
             echo "▶ Starting frontend on port 3001..."
             cd $FRONT
-            PORT=3001 nohup node .output/server/index.mjs > $LOGS/frontend.log 2>&1 &
+            PORT=3001 NITRO_PUBLIC_DIR=$FRONT/.output/public nohup node .output/server/index.mjs > $LOGS/frontend.log 2>&1 &
             echo $! > $FRONT_PID
 
             # =========================
