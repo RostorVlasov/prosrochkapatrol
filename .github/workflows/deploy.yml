@@ -157,15 +157,16 @@ jobs:
             # =========================
             echo "🔪 Killing old processes..."
 
-            # 1. Сначала мягко гасим процессы по PID-файлам
             if [ -f $BACK_PID ]; then kill $(cat $BACK_PID) 2>/dev/null || true; fi
             if [ -f $FRONT_PID ]; then kill $(cat $FRONT_PID) 2>/dev/null || true; fi
 
             sleep 1
 
-            # 2. Жестко выбиваем всё, что продолжает занимать порты приложений
-            kill -9 $(lsof -t -i:3333) 2>/dev/null || true
-            kill -9 $(lsof -t -i:3001) 2>/dev/null || true
+            BACK_PORT_PID=$(ss -lptn 'sport = :3333' | grep -oP 'pid=\K\d+') || true
+            FRONT_PORT_PID=$(ss -lptn 'sport = :3001' | grep -oP 'pid=\K\d+') || true
+
+            if [ ! -z "$BACK_PORT_PID" ]; then kill -9 $BACK_PORT_PID 2>/dev/null || true; fi
+            if [ ! -z "$FRONT_PORT_PID" ]; then kill -9 $FRONT_PORT_PID 2>/dev/null || true; fi
 
             rm -f $BACK_PID $FRONT_PID
 
