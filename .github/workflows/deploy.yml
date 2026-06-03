@@ -129,12 +129,13 @@ jobs:
             unzip -o $DEPLOY_ZIP -d $WORKDIR
 
             # =========================
-            # DEPLOY FRONTEND
+            # DEPLOY FRONTEND (Атомарный)
             # =========================
-            echo "🌐 Deploy frontend..."
-            rm -rf $FRONT/.output
-            mkdir -p $FRONT
-            cp -r $WORKDIR/deploy/frontend/.output $FRONT/
+            echo "🌐 Preparing frontend..."
+            FRONT_TMP=$FRONT-tmp
+            rm -rf $FRONT_TMP
+            mkdir -p $FRONT_TMP
+            cp -r $WORKDIR/deploy/frontend/.output $FRONT_TMP/
 
             # =========================
             # DEPLOY BACKEND
@@ -169,8 +170,14 @@ jobs:
             if [ ! -z "$FRONT_PORT_PID" ]; then kill -9 $FRONT_PORT_PID 2>/dev/null || true; fi
 
             rm -f $BACK_PID $FRONT_PID
+            sleep 1
 
-            sleep 2
+            # =========================
+            # СМЕНА ДИРЕКТОРИЙ ФРОНТЕНДА
+            # =========================
+            echo "🔄 Swapping frontend directories..."
+            rm -rf $FRONT
+            mv $FRONT_TMP $FRONT
 
             # =========================
             # START BACKEND
