@@ -157,8 +157,16 @@ jobs:
             # =========================
             echo "🔪 Killing old processes..."
 
-            fuser -k 3333/tcp 2>/dev/null || true
-            fuser -k 3001/tcp 2>/dev/null || true
+            # 1. Сначала мягко гасим процессы по PID-файлам
+            if [ -f $BACK_PID ]; then kill $(cat $BACK_PID) 2>/dev/null || true; fi
+            if [ -f $FRONT_PID ]; then kill $(cat $FRONT_PID) 2>/dev/null || true; fi
+
+            sleep 1
+
+            # 2. Жестко выбиваем всё, что продолжает занимать порты приложений
+            kill -9 $(lsof -t -i:3333) 2>/dev/null || true
+            kill -9 $(lsof -t -i:3001) 2>/dev/null || true
+
             rm -f $BACK_PID $FRONT_PID
 
             sleep 2
