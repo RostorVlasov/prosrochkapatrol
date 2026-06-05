@@ -300,7 +300,7 @@ useSeoMeta({
     description: `Проверка ${props.shop.store_name} по адресу ${props.shop.address} на сайте FreshCheck`,
     ogTitle: props.shop?.store_name,
     ogDescription: `${props.shop.store_name} на сайте FreshCheck`,
-    ogImage: '/logo.png',
+    ogImage: buildApiUrl(props.shop.shop_photo?.url as string) && '/logo.png',
     twitterCard: 'summary_large_image',
 });
 
