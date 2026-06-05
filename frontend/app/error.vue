@@ -5,8 +5,6 @@
 </template>
 
 <script lang="ts" setup>
-import AppContainer from './appContainer.vue';
-
 const toast = useToast()
 
 interface ErrorResponse {
