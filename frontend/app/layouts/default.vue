@@ -26,7 +26,6 @@
         <button @click="toggleColorMode"
           class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors">
           <AppIcon class="size-5" name="theme" />
-
           <ClientOnly>
             <span>{{ isDark ? 'Светлая тема' : 'Тёмная тема' }}</span>
           </ClientOnly>
@@ -55,13 +54,11 @@
     </main>
 
     <MobileNav v-model="menuActive" />
-
   </div>
 </template>
 
 <script lang="ts" setup>
 import { pages } from '~/data/pages'
-import { TELEGRAM_CHANNEL } from '~/data/social'
 
 const menuActive = ref(false)
 const mode = useColorMode()
@@ -71,6 +68,7 @@ const isMounted = ref(false)
 
 const { isResolved, isAccepted, accept } = useCookieConsent()
 const config = useRuntimeConfig()
+const { show: showTelegramNotification } = useAdNotification()
 
 function initMetrika() {
   const id = config.public.yandexMetrikaId
@@ -98,10 +96,13 @@ onMounted(() => {
       description: 'Для улучшения работы сайта мы используем файлы cookie.',
       icon: 'ph:cookie',
       color: 'neutral',
+      close: false,
       duration: 0,
       onClick: () => { navigateTo('/privacy') },
+      class: 'pointerNone',
       actions: [
         {
+          class: 'pointerAuto',
           label: 'Хорошо',
           onClick: () => {
             accept()
@@ -109,29 +110,18 @@ onMounted(() => {
           },
         },
         {
+          class: 'pointerAuto',
           label: 'Подробнее',
           variant: 'outline',
-          onClick: () => { navigateTo('/privacy') },
+          onClick: () => {
+            navigateTo('/privacy')
+          },
         },
       ],
     })
   }
 
-  toast.add({
-    closeIcon: 'ph:x',
-    title: 'Подпишись на наш телеграмм канал',
-    description: 'Там публикуются все самые свежие новости',
-    icon: 'ph:telegram-logo',
-    color: 'neutral',
-    type: 'background',
-    duration: 0,
-    actions: [{
-      label: 'Подписаться',
-      onClick: () => {
-        navigateTo(TELEGRAM_CHANNEL, { external: true })
-      },
-    }],
-  })
+  showTelegramNotification()
 })
 
 function toggleColorMode() {
@@ -143,4 +133,5 @@ const themeColor = computed(() => isDark.value ? '#6a7282' : '#A0876E')
 useHead({
   meta: [{ name: 'theme-color', content: themeColor }],
 })
+
 </script>

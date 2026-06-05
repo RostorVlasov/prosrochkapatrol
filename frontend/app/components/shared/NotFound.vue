@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen flex items-center justify-center font-[Golos_Text,sans-serif] px-4 py-8 bg-beige-50 dark:bg-beige-900">
+    class="min-h-screen flex items-center justify-center px-4 py-8 bg-beige-50/60 dark:bg-beige-900/60">
     <div
       class="relative z-10 bg-white/90 dark:bg-beige-800/93 backdrop-blur-lg rounded-[2.5rem] p-12 pb-10 text-center border border-beige-300/30 dark:border-beige-700/38 shadow-[0_22px_60px_-10px_rgba(80,55,34,0.16)] dark:shadow-[0_22px_60px_-10px_rgba(0,0,0,0.55)] max-w-130 w-full">
 
@@ -28,17 +28,17 @@
       </div>
 
       <div
-        class="font-[Unbounded,sans-serif] text-[5.5rem] sm:text-[4rem] font-black leading-none tracking-[-0.04em] mb-0.5 text-beige-500 dark:text-beige-200">
-        404
+        class="text-[5.5rem] sm:text-[4rem] font-black leading-none tracking-[-0.04em] mb-0.5 text-beige-500 dark:text-beige-200">
+        {{ status }}
       </div>
 
       <h1
-        class="font-[Unbounded,sans-serif] text-lg sm:text-base font-bold tracking-[-0.01em] text-beige-700 dark:text-beige-200 mb-2">
-        <slot>Страница не найдена</slot>
+        class="text-lg sm:text-base font-bold tracking-[-0.01em] text-beige-700 dark:text-beige-200 mb-2">
+        {{ status === 404 ? 'Страница не найдена' : 'Что-то пошло не так'}}
       </h1>
 
       <p class="text-[0.93rem] leading-[1.7] text-beige-700 dark:text-beige-300 mb-8">
-        Запрошенная страница не существует или была перемещена.
+        {{ status === 404 ? 'Запрошенная страница не существует или была перемещена.' : 'Сообщите об ошибке администрации сайта'}}
       </p>
 
       <div class="flex gap-3 justify-center flex-wrap">
@@ -59,6 +59,7 @@
 const router = useRouter()
 
 useHead({
+  title: 'Ошибка FreshCheck',
   meta: [
     {
       name: 'robots',
@@ -66,5 +67,9 @@ useHead({
     }
   ]
 })
+
+defineProps<{
+  status: number
+}>()
 
 </script>

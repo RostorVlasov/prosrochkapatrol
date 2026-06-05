@@ -1,8 +1,5 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
-@import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..900&family=Unbounded:wght@200..900&display=swap');
-
-@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
     --color-surface-base: #272a2d;
@@ -53,7 +50,7 @@ body {
     font-family: "Golos Text", sans-serif;
     background-color: var(--color-beige-50);
     background-repeat: repeat;
-    background-image: url('/листья.svg');
+    background-image: url('/leaves.svg');
 }
 
 select {
@@ -76,7 +73,7 @@ option {
 
 .dark body {
     background-color: rgb(33, 33, 33);
-    background-image: url('/листья.svg');
+    background-image: url('/leaves.svg');
 }
 
 .bg-elevated {
@@ -94,3 +91,13 @@ html {
 .my-custom-toast li button {
     font-size: 15px
 }
+
+.pointerNone {
+    pointer-events: none;
+}
+
+.pointerAuto {
+    cursor: pointer;
+    pointer-events: all;
+}
+

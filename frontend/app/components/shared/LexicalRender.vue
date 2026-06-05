@@ -16,6 +16,13 @@ interface LexicalNode {
     value?: { url: string; alt?: string }
     indent?: number
     parent?: any
+    // Добавляем fields для поддержки LinkNode
+    fields?: {
+        url?: string
+        newTab?: boolean
+        linkType?: string
+        [key: string]: any
+    }
     [key: string]: any
 }
 
@@ -60,6 +67,9 @@ const getTag = (node: LexicalNode): string => {
         case 'text': return 'span'
         case 'horizontalrule': return 'hr'
         case 'upload': return 'div'
+        // Добавляем link/autolink в маппинг (хот шаблон обрабатывает их отдельно, для надежности)
+        case 'link': return 'a'
+        case 'autolink': return 'a'
         default: return 'div'
     }
 }
@@ -77,7 +87,7 @@ const parseTextContent = (text: string) => {
     // Приоритет проверки важен!
     // 1. https://...
     // 2. www.
-    // 3. EMAIL (стоит ДО домена, чтобы перехватить none@domain.com целиком)
+    // 3. EMAIL
     // 4. Просто домен (domain.com)
     const urlRegex = /(https?:\/\/[^\s]+)|(www\.[^\s]+)|([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|([a-zA-Z0-9-]+\.[a-zA-Z]{2,}[^\s]*)/g
     
@@ -91,10 +101,9 @@ const parseTextContent = (text: string) => {
             parts.push({ type: 'text', content: text.slice(lastIndex, match.index) })
         }
 
-        // match[0] — всё совпадение целиком
         let url = match[0]
         
-        // Убираем знаки препинания в конце (.,;:!?), чтобы они не были частью ссылки
+        // Убираем знаки препинания в конце
         let trailingPunctuation = ''
         if (/[.,;:!?)]$/.test(url)) {
             trailingPunctuation = url.slice(-1)
@@ -104,24 +113,18 @@ const parseTextContent = (text: string) => {
         let href = ''
         let type = 'link'
 
-        // Определяем тип ссылки по группам регулярного выражения
         if (match[1]) {
-            // http/https ссылка
             href = url
         } else if (match[2]) {
-            // www ссылка
             href = `https://${url}`
         } else if (match[3]) {
-            // Email (Группа 3)
             href = `mailto:${url}`
         } else if (match[4]) {
-            // Обычный домен (Группа 4)
             href = `https://${url}`
         }
 
         parts.push({ type, content: url, href })
 
-        // Если был отрезан знак препинания, добавляем его как текст
         if (trailingPunctuation) {
             parts.push({ type: 'text', content: trailingPunctuation })
         }
@@ -129,7 +132,6 @@ const parseTextContent = (text: string) => {
         lastIndex = match.index + match[0].length
     }
 
-    // Оставшийся текст
     if (lastIndex < text.length) {
         parts.push({ type: 'text', content: text.slice(lastIndex) })
     }
@@ -141,11 +143,25 @@ const { buildApiUrl } = useApiBuilder()
 </script>
 
 <template>
-    <!-- Listitem-обёртка вокруг вложенного списка — рендерим детей напрямую без <li> -->
-    <template v-if="isWrapperListItem(node)">
+    <!-- 1. Обработка LinkNode (вставленная вручную ссылка) и Autolink -->
+    <template v-if="node.type === 'link' || node.type === 'autolink'">
+        <a
+            :href="node.fields?.url"
+            :target="node.fields?.newTab ? '_blank' : undefined"
+            rel="noopener noreferrer"
+            class="text-blue-600 underline hover:text-blue-800 transition-colors break-all"
+        >
+            <!-- Рекурсивно рендерим детей (текст внутри ссылки может быть жирным и т.д.) -->
+            <LexicalRender v-for="(child, index) in node.children" :key="index" :node="child" />
+        </a>
+    </template>
+
+    <!-- 2. Обертка для вложенных списков (логика осталась прежней) -->
+    <template v-else-if="isWrapperListItem(node)">
         <LexicalRender v-for="(child, index) in node.children" :key="index" :node="child" />
     </template>
 
+    <!-- 3. Основной компонент для всех остальных типов узлов -->
     <component
         v-else
         :is="getTag(node)"
@@ -177,7 +193,7 @@ const { buildApiUrl } = useApiBuilder()
             node.type === 'horizontalrule' ? 'my-6 border-t border-gray-300' : '',
         ]"
     >
-        <!-- Текст с обработкой ссылок и email -->
+        <!-- Текст с обработкой ссылок и email (для обычных текстовых узлов) -->
         <template v-if="node.type === 'text'">
             <span :class="[getTextClasses(node.format as number || 0), 'wrap-break-word']">
                 <template v-for="(part, index) in parseTextContent(node.text || '')" :key="index">

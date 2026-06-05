@@ -1,6 +1,6 @@
 
 export default defineNuxtConfig({
-  compatibilityDate: '2025-01-01',
+  compatibilityDate: '2025-05-01',
   ssr: true,
   site: {
     url: 'https://FreshCheckAstra.ru',
@@ -37,7 +37,6 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       ],
       link: [
-        { rel: 'stylesheet', href: 'https://awesome-lib.css' },
         { rel: 'icon', type: 'image/png', href: '/logo.png' },
       ],
     },
@@ -49,10 +48,23 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxt/ui',
     '@vueuse/nuxt',
-    '@nuxtjs/color-mode',
     '@nuxtjs/seo',
     'nuxt-yandex-metrika',
   ],
+
+  ui: {
+    fonts: false
+  },
+
+  fonts: {
+    families: [
+      { name: 'Golos Text', provider: 'google', weights: ['400..900'] },
+      { name: 'Unbounded', provider: 'google', weights: ['200..900'] },
+    ],
+    experimental: {
+      processCSSVariables: true,
+    }
+  },
 
   sitemap: {
     sources: ['/api/__sitemap__/urls'],
