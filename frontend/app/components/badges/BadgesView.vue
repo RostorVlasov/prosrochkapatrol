@@ -47,9 +47,7 @@
                 :class="input() + ' w-full'">
         </div>
 
-        <BadgesSkeleton v-if="status === 'pending'" />
-
-        <div v-else-if="filteredBadges.length" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div v-if="filteredBadges.length" class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <BadgeItem v-for="badge in filteredBadges" :key="badge.code" :badge="badge" />
         </div>
 

@@ -67,9 +67,7 @@
                 </div>
         </div>
 
-        <ShopsSkeleton v-if="status === 'pending'" />
-
-        <div v-else-if="filteredShops.length" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div v-if="filteredShops.length" class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <ShopItem v-for="shop in filteredShops" :key="shop.id" :shop="shop" />
         </div>
 

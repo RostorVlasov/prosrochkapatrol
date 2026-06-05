@@ -11,9 +11,7 @@
             </NuxtLink>
         </div>
 
-        <ShopsSkeleton v-if="status === 'pending'" />
-
-        <div v-else-if="latestShops?.length" class="grid grid-cols-1 sm:grid-cols-3 items-stretch gap-6">
+        <div v-if="latestShops?.length" class="grid grid-cols-1 sm:grid-cols-3 items-stretch gap-6">
             <ShopItem v-for="shop in latestShops" :key="shop.id" :shop="shop" />
         </div>
 

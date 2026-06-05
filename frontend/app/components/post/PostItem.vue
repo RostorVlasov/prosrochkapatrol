@@ -16,7 +16,7 @@
                 <img v-if="post.cover" :src="buildApiUrl(post.cover.url)"
                     :alt="post.cover.alt ? post.cover.alt : 'обложка'"
                     class="rounded-lg shadow-xl aspect-video mt-4 w-full" />
-                <RubricList class="mt-3" v-if="post.rubrics && post.rubrics.length > 0" :rubrics="post.rubrics" />
+                <RubricList @click.stop.prevent class="mt-3" v-if="post.rubrics && post.rubrics.length > 0" :rubrics="post.rubrics" />
             </div>
 
             <div class="flex-1 flex flex-col mt-2">
