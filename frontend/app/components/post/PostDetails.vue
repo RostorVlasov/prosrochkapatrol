@@ -41,14 +41,24 @@ const props = defineProps<{
     post: PostDoc
 }>()
 
-useSeoMeta({
+useHead({
     title: props.post?.title,
-    description: `Статья ${props.post.title} на сайте FreshCheck`,
-    ogTitle: props.post?.title,
-    ogDescription: `Статья ${props.post.title} на сайте FreshCheck`,
-    ogImage: buildApiUrl(props.post.cover?.url) || '/logo.png',
-    twitterCard: 'summary_large_image',
-});
+    meta: [
+        { property: 'og:title', content: 'FreshCheck' },
+        { property: 'og:description', content: `Статья '${props.post.title}' на сайте FreshCheck` },
+        { property: 'og:image', content: buildApiUrl(props.post.cover?.url) || '/logo.png' },
+        { property: 'og:type', content: 'article' },
+    ]
+})
+
+// useSeoMeta({
+//     title: props.post?.title,
+//     description: `Статья ${props.post.title} на сайте FreshCheck`,
+//     ogTitle: props.post?.title,
+//     ogDescription: `Статья ${props.post.title} на сайте FreshCheck`,
+//     ogImage: buildApiUrl(props.post.cover?.url) || '/logo.png',
+//     twitterCard: 'summary_large_image',
+// });
 
 
 

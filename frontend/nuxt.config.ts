@@ -34,7 +34,8 @@ export default defineNuxtConfig({
     head: {
       title: 'FreshCheck',
       meta: [
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { property: 'og:type', content: 'article' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/logo.png' },
@@ -54,16 +55,6 @@ export default defineNuxtConfig({
 
   ui: {
     fonts: false
-  },
-
-  fonts: {
-    families: [
-      { name: 'Golos Text', provider: 'google', weights: ['400..900'] },
-      { name: 'Unbounded', provider: 'google', weights: ['200..900'] },
-    ],
-    experimental: {
-      processCSSVariables: true,
-    }
   },
 
   sitemap: {
