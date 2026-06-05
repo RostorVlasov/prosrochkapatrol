@@ -22,8 +22,15 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  cors: ['http://localhost:3000', 'https://FreshCheckAstra.ru', 'http://192.168.0.212:3000'],
   globals: [SiteSettings],
+  serverURL: 'https://api.FreshCheckAstra.ru',
+  cors: [
+    'http://localhost:3000', 
+    'https://FreshCheckAstra.ru',
+    'https://freshcheckastra.ru',
+    'http://192.168.0.212:3000',
+    '*',
+  ],
   admin: {
     components: {
       providers: ['./app/components/AvatarOverrideProvider'],

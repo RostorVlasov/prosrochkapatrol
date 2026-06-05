@@ -34,8 +34,8 @@ export default defineNuxtConfig({
     head: {
       title: 'FreshCheck',
       meta: [
-        { property: 'og:type', content: 'article' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+        { property: 'og:type', content: 'article', tagPriority: 0 },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1', tagPriority: 0 }
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/logo.png' },

@@ -298,10 +298,10 @@ const hasParticipants = computed(() => {
 useHead({
     title: props.shop?.store_name,
     meta: [
-        { property: 'og:title', content: 'FreshCheck' },
-        { property: 'og:description', content: `Проверка '${props.shop.store_name}' на сайте FreshCheck` },
-        { property: 'og:image', content: buildApiUrl(props.shop.shop_photo?.url) || '/logo.png' },
-        { property: 'og:type', content: 'article' },
+        { property: 'og:title', content: 'FreshCheck', tagPriority: 0 },
+        { property: 'og:description', content: `Проверка '${props.shop.store_name}' на сайте FreshCheck`, tagPriority: 0 },
+        { property: 'og:image', content: buildApiUrl(props.shop.shop_photo?.url) || '/logo.png', tagPriority: 0 },
+        { property: 'og:type', content: 'article', tagPriority: 0 },
     ]
 })
 

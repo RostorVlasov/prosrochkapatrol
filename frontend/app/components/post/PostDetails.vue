@@ -44,10 +44,10 @@ const props = defineProps<{
 useHead({
     title: props.post?.title,
     meta: [
-        { property: 'og:title', content: 'FreshCheck' },
-        { property: 'og:description', content: `Статья '${props.post.title}' на сайте FreshCheck` },
-        { property: 'og:image', content: buildApiUrl(props.post.cover?.url) || '/logo.png' },
-        { property: 'og:type', content: 'article' },
+        { property: 'og:title', content: 'FreshCheck', tagPriority: 0  },
+        { property: 'og:description', content: `Статья '${props.post.title}' на сайте FreshCheck`, tagPriority: 0 },
+        { property: 'og:image', content: buildApiUrl(props.post.cover?.url) || '/logo.png', tagPriority: 0 },
+        { property: 'og:type', content: 'article', tagPriority: 0 },
     ]
 })
 
