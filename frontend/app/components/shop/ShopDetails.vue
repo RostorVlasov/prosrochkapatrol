@@ -299,19 +299,10 @@ useHead({
     title: props.shop?.store_name,
     meta: [
         { property: 'og:title', content: 'FreshCheck', tagPriority: 0 },
-        { property: 'og:description', content: `Проверка '${props.shop.store_name}' на сайте FreshCheck`, tagPriority: 0 },
+        { property: 'og:description', content: `Проверка '${props.shop.store_name}' по адресу '${props.shop.address}' на сайте FreshCheck`, tagPriority: 0 },
         { property: 'og:image', content: buildApiUrl(props.shop.shop_photo?.url) || '/logo.png', tagPriority: 0 },
         { property: 'og:type', content: 'article', tagPriority: 0 },
     ]
 })
-
-// useSeoMeta({
-//     title: props.shop?.store_name,
-//     description: `Проверка ${props.shop.store_name} по адресу ${props.shop.address} на сайте FreshCheck`,
-//     ogTitle: props.shop?.store_name,
-//     ogDescription: `${props.shop.store_name} на сайте FreshCheck`,
-//     ogImage: buildApiUrl(props.shop.shop_photo?.url as string) && '/logo.png',
-//     twitterCard: 'summary_large_image',
-// });
 
 </script>

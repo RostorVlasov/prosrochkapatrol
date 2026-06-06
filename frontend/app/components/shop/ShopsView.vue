@@ -130,12 +130,10 @@ const filteredShops = computed(() => {
 
     let result = allShops.value
 
-    // 1. Фильтрация по текстовому поиску
     if (query) {
         result = result.filter(shop => {
             const name = (shop.store_name || '').toLowerCase()
             const address = (shop.address || '').toLowerCase()
-            // Добавляем поля район и микрорайон в поиск
             const districtName = (shop.district || '').toLowerCase()
             const microdistrictName = (shop.microdistrict || '').toLowerCase()
 
@@ -148,17 +146,14 @@ const filteredShops = computed(() => {
         })
     }
 
-    // 2. Фильтрация по району
     if (district) {
         result = result.filter(shop => shop.district === district)
     }
 
-    // 3. Фильтрация по микрорайону
     if (microdistrict) {
         result = result.filter(shop => shop.microdistrict === microdistrict)
     }
 
-    // 4. Сортировка
     const sorted = [...result]
     sorted.sort((a, b) => {
         const aVal = a[field as keyof ShopDoc] ?? ''

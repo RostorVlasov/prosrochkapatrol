@@ -51,15 +51,5 @@ useHead({
     ]
 })
 
-// useSeoMeta({
-//     title: props.post?.title,
-//     description: `Статья ${props.post.title} на сайте FreshCheck`,
-//     ogTitle: props.post?.title,
-//     ogDescription: `Статья ${props.post.title} на сайте FreshCheck`,
-//     ogImage: buildApiUrl(props.post.cover?.url) || '/logo.png',
-//     twitterCard: 'summary_large_image',
-// });
-
-
 
 </script>
