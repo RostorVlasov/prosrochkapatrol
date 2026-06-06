@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-05-01',
   ssr: true,
   site: {
-    url: 'https://FreshCheckAstra.ru',
+    url: 'https://freshcheckastra.ru',
     name: 'FreshCheck',
     description: 'Общественный мониторинг магазинов Астрахани',
     defaultLocale: 'ru',
@@ -26,7 +26,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiUrl: 'http://127.0.0.1:3333',
     public: {
-      API_URL: 'https://api.FreshCheckAstra.ru',
+      vapidPublicKey: process.env.NUXT_PUBLIC_VAPID_PUBLIC_KEY || 'BMHO-gRixKt-wtUNNCStL1lKUO6GFimvunf6phoDlUwbs98xzTPo-WeN67CUXgEcA8Jag7bn6ZEtvnR94wwQvqg',
+      API_URL: 'https://api.freshcheckastra.ru',
     }
   },
 

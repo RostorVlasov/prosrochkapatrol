@@ -65,6 +65,7 @@ const mode = useColorMode()
 const isDark = computed(() => mode.value === 'dark')
 const toast = useToast()
 const isMounted = ref(false)
+const { subscribe } = usePushNotifications()
 
 const { isResolved, isAccepted, accept } = useCookieConsent()
 const config = useRuntimeConfig()
@@ -120,7 +121,8 @@ onMounted(() => {
       ],
     })
   }
-
+  
+  subscribe()
   showTelegramNotification()
 })
 

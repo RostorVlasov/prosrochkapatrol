@@ -160,7 +160,7 @@ export const Complaints: CollectionConfig = {
 
         req.payload.logger.info(`[Complaints.afterChange] new complaint id=${doc.id}, store=${doc.store_address}`)
 
-        const appUrl = 'https://api.FreshCheckAstra.ru'
+        const appUrl = 'https://api.freshcheckastra.ru'
         const link = `${appUrl}/admin/collections/complaints/${doc.id}`
 
         req.payload.logger.info(`[Complaints.afterChange] complaint link: ${link}`)
