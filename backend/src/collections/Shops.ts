@@ -1,5 +1,6 @@
 import type { CollectionConfig, CollectionBeforeChangeHook } from 'payload'
 import { DISTRICTS } from '@/data/districts'
+import { sendPushOnPublish } from '@/utils/sendPushOnPublish'
 
 type HookPayload = Parameters<CollectionBeforeChangeHook>[0]['req']['payload']
 
@@ -61,6 +62,22 @@ export const Shops: CollectionConfig = {
     delete: ({ req: { user } }) => user?.role === 'admin',
   },
   hooks: {
+    afterChange: [
+      ({ req, doc, previousDoc }) => {
+
+        const isNowPublished = doc.admin_panel?.status === 'published'
+        const wasPublished = previousDoc?.admin_panel?.status === 'published'
+
+        if (!isNowPublished || wasPublished) return
+        if (doc.admin_panel?.status !== 'published') return
+
+        return sendPushOnPublish({
+          title: 'Новая проверка',
+          body: `${doc.store_name} по адресу ${doc.address}`,
+          url: 'https://freshcheckastra.ru/product-review/' + doc.id
+        }, req.payload)
+      }
+    ],
     beforeChange: [
       async ({ req, data, operation }) => {
         if (!data.admin_panel) data.admin_panel = {}

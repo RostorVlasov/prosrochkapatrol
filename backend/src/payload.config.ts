@@ -17,6 +17,7 @@ import { Shops } from './collections/Shops'
 import { Complaints } from './collections/Complaints'
 import { Badges } from './collections/Badges'
 import { SiteSettings } from './globals/SiteSettings'
+import { PushSubscriptions } from './collections/PushSubscriptionsWeb'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -52,7 +53,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Posts, Rubrics, Shops, Complaints, Badges],
+  collections: [Users, Media, Posts, Rubrics, Shops, Complaints, Badges, PushSubscriptions],
   email: nodemailerAdapter({
     defaultFromAddress: process.env.SMTP_USER!,
     defaultFromName: 'FreshCheck',

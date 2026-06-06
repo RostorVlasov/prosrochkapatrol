@@ -74,6 +74,7 @@ export interface Config {
     shops: Shop;
     complaints: Complaint;
     badges: Badge;
+    'push-subscriptions': PushSubscription;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -88,13 +89,14 @@ export interface Config {
     shops: ShopsSelect<false> | ShopsSelect<true>;
     complaints: ComplaintsSelect<false> | ComplaintsSelect<true>;
     badges: BadgesSelect<false> | BadgesSelect<true>;
+    'push-subscriptions': PushSubscriptionsSelect<false> | PushSubscriptionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: number;
+    defaultIDType: string;
   };
   fallbackLocale: null;
   globals: {
@@ -136,11 +138,11 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
+  id: string;
   /**
    * Аватар пользователя
    */
-  avatar?: (number | null) | Media;
+  avatar?: (string | null) | Media;
   /**
    * Полное имя пользователя
    */
@@ -173,7 +175,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: number;
+  id: string;
   /**
    * Описание изображения для SEO и доступности (alt-тег)
    */
@@ -181,7 +183,7 @@ export interface Media {
   /**
    * Пользователь, загрузивший этот файл
    */
-  uploaded_by?: (number | null) | User;
+  uploaded_by?: (string | null) | User;
   /**
    * IP адрес с которого была загружена медиа
    */
@@ -203,7 +205,7 @@ export interface Media {
  * via the `definition` "posts".
  */
 export interface Post {
-  id: number;
+  id: string;
   /**
    * Заголовок поста, отображается в списке и на странице
    */
@@ -229,11 +231,11 @@ export interface Post {
   /**
    * Главное изображение поста
    */
-  cover?: (number | null) | Media;
+  cover?: (string | null) | Media;
   /**
    * Одна или несколько рубрик для категоризации поста
    */
-  rubrics?: (number | Rubric)[] | null;
+  rubrics?: (string | Rubric)[] | null;
   admin_panel?: {
     /**
      * Черновик — не виден публично. На рассмотрении — ожидает одобрения админа. Опубликовано — виден всем.
@@ -246,7 +248,7 @@ export interface Post {
     /**
      * Проставляется автоматически при создании поста
      */
-    author?: (number | null) | User;
+    author?: (string | null) | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -256,7 +258,7 @@ export interface Post {
  * via the `definition` "rubrics".
  */
 export interface Rubric {
-  id: number;
+  id: string;
   /**
    * Отображаемое название рубрики
    */
@@ -273,15 +275,31 @@ export interface Rubric {
  * via the `definition` "shops".
  */
 export interface Shop {
-  id: number;
+  id: string;
   /**
    * Официальное название торговой точки
    */
   store_name: string;
   /**
-   * Полный адрес магазина включая город и улицу
+   * Полный адрес магазина — начните вводить, выберите из подсказок
    */
   address: string;
+  /**
+   * Выберите район из списка. После выбора появится список микрорайонов.
+   */
+  district: 'Кировский район' | 'Ленинский район' | 'Советский район' | 'Трусовский район';
+  /**
+   * Заполняется автоматически при выборе адреса или вручную
+   */
+  microdistrict?: string | null;
+  /**
+   * Заполняется автоматически
+   */
+  geo_lat?: string | null;
+  /**
+   * Заполняется автоматически
+   */
+  geo_lon?: string | null;
   /**
    * Дата фактического проведения проверки
    */
@@ -295,7 +313,28 @@ export interface Shop {
    */
   complaint_text?: string | null;
   /**
-   * Сумма баллов, снятых за нарушения качества (от 0 до 5). Итоговая оценка рассчитается автоматически.
+   * Главный инспектор, проводивший проверку
+   */
+  main_inspector: string | User;
+  /**
+   * Сотрудник, составивший акт проверки
+   */
+  compiler?: (string | null) | User;
+  /**
+   * Дополнительные инспекторы, участвовавшие в проверке
+   */
+  other_inspectors?:
+    | {
+        inspector: string | User;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Оператор, ответственный за данную проверку
+   */
+  operator?: (string | null) | User;
+  /**
+   * Сумма баллов, снятых за нарушения качества (0–5). Итоговая оценка рассчитается автоматически.
    */
   quality_total_deduction?: number | null;
   /**
@@ -327,7 +366,7 @@ export interface Shop {
     | boolean
     | null;
   /**
-   * Вычисляется автоматически: 5 - штраф
+   * Вычисляется автоматически: 5 − штраф
    */
   quality_final_score?: number | null;
   /**
@@ -335,7 +374,7 @@ export interface Shop {
    */
   storage_has_violations?: boolean | null;
   /**
-   * Сумма баллов, снятых за нарушения хранения (от 0 до 5). Итоговая оценка рассчитается автоматически.
+   * Сумма баллов, снятых за нарушения хранения (0–5). Итоговая оценка рассчитается автоматически.
    */
   storage_total_deduction?: number | null;
   /**
@@ -367,11 +406,11 @@ export interface Shop {
     | boolean
     | null;
   /**
-   * Вычисляется автоматически: 5 - штраф (если нет нарушений, автоматически 5)
+   * Вычисляется автоматически: 5 − штраф (если нет нарушений — автоматически 5)
    */
   storage_final_score?: number | null;
   /**
-   * Вычисляется автоматически
+   * Вычисляется автоматически: среднее между качеством и хранением
    */
   total_score?: number | null;
   /**
@@ -402,18 +441,15 @@ export interface Shop {
    * Итоговый комментарий инспектора по результатам проверки
    */
   inspector_comment?: string | null;
+  shop_photo: string | Media;
   /**
-   * Комментарий администратора, публикуемый вместе с отчётом
-   */
-  final_comment?: string | null;
-  /**
-   * Фотографии сделанные в ходе проверки магазина
+   * Фотографии, сделанные в ходе проверки магазина
    */
   photos?:
     | {
-        photo: number | Media;
+        photo: string | Media;
         /**
-         * Краткое описание того что изображено на фото
+         * Краткое описание того, что изображено на фото
          */
         caption?: string | null;
         id?: string | null;
@@ -425,9 +461,25 @@ export interface Shop {
      */
     status: 'pending' | 'published' | 'rejected';
     /**
+     * Заполняется автоматически
+     */
+    main_inspector_badge?: (string | null) | Badge;
+    /**
+     * Заполняется автоматически
+     */
+    compiler_badge?: (string | null) | Badge;
+    /**
+     * Заполняется автоматически
+     */
+    operator_badge?: (string | null) | Badge;
+    /**
+     * Заполняется автоматически
+     */
+    other_inspector_badges?: (string | Badge)[] | null;
+    /**
      * Инспектор или редактор, создавший отчёт
      */
-    created_by?: (number | null) | User;
+    created_by?: (string | null) | User;
     /**
      * Была ли ранее проведена проверка этого магазина
      */
@@ -446,10 +498,30 @@ export interface Shop {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "badges".
+ */
+export interface Badge {
+  id: string;
+  /**
+   * Введите код строго в формате из регламента (например: #P01-ASTR)
+   */
+  code: string;
+  type: 'P' | 'YOU';
+  ownerName?: (string | null) | User;
+  status?: ('active' | 'revoked' | 'lost' | 'notUse') | null;
+  /**
+   * Служебная заметка администратора (например: выдан 05.06.2026)
+   */
+  comment?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "complaints".
  */
 export interface Complaint {
-  id: number;
+  id: string;
   admin_panel?: {
     /**
      * IP адрес с которого была подана жалоба
@@ -489,7 +561,7 @@ export interface Complaint {
    */
   photos?:
     | {
-        photo: number | Media;
+        photo: string | Media;
         id?: string | null;
       }[]
     | null;
@@ -498,21 +570,21 @@ export interface Complaint {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "badges".
+ * via the `definition` "push-subscriptions".
  */
-export interface Badge {
-  id: number;
-  /**
-   * Введите код строго в формате из регламента (например: #P01-ASTR)
-   */
-  code: string;
-  type: 'P' | 'YOU';
-  ownerName?: (number | null) | User;
-  status?: ('active' | 'revoked' | 'lost') | null;
-  /**
-   * Служебная заметка администратора (например: выдан 05.06.2026)
-   */
-  comment?: string | null;
+export interface PushSubscription {
+  id: string;
+  endpoint: string;
+  keys:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  userId?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -521,7 +593,7 @@ export interface Badge {
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: number;
+  id: string;
   key: string;
   data:
     | {
@@ -538,40 +610,44 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
+  id: string;
   document?:
     | ({
         relationTo: 'users';
-        value: number | User;
+        value: string | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: number | Media;
+        value: string | Media;
       } | null)
     | ({
         relationTo: 'posts';
-        value: number | Post;
+        value: string | Post;
       } | null)
     | ({
         relationTo: 'rubrics';
-        value: number | Rubric;
+        value: string | Rubric;
       } | null)
     | ({
         relationTo: 'shops';
-        value: number | Shop;
+        value: string | Shop;
       } | null)
     | ({
         relationTo: 'complaints';
-        value: number | Complaint;
+        value: string | Complaint;
       } | null)
     | ({
         relationTo: 'badges';
-        value: number | Badge;
+        value: string | Badge;
+      } | null)
+    | ({
+        relationTo: 'push-subscriptions';
+        value: string | PushSubscription;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -581,10 +657,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: string;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   key?: string | null;
   value?:
@@ -604,7 +680,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
+  id: string;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -691,9 +767,22 @@ export interface RubricsSelect<T extends boolean = true> {
 export interface ShopsSelect<T extends boolean = true> {
   store_name?: T;
   address?: T;
+  district?: T;
+  microdistrict?: T;
+  geo_lat?: T;
+  geo_lon?: T;
   date_checked?: T;
   reason_type?: T;
   complaint_text?: T;
+  main_inspector?: T;
+  compiler?: T;
+  other_inspectors?:
+    | T
+    | {
+        inspector?: T;
+        id?: T;
+      };
+  operator?: T;
   quality_total_deduction?: T;
   quality_facts?: T;
   quality_free_text?: T;
@@ -709,7 +798,7 @@ export interface ShopsSelect<T extends boolean = true> {
   advantages?: T;
   disadvantages?: T;
   inspector_comment?: T;
-  final_comment?: T;
+  shop_photo?: T;
   photos?:
     | T
     | {
@@ -721,6 +810,10 @@ export interface ShopsSelect<T extends boolean = true> {
     | T
     | {
         status?: T;
+        main_inspector_badge?: T;
+        compiler_badge?: T;
+        operator_badge?: T;
+        other_inspector_badges?: T;
         created_by?: T;
         prev_check_status?: T;
         last_check_date?: T;
@@ -765,6 +858,17 @@ export interface BadgesSelect<T extends boolean = true> {
   ownerName?: T;
   status?: T;
   comment?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "push-subscriptions_select".
+ */
+export interface PushSubscriptionsSelect<T extends boolean = true> {
+  endpoint?: T;
+  keys?: T;
+  userId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -815,7 +919,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  * via the `definition` "site-settings".
  */
 export interface SiteSetting {
-  id: number;
+  id: string;
   /**
    * Отображается в заголовке браузера и шапке сайта
    */
@@ -827,11 +931,11 @@ export interface SiteSetting {
   /**
    * Основной логотип сайта
    */
-  logo?: (number | null) | Media;
+  logo?: (string | null) | Media;
   /**
    * Иконка сайта в браузере
    */
-  favicon?: (number | null) | Media;
+  favicon?: (string | null) | Media;
   /**
    * Публичный email для обращений
    */

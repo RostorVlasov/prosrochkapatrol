@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { sendPushOnPublish } from '@/utils/sendPushOnPublish'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -155,6 +156,22 @@ export const Posts: CollectionConfig = {
 
         return data
       },
+    ],
+    afterChange: [
+      ({ req, doc, previousDoc }) => {
+
+        const isNowPublished = doc.admin_panel?.status === 'published'
+        const wasPublished = previousDoc?.admin_panel?.status === 'published'
+
+        if (!isNowPublished || wasPublished) return
+        if (doc.admin_panel?.status !== 'published') return
+
+        return sendPushOnPublish({
+          title: 'Новая статья',
+          body: doc.title,
+          url: 'https://freshcheckastra.ru/news/' + doc.id
+        }, req.payload)
+      }
     ],
   },
 }
