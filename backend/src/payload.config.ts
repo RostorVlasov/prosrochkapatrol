@@ -23,7 +23,7 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   globals: [SiteSettings],
-  serverURL: 'https://api.freshcheckastra.ru',
+  serverURL: 'https://api.FreshCheckAstra.ru',
   cors: [
     'http://localhost:3000', 
     'https://FreshCheckAstra.ru',
