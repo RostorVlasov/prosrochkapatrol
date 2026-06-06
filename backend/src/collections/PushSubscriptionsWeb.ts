@@ -1,4 +1,3 @@
-import { sendPushOnPublish } from "@/utils/sendPushOnPublish";
 import { CollectionConfig } from "payload";
 
 export const PushSubscriptions: CollectionConfig = {
@@ -12,16 +11,4 @@ export const PushSubscriptions: CollectionConfig = {
         { name: 'keys', type: 'json', required: true },
         { name: 'userId', type: 'relationship', relationTo: 'users' },
     ],
-
-    hooks: {
-        afterChange: [
-            ({ req }) => {
-                return sendPushOnPublish({
-                    title: 'Тестовое уведомление',
-                    body: 'Это уведомление тестовое, чтобы понять в каком виде это будет выглядеть',
-                    url: 'https://freshcheckastra.ru'
-                }, req.payload)
-            }
-        ]
-    }
 }
