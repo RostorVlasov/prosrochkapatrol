@@ -1,12 +1,6 @@
 import webpush from 'web-push'
 import type { BasePayload } from 'payload'
 
-webpush.setVapidDetails(
-    process.env.VAPID_EMAIL!,
-    process.env.VAPID_PUBLIC_KEY!,
-    process.env.VAPID_PRIVATE_KEY!
-)
-
 interface PushData {
     title: string,
     body: string,
@@ -14,6 +8,12 @@ interface PushData {
 }
 
 export const sendPushOnPublish = async (data: PushData, payload: BasePayload) => {
+
+    webpush.setVapidDetails(
+        process.env.VAPID_EMAIL!,
+        process.env.VAPID_PUBLIC_KEY!,
+        process.env.VAPID_PRIVATE_KEY!
+    )
 
     const { docs: subs } = await payload.find({
         collection: 'push-subscriptions',
