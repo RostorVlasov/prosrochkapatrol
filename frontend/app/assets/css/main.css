@@ -101,3 +101,54 @@ html {
     pointer-events: all;
 }
 
+@media (max-width: 639px) {
+
+  ol[data-slot="viewport"] [data-slot="base"] {
+    padding: 10px 12px !important;
+    gap: 8px !important;
+    align-items: center !important;
+    border-radius: 14px !important;
+  }
+
+  ol[data-slot="viewport"] [data-slot="base"] [data-slot="icon"] {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  ol[data-slot="viewport"] [data-slot="title"] {
+    font-size: 13px !important;
+    line-height: 1.3 !important;
+  }
+
+  ol[data-slot="viewport"] [data-slot="description"] {
+    font-size: 12px !important;
+    margin-top: 2px !important;
+    line-height: 1.3 !important;
+  }
+
+  ol[data-slot="viewport"] [data-slot="wrapper"] [data-slot="actions"] {
+    margin-top: 6px !important;
+    gap: 6px !important;
+  }
+
+  ol[data-slot="viewport"] [data-slot="wrapper"] [data-slot="actions"] [data-slot="base"] {
+    padding: 3px 9px !important;
+    font-size: 11px !important;
+    border-radius: 6px !important;
+  }
+
+  ol[data-slot="viewport"] > li > [data-slot="actions"] [data-slot="base"] {
+    padding: 0 !important;
+  }
+
+  ol[data-slot="viewport"] > li > [data-slot="actions"] [data-slot="leadingIcon"] {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  ol[data-slot="viewport"] {
+    width: calc(100% - 1.5rem) !important;
+    right: 0.75rem !important;
+    top: 0.75rem !important;
+  }
+}
