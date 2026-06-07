@@ -14,7 +14,7 @@
 
         <div class="py-3 pb-6 px-8">
             <div class="flex justify-between items-center mobile-navbar">
-                <MobileNavItem v-for="page in pages.sidebar" @click="menuActive = false" :icon="page.icon"
+                <MobileNavItem v-for="page in pages.sidebar" @click="menuActive = false" :label="page.name" :icon="page.icon"
                     :to="page.url" />
                 <div class="flex items-center cursor-pointer" @click.stop="menuActive = !menuActive">
                     <AppIcon :class="`size-8 ${menuActive

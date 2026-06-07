@@ -1,39 +1,88 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+
+@font-face {
+  font-family: 'Golos Text';
+  src: url('/fonts/GolosText-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Golos Text';
+  src: url('/fonts/GolosText-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Golos Text';
+  src: url('/fonts/GolosText-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Golos Text';
+  src: url('/fonts/GolosText-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Golos Text';
+  src: url('/fonts/GolosText-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Golos Text';
+  src: url('/fonts/GolosText-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-    --color-surface-base: #272a2d;
-    --color-surface-brown: #a0876e;
-    /* Тёмно-бежевый (#A0876E) и его оттенки */
-    --color-beige-50: #F5EFE8;
-    --color-beige-100: #EBDDD2;
-    --color-beige-200: #D7C0AE;
-    --color-beige-300: #C3A389;
-    --color-beige-400: #B19578;
-    --color-beige-500: #A0876E;
-    /* Основной */
-    --color-beige-600: #806C58;
-    --color-beige-700: #605142;
-    --color-beige-800: #40362C;
-    --color-beige-900: #201B16;
+  --color-surface-base: #272a2d;
+  --color-surface-brown: #a0876e;
+  /* Тёмно-бежевый (#A0876E) и его оттенки */
+  --color-beige-50: #F5EFE8;
+  --color-beige-100: #EBDDD2;
+  --color-beige-200: #D7C0AE;
+  --color-beige-300: #C3A389;
+  --color-beige-400: #B19578;
+  --color-beige-500: #A0876E;
+  /* Основной */
+  --color-beige-600: #806C58;
+  --color-beige-700: #605142;
+  --color-beige-800: #40362C;
+  --color-beige-900: #201B16;
 
-    /* Балтийское море (#3F4245) и его оттенки */
-    --color-gray-50: #ECECED;
-    --color-gray-100: #D9D9DA;
-    --color-gray-200: #B3B4B5;
-    --color-gray-300: #8D8E90;
-    --color-gray-400: #67696B;
-    --color-gray-500: #3F4245;
-    /* Основной */
-    --color-gray-600: #323537;
-    --color-gray-700: #262829;
-    --color-gray-800: #191A1C;
-    --color-gray-900: #0D0D0E;
+  /* Балтийское море (#3F4245) и его оттенки */
+  --color-gray-50: #ECECED;
+  --color-gray-100: #D9D9DA;
+  --color-gray-200: #B3B4B5;
+  --color-gray-300: #8D8E90;
+  --color-gray-400: #67696B;
+  --color-gray-500: #3F4245;
+  /* Основной */
+  --color-gray-600: #323537;
+  --color-gray-700: #262829;
+  --color-gray-800: #191A1C;
+  --color-gray-900: #0D0D0E;
 
-    /* Белый и отбеливающий белый */
-    --color-white: #FFFFFF;
-    --color-off-white: #E7DCDD;
-    --color-slate: #2B2B2B;
+  /* Белый и отбеливающий белый */
+  --color-white: #FFFFFF;
+  --color-off-white: #E7DCDD;
+  --color-slate: #2B2B2B;
 }
 
 h1,
@@ -42,63 +91,63 @@ h3,
 h4,
 h5,
 h6 {
-    @apply font-sans;
-    font-weight: 900;
+  @apply font-sans;
+  font-weight: 900;
 }
 
 body {
-    font-family: "Golos Text", sans-serif;
-    background-color: var(--color-beige-50);
-    background-repeat: repeat;
-    background-image: url('/leaves.svg');
+  font-family: "Golos Text", sans-serif;
+  background-color: var(--color-beige-50);
+  background-repeat: repeat;
+  background-image: url('/leaves.svg');
 }
 
 select {
-    color: var(--color-gray-800);
+  color: var(--color-gray-800);
 }
 
 .dark select {
-    color: white;
+  color: white;
 }
 
 option {
-    color: var(--color-gray-800);
-    background-color: var(--color-beige-50);
+  color: var(--color-gray-800);
+  background-color: var(--color-beige-50);
 }
 
 .dark option {
-    color: white;
-    background-color: var(--color-gray-700);
+  color: white;
+  background-color: var(--color-gray-700);
 }
 
 .dark body {
-    background-color: rgb(33, 33, 33);
-    background-image: url('/leaves.svg');
+  background-color: rgb(33, 33, 33);
+  background-image: url('/leaves.svg');
 }
 
 .bg-elevated {
-    background-color: #2d3236 !important;
+  background-color: #2d3236 !important;
 }
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 .my-custom-toast li {
-    padding: 25px;
+  padding: 25px;
 }
 
 .my-custom-toast li button {
-    font-size: 15px
+  font-size: 15px
 }
 
 .pointerNone {
-    pointer-events: none;
+  pointer-events: none;
 }
 
 .pointerAuto {
-    cursor: pointer;
-    pointer-events: all;
+  cursor: pointer;
+  pointer-events: all;
 }
 
 @media (max-width: 639px) {
@@ -137,11 +186,11 @@ html {
     border-radius: 6px !important;
   }
 
-  ol[data-slot="viewport"] > li > [data-slot="actions"] [data-slot="base"] {
+  ol[data-slot="viewport"]>li>[data-slot="actions"] [data-slot="base"] {
     padding: 0 !important;
   }
 
-  ol[data-slot="viewport"] > li > [data-slot="actions"] [data-slot="leadingIcon"] {
+  ol[data-slot="viewport"]>li>[data-slot="actions"] [data-slot="leadingIcon"] {
     width: 15px !important;
     height: 15px !important;
   }

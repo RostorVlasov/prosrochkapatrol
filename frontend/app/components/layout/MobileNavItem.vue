@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink class="flex items-center" :to="to">
+    <NuxtLink :aria-label="alt" class="flex items-center" :to="to">
         <AppIcon :class="`${to === router.path ? 'dark:text-surface-brown text-white' : 'dark:text-white text-beige-100'} size-7`" :name="icon" />
     </NuxtLink>
 </template>
@@ -12,6 +12,7 @@ const router = useRoute()
 defineProps<{
     icon: IconName,
     to: string,
+    label: string
 }>()
 
 </script>

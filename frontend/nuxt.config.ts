@@ -47,6 +47,13 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1', tagPriority: 0 }
       ],
       link: [
+        {
+          rel: 'preload',
+          as: 'font',
+          type: 'font/woff2',
+          href: '/fonts/GolosText-Regular.woff2',
+          crossorigin: 'anonymous'
+        },
         { rel: 'preload', as: 'image', href: '/leaves.svg' },
         { rel: 'icon', type: 'image/png', href: '/logo.png' },
         { rel: 'preconnect', href: 'https://api.freshcheckastra.ru' },
