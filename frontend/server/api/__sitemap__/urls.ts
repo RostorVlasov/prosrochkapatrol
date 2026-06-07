@@ -18,11 +18,11 @@ export default defineSitemapEventHandler(async () => {
         ...shops.docs.map((item) => {
             const images = [
                 item.shop_photo?.url
-                    ? { loc: `${baseURL}${item.shop_photo.url}` }
+                    ? { loc: `${item.shop_photo.url}` }
                     : null,
                 ...(item.photos ?? [])
                     .filter(p => p.photo?.url)
-                    .map(p => ({ loc: `${baseURL}${p.photo.url}` })),
+                    .map(p => ({ loc: `${p.photo.url}` })),
             ].filter(Boolean)
 
             return asSitemapUrl({
