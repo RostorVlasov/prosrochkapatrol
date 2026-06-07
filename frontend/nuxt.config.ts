@@ -23,6 +23,15 @@ export default defineNuxtConfig({
     '/_nuxt/**': {
       headers: { 'cache-control': 'max-age=31536000, immutable' }
     },
+    '/fonts/**': {
+      headers: { 'cache-control': 'public, max-age=31536000, immutable' }
+    },
+    '/leaves.svg': {
+      headers: { 'cache-control': 'public, max-age=31536000, immutable' }
+    },
+    '/_ipx/**': {
+      headers: { 'cache-control': 'public, max-age=31536000, immutable' }
+    },
   },
 
   nitro: {
@@ -106,7 +115,10 @@ export default defineNuxtConfig({
     },
   ],
   image: {
-    domains: ['api.freshcheckastra.ru']
+    domains: ['api.freshcheckastra.ru'],
+    ipx: {
+      maxAge: 31536000,
+    }
   },
 
   pinia: {

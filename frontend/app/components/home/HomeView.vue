@@ -11,40 +11,40 @@
     <HomeManual />
 
     <!-- Как мы наблюдаем -->
-    <HomeApproach />
+    <LazyHomeApproach />
 
     <!-- Четыре шага -->
-    <HomeProcess />
+    <LazyHomeProcess />
 
     <!-- Команда -->
-    <HomeTeam />
+    <LazyHomeTeam />
 
     <!-- Новости -->
-    <HomeNews />
+    <LazyHomeNews />
 
     <!-- Польза -->
-    <HomeBenefits />
+    <LazyHomeBenefits />
 
     <!-- Ценности -->
-    <HomeValues />
+    <LazyHomeValues />
 
     <!-- Отзывы -->
-    <HomeTestimonials />
+    <LazyHomeTestimonials />
 
     <!-- Недавние визиты -->
-    <HomeRecentVisits :latest-shops="latestShops" :status="status" />
+    <LazyHomeRecentVisits :latest-shops="latestShops" :status="status" />
 
     <!-- FAQ -->
     <section class="py-24">
-      <FaqSection pill="FAQ" title-before="Частые" title-italic="вопросы" subtitle="Всё, что стоит знать о FreshCheck"
+      <LazyFaqSection pill="FAQ" title-before="Частые" title-italic="вопросы" subtitle="Всё, что стоит знать о FreshCheck"
         :items="homeFaqSlice" all-link="/faq" all-link-text="Смотреть все вопросы" />
     </section>
 
     <!-- Соцсети -->
-    <HomeSocials />
+    <LazyHomeSocials />
 
     <!-- CTA -->
-    <HomeCta />
+    <LazyHomeCta />
 
   </LandingContainer>
 </template>
@@ -65,12 +65,12 @@ const latestShops = computed(() => data.value?.docs ?? [])
 const shopsCount = computed(() => data.value?.totalDocs)
 
 useSeoMeta({
-    title: 'FreshCheck - Главная',
-    description: `FreshCheck - Главная`,
-    ogTitle: 'FreshCheck - Главная',
-    ogDescription: `FreshCheck - Главная`,
-    ogImage: '/logo.png',
+    title: 'FreshCheck — общественный мониторинг магазинов Астрахани',
+    description: 'Независимая проверка сроков годности и условий хранения в магазинах Астрахани. Честные обзоры, рейтинги и фотоотчёты от жителей города.',
+    ogTitle: 'FreshCheck — общественный мониторинг магазинов Астрахани',
+    ogDescription: 'Независимая проверка сроков годности и условий хранения в магазинах Астрахани.',
+    ogImage: '/freshcheck.png',
     twitterCard: 'summary_large_image',
-});
+})
 
 </script>
