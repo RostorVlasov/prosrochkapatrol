@@ -11,7 +11,7 @@
         <div
             class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 mb-8 shadow-sm">
             <div class="flex gap-4 items-start">
-                <img src="/logo.png" alt="logo" class="size-6 shrink-0 mt-0.5">
+                <NuxtImg format="webp" quality="80" src="/logo.png" alt="logo" class="size-6 shrink-0 mt-0.5"/>
                 <div class="space-y-2">
                     <h2 class="font-semibold text-zinc-900 dark:text-white">О странице</h2>
                     <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">

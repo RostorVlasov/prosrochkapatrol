@@ -2,7 +2,7 @@
     <div
         class="bg-white dark:bg-slate rounded-3xl p-8 md:p-10 border border-off-white dark:border-gray-500 shadow-sm hover:border-beige-500 transition-all duration-300 flex flex-col">
         <div class="flex items-start gap-5 mb-6">
-            <img class="size-16 object-contain rounded-full" :src="logo"/>
+            <NuxtImg format="webp" loading="lazy" class="size-16 object-contain rounded-full" :alt="name" :src="logo"/>
             <div>
                 <h2 class="text-2xl font-bold text-slate dark:text-white">{{ name }}</h2>
                 <span

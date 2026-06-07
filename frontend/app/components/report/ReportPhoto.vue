@@ -38,7 +38,7 @@
         <TransitionGroup v-if="items.length" tag="div" name="photo" class="grid grid-cols-3 gap-2">
             <div v-for="item in items" :key="item.id"
                 class="relative aspect-square rounded-lg overflow-hidden bg-stone-200 dark:bg-stone-700 group">
-                <img :src="item.previewUrl" :alt="item.file.name" class="w-full h-full object-cover" />
+                <NuxtImg format="webp" quality="80" loading="lazy" :src="item.previewUrl" :alt="item.file.name" class="w-full h-full object-cover" />
 
                 <!-- uploading -->
                 <div v-if="item.status === 'uploading'"

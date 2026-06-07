@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     description: 'Общественный мониторинг магазинов Астрахани',
     defaultLocale: 'ru',
   },
+
   routeRules: {
     '/': { isr: 3600 },
     '/badges/**': { isr: 3600 },
@@ -19,6 +20,13 @@ export default defineNuxtConfig({
     '/product-review/**': { isr: 3600 },
     '/report/**': { isr: 3600 },
     '/_error/**': { isr: false },
+    '/_nuxt/**': {
+      headers: { 'cache-control': 'max-age=31536000, immutable' }
+    },
+  },
+
+  nitro: {
+    compressPublicAssets: true,
   },
 
   css: ['~/assets/css/main.css'],
@@ -39,7 +47,10 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1', tagPriority: 0 }
       ],
       link: [
+        { rel: 'preload', as: 'image', href: '/leaves.svg' },
         { rel: 'icon', type: 'image/png', href: '/logo.png' },
+        { rel: 'preconnect', href: 'https://api.freshcheckastra.ru' },
+        { rel: 'dns-prefetch', href: 'https://api.freshcheckastra.ru' },
       ],
     },
   },
@@ -52,6 +63,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxtjs/seo',
     'nuxt-yandex-metrika',
+    '@nuxt/image'
   ],
 
   ui: {
@@ -70,13 +82,12 @@ export default defineNuxtConfig({
       clickmap: true,
       trackLinks: true,
     },
+    delay: 3000,
   },
+
   icon: {
     serverBundle: {
       collections: ['ph', 'heroicons', 'mdi']
-    },
-    clientBundle: {
-      scan: true,
     },
     fallbackToApi: false
   },
@@ -87,6 +98,9 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+  image: {
+    domains: ['api.freshcheckastra.ru']
+  },
 
   pinia: {
     storesDirs: []

@@ -30,7 +30,7 @@
                     >
                         <SwiperSlide v-for="(img, idx) in images" :key="idx" class="flex items-center justify-center">
                             <div class="swiper-zoom-container w-full h-full flex items-center justify-center">
-                                <img :src="buildApiUrl(img.photo.url)"
+                                <NuxtImg format="webp" loading="lazy" quality="80" :src="buildApiUrl(img.photo.url)"
                                     class="max-w-full max-h-full object-contain rounded-2xl pointer-events-none select-none"
                                     draggable="false" />
                             </div>
@@ -41,7 +41,7 @@
                 <div v-if="images.length > 1"
                     ref="thumbnailsRef"
                     class="w-full flex gap-2.5 overflow-x-auto pb-safe mb-2  px-4 py-3 scrollbar-hide snap-x snap-mandatory">
-                    <img v-for="(img, idx) in images" :key="idx"
+                    <NuxtImg format="webp" loading="lazy" quality="80" v-for="(img, idx) in images" :key="idx"
                         :src="buildApiUrl(img.photo.url)"
                         class="w-14 h-14 shrink-0 object-cover rounded-xl cursor-pointer border-2 transition-all snap-start"
                         :class="modelValue === idx ? 'border-white scale-105' : 'border-transparent opacity-50'"

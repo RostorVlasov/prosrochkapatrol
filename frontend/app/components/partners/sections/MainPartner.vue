@@ -2,7 +2,7 @@
     <div
         class="bg-white dark:bg-slate rounded-3xl p-8 md:p-10 border border-off-white dark:border-gray-500 shadow-sm hover:border-beige-500 transition-all duration-300 flex flex-col">
         <div class="flex items-center justify-center">
-            <img class="w-lg h-auto object-contain rounded-full" :src="logo" />
+            <NuxtImg quality="80" format="webp" loading="lazy" class="w-lg h-auto object-contain rounded-full" :alt="name" :src="logo" />
         </div>
         <div class="flex items-start gap-5 mb-6">
             <div>

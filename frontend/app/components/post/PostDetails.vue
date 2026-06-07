@@ -22,7 +22,7 @@
 
         <div>
             <h1 class="text-2xl mt-4 font-bold">{{ post.title }}</h1>
-            <img v-if="post.cover" :src="buildApiUrl(post.cover.url)" :alt="post.cover.alt ? post.cover.alt : 'обложка'"
+            <NuxtImg v-if="post.cover" quality="80" format="webp" loading="lazy" :src="buildApiUrl(post.cover.url)" :alt="post.cover.alt ? post.cover.alt : 'обложка статьи ' + post.title"
                 class="rounded-lg shadow-xl aspect-video mt-4 w-full" />
         </div>
 

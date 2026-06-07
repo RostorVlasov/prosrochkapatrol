@@ -3,7 +3,7 @@
 
         <USkeleton v-if="isImageLoading" class="absolute inset-0" />
 
-        <img ref="imgRef" :src="buildApiUrl(images[currentPreviewIndex]?.photo.url ?? '')"
+        <NuxtImg format="webp" loading="lazy" ref="imgRef" :src="buildApiUrl(images[currentPreviewIndex]?.photo.url ?? '')"
             class="w-full xl:max-h-[70vh] max-h-[40vh] object-contain cursor-zoom-in select-none transition-opacity duration-300"
             :class="isImageLoading ? 'opacity-0' : 'opacity-100'" @load="handleImageLoad"
             @click="openModal(currentPreviewIndex)" draggable="false" />

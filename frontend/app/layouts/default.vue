@@ -5,11 +5,11 @@
 
       <div class="px-4 py-5 border-b border-gray-200 dark:border-gray-800">
         <NuxtLink v-if="!isMounted" to="/">
-          <img class="h-15 w-auto" :src="'/freshcheck.png'" alt="FreshCheck" />
+          <NuxtImg format="webp" fetchpriority="high" quality="80" class="h-15 w-auto" :src="'/freshcheck.png'" alt="FreshCheck" />
         </NuxtLink>
         <ClientOnly>
           <NuxtLink to="/">
-            <img class="h-15 w-auto" :src="isDark ? '/freshcheck-light.png' : '/freshcheck.png'" alt="FreshCheck" />
+            <NuxtImg format="webp" fetchpriority="high" quality="80" class="h-15 w-auto" :src="isDark ? '/freshcheck-light.png' : '/freshcheck.png'" alt="FreshCheck" />
           </NuxtLink>
         </ClientOnly>
       </div>
@@ -37,9 +37,9 @@
                    bg-white dark:bg-black/70 border-b border-gray-200 dark:border-0
                    backdrop-blur-2xl flex justify-between items-center">
       <NuxtLink :to="pages.sidebar.home.url">
-        <img v-if="!isMounted" class="w-50 h-auto" :src="'/freshcheck.png'" alt="FreshCheck" />
+        <NuxtImg format="webp" fetchpriority="high" quality="80" v-if="!isMounted" class="w-50 h-auto" :src="'/freshcheck.png'" alt="FreshCheck" />
         <ClientOnly>
-          <img class="w-50 h-auto" :src="isDark ? '/freshcheck-light.png' : '/freshcheck.png'" alt="FreshCheck" />
+          <NuxtImg format="webp" fetchpriority="high" quality="80" class="w-50 h-auto" :src="isDark ? '/freshcheck-light.png' : '/freshcheck.png'" alt="FreshCheck" />
         </ClientOnly>
       </NuxtLink>
       <button @click="toggleColorMode" class="text-gray-800 dark:text-white">

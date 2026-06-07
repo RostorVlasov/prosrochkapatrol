@@ -8,16 +8,20 @@
                 <div class="flex flex-col gap-4">
                     <NuxtLink to="/" class="inline-flex w-max">
                         <ClientOnly>
-                            <img
+                            <NuxtImg
+                                format="webp"
+                                quality="80"
                                 :src="isDark ? '/freshcheck-light.png' : '/freshcheck.png'"
-                                alt="FreshCheck"
+                                alt="логотип FreshCheck"
                                 class="h-14 w-auto"
                             />
 
                             <template #fallback>
-                                <img
+                                <NuxtImg
+                                    format="webp"
+                                    quality="80"
                                     src="/freshcheck.png"
-                                    alt="FreshCheck"
+                                    alt="логотип FreshCheck"
                                     class="h-14 w-auto"
                                 />
                             </template>

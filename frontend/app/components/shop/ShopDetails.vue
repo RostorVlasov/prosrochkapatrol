@@ -15,7 +15,7 @@
 
     <!-- Инфобаннер -->
     <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 mt-3 flex gap-3 items-start">
-      <img src="/logo.png" alt="logo" class="size-5 shrink-0 mt-0.5">
+      <NuxtImg format="webp" quality="80" src="/logo.png" alt="logo" class="size-5 shrink-0 mt-0.5"/>
       <div class="text-sm text-blue-800 dark:text-blue-300 leading-relaxed space-y-2">
         <p>
           Проверка* проведена в рамках гражданской инициативы <strong>FreshCheck</strong>.
@@ -32,7 +32,7 @@
 
     <!-- Фото обложки -->
     <div class="w-full rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700 mt-3">
-      <img :src="buildApiUrl(shop.shop_photo?.url as string)" :alt="shop.store_name"
+      <NuxtImg format="webp" loading="lazy" quality="80" :src="buildApiUrl(shop.shop_photo?.url as string)" :alt="shop.store_name"
         class="w-full aspect-video object-cover" />
     </div>
 

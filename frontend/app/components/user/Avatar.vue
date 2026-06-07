@@ -6,7 +6,7 @@
       class="absolute inset-0 rounded-full"
     />
 
-    <img
+    <NuxtImg format="webp" loading="lazy" quality="80"
       ref="imgRef"
       :src="buildApiUrl(avatar.url)"
       alt="avatar"
