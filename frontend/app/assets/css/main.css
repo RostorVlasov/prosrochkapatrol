@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
-
 @font-face {
   font-family: 'Golos Text';
   src: url('/fonts/GolosText-Regular.woff2') format('woff2');

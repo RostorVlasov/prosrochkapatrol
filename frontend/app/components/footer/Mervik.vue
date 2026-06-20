@@ -1,5 +1,5 @@
 <template>
-    <a href="https://mervik.ru/" class="block">
+    <a href="https://mervik.ru/" class="block w-64">
         <div
             class="group relative overflow-hidden rounded-2xl border
                    border-gray-200 dark:border-white/10
@@ -31,7 +31,7 @@
                             MerVik
                         </span>
                         <span
-                            class="text-[10px] flex items-center justify-center px-2 py-0.5 rounded-full font-mono uppercase tracking-wider
+                            class="text-[10px] text-start flex items-center justify-center px-2 py-0.5 rounded-full font-mono uppercase tracking-wider
                                    border border-red-400/30 dark:border-red-500/20
                                    bg-red-50 dark:bg-red-500/10
                                    text-red-500 dark:text-red-400">

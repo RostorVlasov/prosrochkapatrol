@@ -15,7 +15,7 @@
 
     <!-- Инфобаннер -->
     <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 mt-3 flex gap-3 items-start">
-      <NuxtImg format="webp" quality="80" src="/logo.png" alt="logo" class="size-5 shrink-0 mt-0.5"/>
+      <NuxtImg format="webp" quality="80" src="/logo.png" alt="logo" class="size-5 shrink-0 mt-0.5" />
       <div class="text-sm text-blue-800 dark:text-blue-300 leading-relaxed space-y-2">
         <p>
           Проверка* проведена в рамках гражданской инициативы <strong>FreshCheck</strong>.
@@ -32,8 +32,8 @@
 
     <!-- Фото обложки -->
     <div class="w-full rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700 mt-3">
-      <NuxtImg format="webp" loading="lazy" quality="80" :src="buildApiUrl(shop.shop_photo?.url as string)" :alt="shop.store_name"
-        class="w-full aspect-video object-cover" />
+      <NuxtImg format="webp" loading="lazy" quality="80" :src="buildApiUrl(shop.shop_photo?.url as string)"
+        :alt="shop.store_name" class="w-full aspect-video object-cover" />
     </div>
 
     <!-- Основная информация -->
@@ -86,7 +86,7 @@
       </div>
     </div>
 
-    
+
     <!-- Преимущества / недостатки -->
     <div class="grid md:grid-cols-2 gap-3 mt-3">
       <div class="bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800/30 rounded-2xl p-4">
@@ -205,12 +205,15 @@
 
     <!-- Комментарий проверяющего -->
     <div v-if="shop.inspector_comment"
-      class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3 flex gap-3 items-start">
-      <div class="size-9 rounded-full bg-gray-100 dark:bg-gray-600 flex items-center justify-center shrink-0">
-        <AppIcon name="user" class="size-5 text-gray-500 dark:text-gray-400" />
+      class="bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-2xl p-4 mt-3 flex flex-col sm:flex-row gap-3 items-start">
+      <div class="flex flex-row sm:flex-col gap-2 items-center justify-center">
+        <div class="size-9 rounded-full bg-gray-100 dark:bg-gray-600 flex items-center justify-center shrink-0">
+          <AppIcon name="user" class="size-5 text-gray-500 dark:text-gray-400" />
+        </div>
+        <p class="text-sm sm:hidden font-semibold mb-1">Комментарий участника визита</p>
       </div>
       <div>
-        <p class="text-sm font-semibold mb-1">Комментарий участника визита</p>
+        <p class="text-sm hidden sm:block font-semibold mb-1">Комментарий участника визита</p>
         <p class="text-sm text-gray-600 dark:text-gray-100 whitespace-pre-line leading-relaxed">
           {{ shop.inspector_comment }}
         </p>
@@ -224,24 +227,18 @@
       <div class="space-y-3">
 
         <!-- Основной проверяющий -->
-        <ParticipantRow 
-          v-if="shop.main_inspector" role="Основной проверяющий*" icon-color="blue"
-          :user="shop.main_inspector"
-          :badge="shop.admin_panel?.main_inspector_badge" />
+        <ParticipantRow v-if="shop.main_inspector" role="Основной проверяющий*" icon-color="blue"
+          :user="shop.main_inspector" :badge="shop.admin_panel?.main_inspector_badge" />
 
         <!-- Составитель -->
-        <ParticipantRow 
-          v-if="shop.compiler" role="Составитель отчёта" icon-color="purple" icon="edit"
+        <ParticipantRow v-if="shop.compiler" role="Составитель отчёта" icon-color="purple" icon="edit"
           :user="shop.compiler" :badge="shop.admin_panel?.compiler_badge" />
 
         <!-- Другие проверяющие -->
         <ParticipantRow v-for="(item, idx) in shop.other_inspectors" :key="idx" role="Проверяющий*" icon-color="gray"
-          :user="item.inspector"
-          :badge="shop.admin_panel?.other_inspector_badges?.[idx]" />
+          :user="item.inspector" :badge="shop.admin_panel?.other_inspector_badges?.[idx]" />
 
-          <ParticipantRow 
-          v-if="shop.operator" role="Оператор" icon-color="green" icon="settings"
-          :user="shop.operator" 
+        <ParticipantRow v-if="shop.operator" role="Оператор" icon-color="green" icon="settings" :user="shop.operator"
           :badge="shop.admin_panel?.operator_badge" />
 
       </div>
@@ -270,39 +267,39 @@
   </AdaptiveContainer>
 </template>
 
-<script lang="ts" setup>
-import { pages } from '~/data/pages'
-import type { ShopDoc } from '~/types/shops.types'
+  <script lang="ts" setup>
+  import { pages } from '~/data/pages'
+  import type { ShopDoc } from '~/types/shops.types'
 
-const props = defineProps<{ shop: ShopDoc }>()
-const { buildApiUrl } = useApiBuilder()
+  const props = defineProps<{ shop: ShopDoc }>()
+  const { buildApiUrl } = useApiBuilder()
 
-const reasonTypeMapping = computed(() => {
-  if (props.shop.reason_type === 'planned') {
-    return {
-      text: 'Плановая',
-      class: 'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
+  const reasonTypeMapping = computed(() => {
+    if (props.shop.reason_type === 'planned') {
+      return {
+        text: 'Плановая',
+        class: 'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
+      }
     }
-  }
-  return {
-    text: 'По жалобе',
-    class: 'bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300',
-  }
-})
+    return {
+      text: 'По жалобе',
+      class: 'bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300',
+    }
+  })
 
-const hasParticipants = computed(() => {
-  const s = props.shop
-  return s.main_inspector || s.compiler || s.operator || s.other_inspectors?.length
-})
+  const hasParticipants = computed(() => {
+    const s = props.shop
+    return s.main_inspector || s.compiler || s.operator || s.other_inspectors?.length
+  })
 
-useHead({
+  useHead({
     title: props.shop?.store_name,
     meta: [
-        { property: 'og:title', content: 'FreshCheck', tagPriority: 0 },
-        { property: 'og:description', content: `Проверка '${props.shop.store_name}' по адресу '${props.shop.address}' на сайте FreshCheck`, tagPriority: 0 },
-        { property: 'og:image', content: buildApiUrl(props.shop.shop_photo?.url) || '/logo.png', tagPriority: 0 },
-        { property: 'og:type', content: 'article', tagPriority: 0 },
+      { property: 'og:title', content: 'FreshCheck', tagPriority: 0 },
+      { property: 'og:description', content: `Проверка '${props.shop.store_name}' по адресу '${props.shop.address}' на сайте FreshCheck`, tagPriority: 0 },
+      { property: 'og:image', content: buildApiUrl(props.shop.shop_photo?.url) || '/logo.png', tagPriority: 0 },
+      { property: 'og:type', content: 'article', tagPriority: 0 },
     ]
-})
+  })
 
 </script>
