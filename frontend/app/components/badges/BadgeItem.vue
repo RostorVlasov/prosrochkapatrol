@@ -4,7 +4,7 @@
         <div class="flex items-center gap-2 mb-3">
             <span class="font-mono font-semibold text-base tracking-wide">{{ badge.code }}</span>
             <span class="text-xs font-medium uppercase tracking-wider px-2 py-0.5 rounded-full"
-                :class="typePillClass">{{ badge.type === 'P' ? 'Проверяющий' : 'Ютубер' }}</span>
+                :class="typePillClass">{{ badge.type === 'P' ? '*Проверяющий' : 'Ютубер' }}</span>
         </div>
 
         <div class="flex items-center gap-2 flex-wrap">

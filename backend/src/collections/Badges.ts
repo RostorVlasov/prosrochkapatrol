@@ -37,7 +37,7 @@ export const Badges: CollectionConfig = {
             type: 'select',
             required: true,
             options: [
-                { label: 'Проверяющий (#P)', value: 'P' },
+                { label: '*Проверяющий (#P)', value: 'P' },
                 { label: 'Блогер (#YOU)', value: 'YOU' },
             ],
         },
