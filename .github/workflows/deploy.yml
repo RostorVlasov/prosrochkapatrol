@@ -50,8 +50,10 @@ jobs:
           mkdir -p deploy/frontend
           mkdir -p deploy/backend
 
+          # Копируем билд фронта
           cp -r frontend/.output deploy/frontend/
 
+          # Копируем минимально необходимый билд бэка
           mkdir -p deploy/backend/.next
           cp -r backend/.next/server deploy/backend/.next/
           cp -r backend/.next/static deploy/backend/.next/
@@ -65,35 +67,30 @@ jobs:
 
           cp backend/package.json deploy/backend/
           cp backend/package-lock.json deploy/backend/ 2>/dev/null || true
-          cp backend/next.config.ts deploy/backend/ 2>/dev/null || true
-          cp backend/next.config.js deploy/backend/ 2>/dev/null || true
-          cp backend/next.config.mjs deploy/backend/ 2>/dev/null || true
+          cp backend/next.config.* deploy/backend/ 2>/dev/null || true
           cp -r backend/public deploy/backend/ 2>/dev/null || true
-
-          cp backend/tsconfig.json deploy/backend/
-          cp -r backend/src deploy/backend/
 
           echo "📊 Deploy folder size: $(du -sh deploy | cut -f1)"
 
       # =========================
-      # CREATE ZIP
+      # CREATE TAR ARCHIVE (Быстрее zip в 5-10 раз)
       # =========================
-      - name: Create deploy.zip
+      - name: Create deploy.tar.gz
         run: |
-          zip -r deploy.zip deploy
-          echo "📦 Archive size: $(du -sh deploy.zip | cut -f1)"
+          tar -czf deploy.tar.gz deploy
+          echo "📦 Archive size: $(du -sh deploy.tar.gz | cut -f1)"
 
       # =========================
-      # UPLOAD ZIP TO SERVER
+      # UPLOAD TO SERVER
       # =========================
-      - name: Upload deploy.zip to server
+      - name: Upload deploy.tar.gz to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "deploy.zip"
+          source: "deploy.tar.gz"
           target: "/var/www/prosrochkapatrol/"
 
       # =========================
@@ -110,7 +107,7 @@ jobs:
           script: |
             set -e
 
-            DEPLOY_ZIP=/var/www/prosrochkapatrol/deploy.zip
+            DEPLOY_TAR=/var/www/prosrochkapatrol/deploy.tar.gz
             WORKDIR=/var/www/prosrochkapatrol/work
             BACK=/var/www/prosrochkapatrol/back
             FRONT=/var/www/prosrochkapatrol/front
@@ -120,11 +117,11 @@ jobs:
 
             mkdir -p $LOGS
 
-            # 1. UNZIP
-            echo "📦 Unzipping..."
+            # 1. UNTAR
+            echo "📦 Extracting tar archive..."
             rm -rf $WORKDIR
             mkdir -p $WORKDIR
-            unzip -o $DEPLOY_ZIP -d $WORKDIR
+            tar -xzf $DEPLOY_TAR -C $WORKDIR
 
             # 2. PREPARE FRONTEND
             echo "🌐 Preparing frontend..."
@@ -133,12 +130,11 @@ jobs:
             mkdir -p $FRONT_TMP
             cp -r $WORKDIR/deploy/frontend/.output/* $FRONT_TMP/
 
-            # 3. KILL OLD PROCESSES (Убиваем процессы ДО работы с node_modules)
+            # 3. KILL OLD PROCESSES
             echo "🔪 Killing old processes and freeing ports..."
             if [ -f $BACK_PID ]; then kill -9 $(cat $BACK_PID) 2>/dev/null || true; fi
             if [ -f $FRONT_PID ]; then kill -9 $(cat $FRONT_PID) 2>/dev/null || true; fi
 
-            # Универсальный метод освобождения портов 3333 и 3001
             fuser -k -9 3333/tcp 2>/dev/null || true
             fuser -k -9 3001/tcp 2>/dev/null || true
             lsof -ti:3333 | xargs kill -9 2>/dev/null || true
@@ -150,7 +146,6 @@ jobs:
 
             # 4. DEPLOY BACKEND
             echo "⚙️ Deploy backend..."
-            # Удаляем node_modules и .next целиком, чтобы избежать TAR_ENTRY_ERROR
             rm -rf $BACK/.next $BACK/public $BACK/node_modules
             cp -r $WORKDIR/deploy/backend/. $BACK/
             cd $BACK
@@ -196,5 +191,5 @@ jobs:
               exit 1
             fi
 
-            rm -rf $WORKDIR $DEPLOY_ZIP
+            rm -rf $WORKDIR $DEPLOY_TAR
             echo "🎉 DEPLOY COMPLETE"
