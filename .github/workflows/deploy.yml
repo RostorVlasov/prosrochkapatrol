@@ -1,4 +1,4 @@
-name: Deploy to VDS
+name: Deploy to Server
 
 on:
   push:
@@ -13,14 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # =========================
-      # SETUP
-      # =========================
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
 
       # =========================
-      # BUILD FRONTEND (Nuxt)
+      # СБОРКА FRONTEND (Nuxt)
       # =========================
       - name: Install frontend deps
         working-directory: ./frontend
@@ -31,18 +28,7 @@ jobs:
         run: bun run build
 
       # =========================
-      # BUILD BACKEND (Payload/Next)
-      # =========================
-      - name: Install backend deps
-        working-directory: ./backend
-        run: bun install
-
-      - name: Build backend
-        working-directory: ./backend
-        run: bun run build
-
-      # =========================
-      # PREPARE DEPLOY FOLDER
+      # ПОДГОТОВКА ПАПКИ ДЛЯ ДЕПЛОЯ
       # =========================
       - name: Prepare deploy folder
         run: |
@@ -50,40 +36,25 @@ jobs:
           mkdir -p deploy/frontend
           mkdir -p deploy/backend
 
-          # Копируем билд фронта
           cp -r frontend/.output deploy/frontend/
-
-          # Копируем минимально необходимый билд бэка
-          mkdir -p deploy/backend/.next
-          cp -r backend/.next/server deploy/backend/.next/
-          cp -r backend/.next/static deploy/backend/.next/
-          cp backend/.next/BUILD_ID deploy/backend/.next/
-          cp backend/.next/build-manifest.json deploy/backend/.next/ 2>/dev/null || true
-          cp backend/.next/app-path-routes-manifest.json deploy/backend/.next/ 2>/dev/null || true
-          cp backend/.next/prerender-manifest.json deploy/backend/.next/ 2>/dev/null || true
-          cp backend/.next/routes-manifest.json deploy/backend/.next/ 2>/dev/null || true
-          cp backend/.next/required-server-files.json deploy/backend/.next/ 2>/dev/null || true
-          cp backend/.next/package.json deploy/backend/.next/ 2>/dev/null || true
-
+          cp -r backend/src deploy/backend/
           cp backend/package.json deploy/backend/
           cp backend/package-lock.json deploy/backend/ 2>/dev/null || true
-          cp backend/next.config.* deploy/backend/ 2>/dev/null || true
+          cp backend/next.config.ts deploy/backend/ 2>/dev/null || cp backend/next.config.js deploy/backend/ 2>/dev/null || true
+          cp backend/tsconfig.json deploy/backend/ 2>/dev/null || true
           cp -r backend/public deploy/backend/ 2>/dev/null || true
 
-          echo "📊 Deploy folder size: $(du -sh deploy | cut -f1)"
+          echo "📊 Deploy size: $(du -sh deploy | cut -f1)"
 
-      # =========================
-      # CREATE TAR ARCHIVE (Быстрее zip в 5-10 раз)
-      # =========================
-      - name: Create deploy.tar.gz
+      - name: Archive deploy folder
         run: |
           tar -czf deploy.tar.gz deploy
           echo "📦 Archive size: $(du -sh deploy.tar.gz | cut -f1)"
 
       # =========================
-      # UPLOAD TO SERVER
+      # ЗАГРУЗКА НА СЕРВЕР
       # =========================
-      - name: Upload deploy.tar.gz to server
+      - name: Upload archive to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -94,9 +65,9 @@ jobs:
           target: "/var/www/prosrochkapatrol/"
 
       # =========================
-      # DEPLOY ON SERVER
+      # ДЕПЛОЙ НА СЕРВЕРЕ (PM2)
       # =========================
-      - name: Deploy on server
+      - name: Execute remote deploy script
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -112,84 +83,95 @@ jobs:
             BACK=/var/www/prosrochkapatrol/back
             FRONT=/var/www/prosrochkapatrol/front
             LOGS=/var/log/prosrochkapatrol
-            BACK_PID=/var/run/prosrochkapatrol-back.pid
-            FRONT_PID=/var/run/prosrochkapatrol-front.pid
 
             mkdir -p $LOGS
+            mkdir -p $BACK
+            mkdir -p $FRONT
 
-            # 1. UNTAR
-            echo "📦 Extracting tar archive..."
+            # 1. РАСПАКОВКА
+            echo "📦 Extracting archive..."
             rm -rf $WORKDIR
             mkdir -p $WORKDIR
             tar -xzf $DEPLOY_TAR -C $WORKDIR
 
-            # 2. PREPARE FRONTEND
+            # 2. ПОДГОТОВКА FRONTEND
             echo "🌐 Preparing frontend..."
             FRONT_TMP=$FRONT-tmp
             rm -rf $FRONT_TMP
             mkdir -p $FRONT_TMP
-            cp -r $WORKDIR/deploy/frontend/.output/* $FRONT_TMP/
+            cp -r $WORKDIR/deploy/frontend/.output $FRONT_TMP/
 
-            # 3. KILL OLD PROCESSES
-            echo "🔪 Killing old processes and freeing ports..."
-            if [ -f $BACK_PID ]; then kill -9 $(cat $BACK_PID) 2>/dev/null || true; fi
-            if [ -f $FRONT_PID ]; then kill -9 $(cat $FRONT_PID) 2>/dev/null || true; fi
+            # 3. ПОДГОТОВКА И СБОРКА BACKEND
+            echo "⚙️ Deploying backend..."
+            if [ -f $BACK/.env ]; then
+              cp $BACK/.env /tmp/patrol-backup.env
+            fi
 
-            fuser -k -9 3333/tcp 2>/dev/null || true
-            fuser -k -9 3001/tcp 2>/dev/null || true
-            lsof -ti:3333 | xargs kill -9 2>/dev/null || true
-            lsof -ti:3001 | xargs kill -9 2>/dev/null || true
-            pkill -f "node_modules/.bin/next" 2>/dev/null || true
+            rm -rf $BACK/src
+            rm -f $BACK/package.json $BACK/package-lock.json $BACK/next.config.* $BACK/tsconfig.json
 
-            rm -f $BACK_PID $FRONT_PID
-            sleep 2
+            cp -r $WORKDIR/deploy/backend/src $BACK/
+            cp -f $WORKDIR/deploy/backend/package.json $BACK/
+            cp -f $WORKDIR/deploy/backend/package-lock.json $BACK/ 2>/dev/null || true
+            cp -f $WORKDIR/deploy/backend/next.config.* $BACK/ 2>/dev/null || true
+            cp -f $WORKDIR/deploy/backend/tsconfig.json $BACK/ 2>/dev/null || true
 
-            # 4. DEPLOY BACKEND
-            echo "⚙️ Deploy backend..."
-            rm -rf $BACK/.next $BACK/public $BACK/node_modules
-            cp -r $WORKDIR/deploy/backend/. $BACK/
+            if [ -d "$WORKDIR/deploy/backend/public" ]; then
+              mkdir -p $BACK/public
+              cp -r $WORKDIR/deploy/backend/public/* $BACK/public/ 2>/dev/null || true
+            fi
+
+            if [ -f /tmp/patrol-backup.env ]; then
+              cp /tmp/patrol-backup.env $BACK/.env
+            fi
+
             cd $BACK
+            echo "📦 Installing backend dependencies..."
+            npm install
+            echo "🔨 Building Next.js backend..."
+            npm run build
 
-            echo "📦 Installing dependencies..."
-            npm install --omit=dev
-            npm install @img/sharp-linux-x64 @img/sharp-libvips-linux-x64
-            echo "✅ Dependencies installed"
+            # 4. ПЕРЕЗАПУСК ПРОЦЕССОВ ЧЕРЕЗ PM2
+            echo "🔪 Restarting processes via PM2..."
+            pm2 stop prosrochka-back 2>/dev/null || true
+            pm2 stop prosrochka-front 2>/dev/null || true
+            pm2 delete prosrochka-back 2>/dev/null || true
+            pm2 delete prosrochka-front 2>/dev/null || true
 
-            # 5. SWAP FRONTEND DIRECTORIES
-            echo "🔄 Swapping frontend directories..."
+            # 5. ЗАМЕНА ДИРЕКТОРИИ FRONTEND
+            echo "🔄 Swapping frontend..."
             rm -rf $FRONT
             mv $FRONT_TMP $FRONT
 
-            # 6. START BACKEND
-            echo "▶ Starting backend on port 3333..."
+            # 6. ЗАПУСК В PM2
+            echo "▶ Starting apps in PM2..."
             cd $BACK
-            PORT=3333 nohup node node_modules/.bin/next start > $LOGS/backend.log 2>&1 &
-            echo $! > $BACK_PID
+            pm2 start "PORT=3333 npx next start" --name prosrochka-back
 
-            # 7. START FRONTEND
-            echo "▶ Starting frontend on port 3001..."
             cd $FRONT
-            PORT=3001 NITRO_PUBLIC_DIR=$FRONT/public nohup node server/index.mjs > $LOGS/frontend.log 2>&1 &
-            echo $! > $FRONT_PID
+            pm2 start "PORT=3001 NITRO_PUBLIC_DIR=$FRONT/public node .output/server/index.mjs" --name prosrochka-front
 
-            # 8. CHECK HEALTH
+            pm2 save
+
+            # 7. ПРОВЕРКА СТАБИЛЬНОСТИ
             sleep 5
-
-            if [ -f $BACK_PID ] && kill -0 $(cat $BACK_PID) 2>/dev/null; then
-              echo "✅ Backend is running on port 3333"
+            
+            if pm2 list | grep -q "prosrochka-back.*online"; then
+              echo "✅ Backend is ONLINE"
             else
-              echo "❌ Backend crashed! Log:"
-              tail -30 $LOGS/backend.log
+              echo "❌ Backend failed to start!"
+              pm2 logs prosrochka-back --lines 30
               exit 1
             fi
 
-            if [ -f $FRONT_PID ] && kill -0 $(cat $FRONT_PID) 2>/dev/null; then
-              echo "✅ Frontend is running on port 3001"
+            if pm2 list | grep -q "prosrochka-front.*online"; then
+              echo "✅ Frontend is ONLINE"
             else
-              echo "❌ Frontend crashed! Log:"
-              tail -20 $LOGS/frontend.log
+              echo "❌ Frontend failed to start!"
+              pm2 logs prosrochka-front --lines 30
               exit 1
             fi
 
+            # 8. ОЧИСТКА
             rm -rf $WORKDIR $DEPLOY_TAR
-            echo "🎉 DEPLOY COMPLETE"
+            echo "🎉 DEPLOY SUCCESSFUL"
