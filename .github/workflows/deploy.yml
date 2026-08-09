@@ -131,11 +131,26 @@ jobs:
             FRONT_TMP=$FRONT-tmp
             rm -rf $FRONT_TMP
             mkdir -p $FRONT_TMP
-            # Распаковываем файлы из .output напрямую в корень FRONT_TMP
             cp -r $WORKDIR/deploy/frontend/.output/* $FRONT_TMP/
 
-            # 3. DEPLOY BACKEND
+            # 3. KILL OLD PROCESSES (Убиваем процессы ДО работы с node_modules)
+            echo "🔪 Killing old processes and freeing ports..."
+            if [ -f $BACK_PID ]; then kill -9 $(cat $BACK_PID) 2>/dev/null || true; fi
+            if [ -f $FRONT_PID ]; then kill -9 $(cat $FRONT_PID) 2>/dev/null || true; fi
+
+            # Универсальный метод освобождения портов 3333 и 3001
+            fuser -k -9 3333/tcp 2>/dev/null || true
+            fuser -k -9 3001/tcp 2>/dev/null || true
+            lsof -ti:3333 | xargs kill -9 2>/dev/null || true
+            lsof -ti:3001 | xargs kill -9 2>/dev/null || true
+            pkill -f "node_modules/.bin/next" 2>/dev/null || true
+
+            rm -f $BACK_PID $FRONT_PID
+            sleep 2
+
+            # 4. DEPLOY BACKEND
             echo "⚙️ Deploy backend..."
+            # Удаляем node_modules и .next целиком, чтобы избежать TAR_ENTRY_ERROR
             rm -rf $BACK/.next $BACK/public $BACK/node_modules
             cp -r $WORKDIR/deploy/backend/. $BACK/
             cd $BACK
@@ -144,18 +159,6 @@ jobs:
             npm install --omit=dev
             npm install @img/sharp-linux-x64 @img/sharp-libvips-linux-x64
             echo "✅ Dependencies installed"
-
-            # 4. KILL OLD PROCESSES
-            echo "🔪 Killing old processes..."
-            if [ -f $BACK_PID ]; then kill -9 $(cat $BACK_PID) 2>/dev/null || true; fi
-            if [ -f $FRONT_PID ]; then kill -9 $(cat $FRONT_PID) 2>/dev/null || true; fi
-
-            # Жесткая очистка портов от зависших Node-процессов
-            fuser -k -9 3333/tcp 2>/dev/null || true
-            fuser -k -9 3001/tcp 2>/dev/null || true
-
-            rm -f $BACK_PID $FRONT_PID
-            sleep 2
 
             # 5. SWAP FRONTEND DIRECTORIES
             echo "🔄 Swapping frontend directories..."
@@ -177,7 +180,7 @@ jobs:
             # 8. CHECK HEALTH
             sleep 5
 
-            if kill -0 $(cat $BACK_PID) 2>/dev/null; then
+            if [ -f $BACK_PID ] && kill -0 $(cat $BACK_PID) 2>/dev/null; then
               echo "✅ Backend is running on port 3333"
             else
               echo "❌ Backend crashed! Log:"
@@ -185,7 +188,7 @@ jobs:
               exit 1
             fi
 
-            if kill -0 $(cat $FRONT_PID) 2>/dev/null; then
+            if [ -f $FRONT_PID ] && kill -0 $(cat $FRONT_PID) 2>/dev/null; then
               echo "✅ Frontend is running on port 3001"
             else
               echo "❌ Frontend crashed! Log:"
