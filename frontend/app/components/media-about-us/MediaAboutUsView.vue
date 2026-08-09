@@ -63,7 +63,7 @@
           </p>
         </div>
 
-        <!-- Источники в СМИ (блок с 2 первоисточниками одной новости) -->
+        <!-- Источники в СМИ -->
         <div class="p-8 sm:p-12 bg-gray-50/50 dark:bg-gray-800/50">
           <h3 class="text-lg font-bold mb-6 text-slate dark:text-white flex items-center gap-2">
             <AppIcon name="newspaper" class="w-5 h-5 text-beige-500" />
@@ -168,5 +168,4 @@
 
 <script lang="ts" setup>
 import AppIcon from '@/components/ui/AppIcon.vue'
-import SectionPill from '@/components/ui/SectionPill.vue'
 </script>
