@@ -26,9 +26,9 @@ export default buildConfig({
   globals: [SiteSettings],
   serverURL: 'https://api.freshcheckastra.ru',
   cors: [
-    'http://localhost:3000', 
+    'http://localhost:4001',
     'https://freshcheckastra.ru',
-    'http://192.168.0.212:3000',
+    'http://192.168.0.212:4001',
     '*',
   ],
   admin: {

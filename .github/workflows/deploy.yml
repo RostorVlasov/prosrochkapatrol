@@ -146,10 +146,10 @@ jobs:
             # 6. ЗАПУСК В PM2
             echo "▶ Starting apps in PM2..."
             cd $BACK
-            pm2 start "PORT=3333 npx next start" --name prosrochka-back
+            pm2 start "PORT=4000 npx next start" --name prosrochka-back
 
             cd $FRONT
-            pm2 start "PORT=3001 NITRO_PUBLIC_DIR=$FRONT/public node .output/server/index.mjs" --name prosrochka-front
+            pm2 start "PORT=4001 NITRO_PUBLIC_DIR=$FRONT/public node .output/server/index.mjs" --name prosrochka-front
 
             pm2 save
 

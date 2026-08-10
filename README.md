@@ -139,10 +139,10 @@ SMTP_PASS=your_password
 
 ```env
 # API
-NUXT_PUBLIC_API_URL=http://localhost:3000
+NUXT_PUBLIC_API_URL=http://localhost:4000
 
-# Порт фронтенда (бэкенд занимает 3000)
-NUXT_PORT=3001
+# Порт фронтенда (бэкенд занимает 4000)
+NUXT_PORT=4001
 NUXT_HOST=localhost
 ```
 
@@ -155,8 +155,8 @@ cd backend
 pnpm run dev
 ```
 
-Backend будет доступен на: **http://localhost:3000**
-- Админ-панель: http://localhost:3000/admin
+Backend будет доступен на: **http://localhost:4000**
+- Админ-панель: http://localhost:4000/admin
 
 #### Вариант B: Запуск только фронтенда
 
@@ -165,7 +165,7 @@ cd frontend
 pnpm run dev
 ```
 
-Frontend будет доступен на: **http://localhost:3001**
+Frontend будет доступен на: **http://localhost:4001**
 
 #### Вариант C: Запуск обоих (рекомендуется для локальной разработки)
 
@@ -184,8 +184,8 @@ pnpm run dev
 ### 5. Проверить установку
 
 Откройте в браузере:
-- Backend API + админ-панель: **http://localhost:3000/admin**
-- Frontend приложение: **http://localhost:3001**
+- Backend API + админ-панель: **http://localhost:4000/admin**
+- Frontend приложение: **http://localhost:4001**
 
 ---
 
@@ -250,9 +250,9 @@ prosrochkapatrol/
 
 | Переменная | Описание | Пример | Обязательна |
 |---|---|---|---|
-| `NUXT_PUBLIC_API_URL` | URL бэкенд API | `http://localhost:3000` | ❌ |
+| `NUXT_PUBLIC_API_URL` | URL бэкенд API | `http://localhost:4000` | ❌ |
 | `NUXT_HOST` | Хост фронтенда | `localhost` | ❌ |
-| `NUXT_PORT` | Порт фронтенда | `3001` | ❌ |
+| `NUXT_PORT` | Порт фронтенда | `4001` | ❌ |
 
 ### Production
 
