@@ -1,67 +1,118 @@
-name: Деплой на сервер
+name: Deploy production
 
 on:
   push:
     branches:
       - main
+    paths:
+      - '.github/workflows/deploy.yml'
+      - '.github/workflows/ci.yml'
+      - 'frontend/**'
+      - 'backend/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
 
 jobs:
-  deploy:
+  build-artifacts:
+    name: Build deploy artifacts
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
-      - name: Загрузка репозитория
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Установка Bun
-        uses: oven-sh/setup-bun@v1
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
 
-      # =========================
-      # СБОРКА FRONTEND (Nuxt)
-      # =========================
-      - name: Сборка фронтенда
+      - name: Install frontend dependencies
         working-directory: ./frontend
-        run: |
-          echo "🔨 Собираем фронтенд..."
-          bun install
-          bun run build
-          echo "✅ Фронтенд собран"
+        run: bun install --frozen-lockfile
 
-      # =========================
-      # ПОДГОТОВКА ПАКЕТА ДЛЯ ДЕПЛОЯ
-      # =========================
-      - name: Подготовка архива
-        run: |
-          echo "📦 Готовим архив для деплоя..."
-          rm -rf deploy
-          mkdir -p deploy/frontend deploy/backend
-          cp -r frontend/.output deploy/frontend/
-          cp -r backend/src deploy/backend/
-          cp backend/package.json deploy/backend/
-          cp backend/package-lock.json deploy/backend/ 2>/dev/null || true
-          cp backend/next.config.* deploy/backend/ 2>/dev/null || true
-          cp backend/tsconfig.json deploy/backend/ 2>/dev/null || true
-          cp -r backend/public deploy/backend/ 2>/dev/null || true
-          tar -czf deploy.tar.gz deploy
-          echo "✅ Архив готов ($(du -sh deploy.tar.gz | cut -f1))"
+      - name: Build frontend
+        working-directory: ./frontend
+        run: bun run build
 
-      # =========================
-      # ЗАГРУЗКА НА СЕРВЕР
-      # =========================
-      - name: Отправка на сервер
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: pnpm install --no-frozen-lockfile --lockfile=false
+
+      - name: Build backend
+        working-directory: ./backend
+        env:
+          DATABASE_URI: mongodb://127.0.0.1:27017/prosrochkapatrol-build
+          PAYLOAD_SECRET: build-secret
+          SMTP_HOST: localhost
+          SMTP_PORT: '1025'
+          SMTP_USER: ci@example.com
+          SMTP_PASS: ci-password
+        run: pnpm run build
+
+      - name: Package release bundle
+        run: |
+          set -euo pipefail
+          rm -rf dist deploy.tar.gz
+          mkdir -p dist/frontend dist/backend/.next
+          cp -R frontend/.output dist/frontend/.output
+          cp -R backend/.next/standalone/. dist/backend/
+          cp -R backend/.next/static dist/backend/.next/static
+          if [ -d backend/public ]; then
+            cp -R backend/public dist/backend/public
+          fi
+          cp backend/package.json dist/backend/package.json
+          tar -czf deploy.tar.gz -C dist .
+
+      - name: Upload deploy artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-deploy-bundle
+          path: deploy.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    name: Deploy to server
+    runs-on: ubuntu-latest
+    needs: build-artifacts
+    timeout-minutes: 30
+    environment:
+      name: production
+
+    steps:
+      - name: Download deploy artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: production-deploy-bundle
+
+      - name: Upload release bundle to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "deploy.tar.gz"
-          target: "/var/www/prosrochkapatrol/"
+          source: deploy.tar.gz
+          target: /var/www/prosrochkapatrol/
 
-      # =========================
-      # УДАЛЁННЫЙ ДЕПЛОЙ (PM2)
-      # =========================
-      - name: Развёртывание на сервере
+      - name: Deploy release on server
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -70,94 +121,83 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           command_timeout: 30m
           script: |
-            set -e
+            set -Eeuo pipefail
 
-            # Переменные
-            DEPLOY_TAR="/var/www/prosrochkapatrol/deploy.tar.gz"
-            WORKDIR="/var/www/prosrochkapatrol/work"
-            BACK="/var/www/prosrochkapatrol/back"
-            FRONT="/var/www/prosrochkapatrol/front"
+            ROOT="/var/www/prosrochkapatrol"
+            DEPLOY_TAR="$ROOT/deploy.tar.gz"
+            WORKDIR="$ROOT/work"
+            BACK="$ROOT/back"
+            FRONT="$ROOT/front"
+            BACK_NEW="$ROOT/back-new"
+            FRONT_NEW="$ROOT/front-new"
+            BACK_PREV="$ROOT/back-previous"
+            FRONT_PREV="$ROOT/front-previous"
+            BACK_NAME="prosrochka-back"
+            FRONT_NAME="prosrochka-front"
 
-            # Красивые цвета
-            GREEN='\033[0;32m'
-            RED='\033[0;31m'
-            YELLOW='\033[0;33m'
-            NC='\033[0m'
+            rollback() {
+              echo "⚠️ Ошибка деплоя, откатываемся..."
+              pm2 delete "$BACK_NAME" 2>/dev/null || true
+              pm2 delete "$FRONT_NAME" 2>/dev/null || true
 
-            echo -e "${GREEN}🚀 Запускаем деплой...${NC}"
+              rm -rf "$BACK" "$FRONT"
+              [ -d "$BACK_PREV" ] && mv "$BACK_PREV" "$BACK"
+              [ -d "$FRONT_PREV" ] && mv "$FRONT_PREV" "$FRONT"
 
-            # 1. Распаковка
-            echo -n "📦 Распаковываем архив... "
-            rm -rf $WORKDIR && mkdir -p $WORKDIR
-            tar -xzf $DEPLOY_TAR -C $WORKDIR > /dev/null 2>&1
-            echo -e "${GREEN}готово${NC}"
+              if [ -f "$BACK/server.js" ]; then
+                cd "$BACK"
+                PORT=3333 pm2 start node --name "$BACK_NAME" -- server.js
+              fi
 
-            # 2. Подготовка фронтенда
-            echo -n "🌐 Подготавливаем фронтенд... "
-            FRONT_TMP="$FRONT-tmp"
-            rm -rf $FRONT_TMP && mkdir -p $FRONT_TMP
-            cp -r $WORKDIR/deploy/frontend/.output $FRONT_TMP/
-            echo -e "${GREEN}готово${NC}"
+              if [ -f "$FRONT/.output/server/index.mjs" ]; then
+                cd "$FRONT"
+                PORT=3001 pm2 start node --name "$FRONT_NAME" -- .output/server/index.mjs
+              fi
 
-            # 3. Подготовка и сборка бэкенда
-            echo -n "⚙️ Собираем бэкенд... "
-            # Сохраняем .env, если есть
-            [ -f $BACK/.env ] && cp $BACK/.env /tmp/backup.env
-            # Очищаем старые файлы
-            rm -rf $BACK/src $BACK/package.json $BACK/package-lock.json $BACK/next.config.* $BACK/tsconfig.json 2>/dev/null || true
-            # Копируем новые
-            cp -r $WORKDIR/deploy/backend/src $BACK/
-            cp -f $WORKDIR/deploy/backend/package.json $BACK/
-            cp -f $WORKDIR/deploy/backend/package-lock.json $BACK/ 2>/dev/null || true
-            cp -f $WORKDIR/deploy/backend/next.config.* $BACK/ 2>/dev/null || true
-            cp -f $WORKDIR/deploy/backend/tsconfig.json $BACK/ 2>/dev/null || true
-            [ -d "$WORKDIR/deploy/backend/public" ] && cp -r $WORKDIR/deploy/backend/public/* $BACK/public/ 2>/dev/null || true
-            # Восстанавливаем .env
-            [ -f /tmp/backup.env ] && cp /tmp/backup.env $BACK/.env
-            # Устанавливаем зависимости и собираем (тихо)
-            cd $BACK
-            npm install --silent > /dev/null 2>&1
-            npm run build --silent > /dev/null 2>&1
-            echo -e "${GREEN}готово${NC}"
+              pm2 save >/dev/null 2>&1 || true
+            }
 
-            # 4. Замена директории фронтенда (до перезапуска PM2, чтобы сервер стартовал из новых файлов)
-            echo -n "🔄 Применяем фронтенд... "
-            rm -rf $FRONT
-            mv $FRONT_TMP $FRONT
-            echo -e "${GREEN}готово${NC}"
+            trap rollback ERR
 
-            # 5. Перезапуск PM2
-            echo -n "🔄 Перезапускаем PM2... "
-            pm2 delete all 2>/dev/null || true
-            cd $BACK
-            PORT=3333 pm2 start npm --name "prosrochka-back" -- start > /dev/null 2>&1
-            cd $FRONT
-            PORT=3001 pm2 start node --name "prosrochka-front" -- .output/server/index.mjs > /dev/null 2>&1
-            pm2 save > /dev/null 2>&1
-            echo -e "${GREEN}готово${NC}"
+            rm -rf "$WORKDIR" "$BACK_NEW" "$FRONT_NEW"
+            mkdir -p "$WORKDIR" "$BACK_NEW" "$FRONT_NEW"
+            tar -xzf "$DEPLOY_TAR" -C "$WORKDIR"
 
-            # 6. Проверка статуса
+            cp -R "$WORKDIR/frontend/.output" "$FRONT_NEW/.output"
+            cp -a "$WORKDIR/backend/." "$BACK_NEW/"
+
+            if [ -f "$BACK/.env" ]; then
+              cp "$BACK/.env" "$BACK_NEW/.env"
+            fi
+
+            rm -rf "$BACK_PREV" "$FRONT_PREV"
+            [ -d "$BACK" ] && mv "$BACK" "$BACK_PREV"
+            [ -d "$FRONT" ] && mv "$FRONT" "$FRONT_PREV"
+            mv "$BACK_NEW" "$BACK"
+            mv "$FRONT_NEW" "$FRONT"
+
+            pm2 delete "$BACK_NAME" 2>/dev/null || true
+            pm2 delete "$FRONT_NAME" 2>/dev/null || true
+
+            cd "$BACK"
+            PORT=3333 pm2 start node --name "$BACK_NAME" -- server.js
+
+            cd "$FRONT"
+            PORT=3001 pm2 start node --name "$FRONT_NAME" -- .output/server/index.mjs
+
+            pm2 save >/dev/null 2>&1
             sleep 5
-            echo -n "✅ Проверяем статус... "
-            if pm2 list | grep -q "prosrochka-back.*online" && pm2 list | grep -q "prosrochka-front.*online"; then
-              echo -e "${GREEN}ОК${NC}"
-            else
-              echo -e "${RED}ОШИБКА${NC}"
-              echo "❌ Процессы не запущены. Логи:"
-              pm2 logs --lines 20
+
+            pm2 show "$BACK_NAME" >/dev/null
+            pm2 show "$FRONT_NAME" >/dev/null
+
+            BACK_CODE=$(curl -fsS -o /dev/null -w "%{http_code}" http://127.0.0.1:3333/admin || echo "000")
+            FRONT_CODE=$(curl -fsS -o /dev/null -w "%{http_code}" http://127.0.0.1:3001/ || echo "000")
+
+            if [ "$BACK_CODE" != "200" ] || [ "$FRONT_CODE" != "200" ]; then
+              echo "Healthcheck failed: backend=$BACK_CODE frontend=$FRONT_CODE"
               exit 1
             fi
 
-            # 7. Проверка работоспособности
-            echo -n "🏥 Проверка здоровья... "
-            BACK_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3333 2>/dev/null || echo "000")
-            FRONT_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3001 2>/dev/null || echo "000")
-            if [[ "$BACK_CODE" =~ ^(200|404)$ ]] && [[ "$FRONT_CODE" =~ ^(200|404)$ ]]; then
-              echo -e "${GREEN}ОК${NC} (бэк: $BACK_CODE, фронт: $FRONT_CODE)"
-            else
-              echo -e "${YELLOW}ПРЕДУПРЕЖДЕНИЕ${NC} (бэк: $BACK_CODE, фронт: $FRONT_CODE)"
-            fi
-
-            # 8. Очистка
-            rm -rf $WORKDIR $DEPLOY_TAR
-            echo -e "${GREEN}🎉 Деплой успешно завершён!${NC}"
+            rm -rf "$WORKDIR" "$DEPLOY_TAR" "$BACK_PREV" "$FRONT_PREV"
+            echo "✅ Деплой успешно завершён"

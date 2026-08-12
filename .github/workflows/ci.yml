@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/**'
+      - 'frontend/**'
+      - 'backend/**'
+      - 'README.md'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/**'
+      - 'frontend/**'
+      - 'backend/**'
+      - 'README.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    name: Frontend build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install frontend dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build frontend
+        run: bun run build
+
+  backend:
+    name: Backend lint, build and tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: ./backend
+    services:
+      mongo:
+        image: mongo:7
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd="mongosh --eval \"db.adminCommand('ping')\""
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    env:
+      CI: true
+      DATABASE_URI: mongodb://127.0.0.1:27017/prosrochkapatrol-ci
+      PAYLOAD_SECRET: ci-secret
+      SMTP_HOST: localhost
+      SMTP_PORT: '1025'
+      SMTP_USER: ci@example.com
+      SMTP_PASS: ci-password
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install backend dependencies
+        run: pnpm install --no-frozen-lockfile --lockfile=false
+
+      - name: Lint backend
+        run: pnpm run lint
+
+      - name: Build backend
+        run: pnpm run build
+
+      - name: Run integration tests
+        run: pnpm run test:int

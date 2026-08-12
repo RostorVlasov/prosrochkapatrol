@@ -109,10 +109,11 @@ cd prosrochkapatrol
 ### 2. Установить зависимости
 
 ```bash
-pnpm install
+cd backend && pnpm install
+cd ../frontend && bun install
 ```
 
-Это установит зависимости для обоих приложений (frontend и backend).
+Зависимости устанавливаются отдельно: Payload backend использует `pnpm`, а Nuxt frontend — `bun`.
 
 ### 3. Создать файл `.env` в каждой директории
 
@@ -267,6 +268,14 @@ SMTP_PORT=587
 SMTP_USER=your_email@example.com
 SMTP_PASS=your_app_password
 ```
+
+### GitHub Actions и деплой
+
+- `CI` запускается для `push` и `pull_request` в `main`, собирает frontend и проверяет backend (`lint`, `build`, `test:int`).
+- `Deploy production` запускается для `push` в `main` и вручную через `workflow_dispatch`.
+- Деплой теперь собирает production-артефакты в GitHub Actions и отправляет на сервер уже готовый bundle, без `npm install` и `npm run build` на проде.
+- Перед включением деплоя в репозитории должны быть настроены secrets: `SSH_HOST`, `SSH_PORT`, `SSH_USER`, `SSH_KEY`.
+- Workflow деплоя использует защиту от параллельных запусков и выполняет smoke-check backend (`/admin`) и frontend (`/`) после перезапуска PM2.
 
 ---
 
