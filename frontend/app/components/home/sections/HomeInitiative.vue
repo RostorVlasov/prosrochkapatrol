@@ -82,9 +82,8 @@
                 <p class="text-xs text-gray-400 dark:text-beige-100/40 mt-2">
                     * Данные о голосах обновляются с задержкой и могут не отражать текущий результат на сайте РОИ.
                 </p>
-                </div>
-            </div>
-        </div>
+            </div> <!-- закрываем div.relative z-10 -->
+        </div> <!-- закрываем div.relative rounded-3xl -->
     </section>
 </template>
 
