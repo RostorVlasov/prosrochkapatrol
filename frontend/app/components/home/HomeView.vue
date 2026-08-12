@@ -4,6 +4,9 @@
     <!-- Заголовок -->
     <HomeHero />
 
+    <!-- Инициатива на РОИ -->
+    <HomeInitiative />
+
     <!-- Статистика -->
     <HomeStats :shops-count="shopsCount" />
 
