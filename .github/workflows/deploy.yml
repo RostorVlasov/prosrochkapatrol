@@ -131,31 +131,31 @@ jobs:
             echo "🔨 Building Next.js backend..."
             npm run build
 
-            # 4. ПЕРЕЗАПУСК ПРОЦЕССОВ ЧЕРЕЗ PM2
-            echo "🔪 Restarting processes via PM2..."
-            pm2 stop prosrochka-back 2>/dev/null || true
-            pm2 stop prosrochka-front 2>/dev/null || true
-            pm2 delete prosrochka-back 2>/dev/null || true
-            pm2 delete prosrochka-front 2>/dev/null || true
+            # 4. УДАЛЯЕМ ВСЕ СТАРЫЕ ПРОЦЕССЫ PM2 (чтобы избежать конфликтов портов)
+            echo "🔪 Stopping and deleting ALL PM2 processes..."
+            pm2 delete all 2>/dev/null || true
 
             # 5. ЗАМЕНА ДИРЕКТОРИИ FRONTEND
             echo "🔄 Swapping frontend..."
             rm -rf $FRONT
             mv $FRONT_TMP $FRONT
 
-            # 6. ЗАПУСК В PM2
+            # 6. ЗАПУСК В PM2 (ПРАВИЛЬНО - без обёрток bash)
             echo "▶ Starting apps in PM2..."
-            cd $BACK
-            pm2 start "PORT=3333 npx next start" --name prosrochka-back
 
+            # Бэкенд (Next.js через npm start, порт 3333)
+            cd $BACK
+            PORT=3333 pm2 start npm --name "prosrochka-back" -- start
+
+            # Фронтенд (Nuxt/Nitro напрямую через node, порт 3001)
             cd $FRONT
-            pm2 start "PORT=3001 NITRO_PUBLIC_DIR=$FRONT/public node .output/server/index.mjs" --name prosrochka-front
+            PORT=3001 pm2 start node --name "prosrochka-front" -- .output/server/index.mjs
 
             pm2 save
 
             # 7. ПРОВЕРКА СТАБИЛЬНОСТИ
             sleep 5
-            
+
             if pm2 list | grep -q "prosrochka-back.*online"; then
               echo "✅ Backend is ONLINE"
             else
