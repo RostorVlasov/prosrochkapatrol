@@ -1,171 +1,410 @@
 <template>
-  <LandingContainer class="py-12 sm:py-18 px-6">
+  <LandingContainer class="px-6 py-12 sm:py-18">
+    <section class="relative flex min-h-[calc(100vh-8rem)] items-center py-12 sm:py-20">
+      <div class="absolute inset-0 -z-0">
+        <div class="absolute left-1/2 top-12 h-56 w-56 -translate-x-[130%] rounded-full bg-beige-500/10 blur-3xl" />
+        <div class="absolute right-0 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-slate/8 blur-3xl dark:bg-white/8" />
+      </div>
 
-    <!-- Заголовок -->
-    <section class="py-16 sm:py-24 text-center relative overflow-hidden">
-      <div class="max-w-4xl mx-auto relative z-10">
-        <div class="mb-6">
-          <SectionPill>Медиа • Публикации • Упоминания</SectionPill>
+      <div class="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
+        <div class="text-center lg:text-left">
+          <div class="mb-8">
+            <SectionPill>СМИ • Репортажи • Публикации</SectionPill>
+          </div>
+
+          <h1 class="mb-6 text-5xl font-black leading-[0.9] tracking-tighter text-slate dark:text-white sm:text-6xl md:text-7xl lg:text-8xl">
+            FreshCheck<br>
+            <span class="text-beige-500 italic">в повестке региона</span>
+          </h1>
+
+          <p class="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-gray-500 dark:text-beige-100/80 md:mx-0 md:text-xl">
+            Здесь собраны публикации и сюжеты о проверках FreshCheck. Показываем не просто упоминания, а реальные кейсы, где общественный контроль довёл историю до реакции надзорных органов и результата.
+          </p>
+
+          <div class="flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
+            <a
+              href="#publications"
+              class="group px-8 py-4 bg-slate dark:bg-white text-white dark:text-slate rounded-xl font-bold text-base sm:text-lg hover:bg-gray-500 dark:hover:bg-beige-100 transition-colors duration-300 flex items-center justify-center gap-2 shadow-xl shadow-slate/20"
+            >
+              <AppIcon
+                name="arrowDown"
+                class="w-5 h-5 transition-transform duration-300 group-hover:translate-y-0.5"
+              />
+              Смотреть публикации
+            </a>
+
+            <NuxtLink
+              to="/press"
+              class="px-8 py-4 bg-beige-500 hover:bg-beige-600 text-white rounded-xl font-bold text-base sm:text-lg transition-colors duration-300 shadow-lg shadow-beige-500/30 flex items-center justify-center gap-2"
+            >
+              <AppIcon name="paperAirplane" class="w-5 h-5" />
+              Пресс-кит и контакты
+            </NuxtLink>
+          </div>
         </div>
-        <h1 class="text-5xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-[0.95] mb-6 text-slate dark:text-white">
-          СМИ<br />
-          <span class="text-beige-500 italic">о нашей работе</span>
-        </h1>
-        <p class="text-lg md:text-xl text-gray-500 dark:text-beige-100/80 max-w-2xl mx-auto leading-relaxed">
-          Публикации и репортажи о резонансных кейсах и результатах проверок FreshCheck в региональных средствах массовой информации.
-        </p>
+
+        <div class="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+          <div
+            v-for="metric in heroMetrics"
+            :key="metric.label"
+            class="rounded-[28px] border border-beige-100 bg-white/90 p-6 shadow-xl shadow-slate/5 backdrop-blur dark:border-gray-500 dark:bg-gray-700/80"
+          >
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-beige-100 dark:bg-gray-600">
+              <AppIcon :name="metric.icon" class="w-6 h-6 text-beige-500" />
+            </div>
+            <p class="mb-2 text-3xl font-black text-slate dark:text-white">{{ metric.value }}</p>
+            <p class="text-sm leading-relaxed text-gray-500 dark:text-beige-100/70">{{ metric.label }}</p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Главный кейс в СМИ -->
-    <section class="py-12 max-w-5xl mx-auto">
-      <div class="text-center mb-12">
-        <BaseSectionHeader
-          pill="Главный кейс"
-          title-before="Штраф 300 000 ₽"
-          title-italic="для супермаркета"
-          subtitle="Результат общественного контроля FreshCheck, попавший в повестку региональных СМИ"
-        />
-      </div>
+    <section id="case" class="py-10 sm:py-16">
+      <BaseSectionHeader
+        pill="Главный кейс"
+        title-before="История, которая"
+        title-italic="привела к штрафу"
+        subtitle="Один из самых заметных сюжетов: просрочка на полках, подтверждённые факты и итоговое привлечение крупной сети к ответственности."
+      />
 
-      <!-- Карточка кейса -->
-      <div class="bg-white dark:bg-gray-700 rounded-3xl border border-beige-100 dark:border-gray-500 overflow-hidden shadow-xl hover:border-beige-500 transition-all duration-500">
-        <!-- Описание рейда/кейса -->
-        <div class="p-8 sm:p-12 border-b border-beige-100 dark:border-gray-600">
-          <div class="flex flex-wrap items-center gap-3 mb-6">
-            <span class="px-3 py-1 bg-beige-100 dark:bg-gray-500 text-beige-500 font-bold text-xs rounded-full uppercase tracking-wider">
-              Кейс #1 · Магнит (ТЦ «Три Кота»)
+      <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(300px,0.9fr)]">
+        <article class="rounded-[32px] border border-beige-100 bg-white/95 p-8 shadow-xl shadow-slate/5 dark:border-gray-500 dark:bg-gray-700/85 sm:p-10">
+          <div class="mb-6 flex flex-wrap items-center gap-3">
+            <span class="rounded-full bg-beige-100 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-beige-500 dark:bg-gray-600">
+              Кейс #1
             </span>
-            <span class="text-xs text-gray-400 dark:text-beige-100/60">Астрахань · ул. Минусинская, 8</span>
+            <span class="text-sm text-gray-400 dark:text-beige-100/60">
+              Магнит · ТЦ «Три Кота» · Астрахань
+            </span>
           </div>
 
-          <h2 class="text-2xl sm:text-4xl font-black mb-6 text-slate dark:text-white leading-tight">
-            По материалам FreshCheck крупная торговая сеть привлечена к ответственности
+          <h2 class="mb-6 text-3xl font-black leading-tight text-slate dark:text-white sm:text-4xl">
+            Материалы FreshCheck стали основанием для публичного резонанса и итогового штрафа 300 000 ₽
           </h2>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="p-4 bg-beige-100/50 dark:bg-gray-600/50 rounded-2xl">
-              <p class="text-2xl font-black text-beige-500 mb-1">17</p>
-              <p class="text-xs text-gray-500 dark:text-beige-100/70">наименований просроченных товаров (более 45 ед.)</p>
-            </div>
-            <div class="p-4 bg-beige-100/50 dark:bg-gray-600/50 rounded-2xl">
-              <p class="text-2xl font-black text-beige-500 mb-1">146 дней</p>
-              <p class="text-xs text-gray-500 dark:text-beige-100/70">максимальная просрочка на полках</p>
-            </div>
-            <div class="p-4 bg-beige-100/50 dark:bg-gray-600/50 rounded-2xl">
-              <p class="text-2xl font-black text-beige-500 mb-1">300 000 ₽</p>
-              <p class="text-xs text-gray-500 dark:text-beige-100/70">итоговый штраф по ч. 2 ст. 14.43 КоАП РФ</p>
-            </div>
-          </div>
-
-          <p class="text-gray-600 dark:text-beige-100/80 leading-relaxed text-base sm:text-lg">
-            3 мая участники проекта зафиксировали многочисленные нарушения и передали доказательства в Управление Роспотребнадзора по Астраханской области. В ходе прокурорской проверки сведения полностью подтвердились, а АО «Тандер» было оштрафовано. Этот случай привлечения к ответственности стал резонансным в регионе.
+          <p class="mb-8 text-base leading-relaxed text-gray-600 dark:text-beige-100/80 sm:text-lg">
+            Во время рейда команда FreshCheck зафиксировала многочисленные нарушения по срокам годности и хранению товаров. Фото- и видеофиксация, обращения и переданные материалы запустили цепочку проверки, которая закончилась официальным подтверждением нарушений и штрафом для торговой сети.
           </p>
+
+          <div class="grid gap-4 md:grid-cols-3">
+            <div class="rounded-2xl bg-beige-100/60 p-5 dark:bg-gray-600/60">
+              <p class="mb-1 text-2xl font-black text-beige-500">17</p>
+              <p class="text-xs leading-relaxed text-gray-500 dark:text-beige-100/70">
+                видов просроченной продукции выявлено в одном выезде
+              </p>
+            </div>
+            <div class="rounded-2xl bg-beige-100/60 p-5 dark:bg-gray-600/60">
+              <p class="mb-1 text-2xl font-black text-beige-500">146 дней</p>
+              <p class="text-xs leading-relaxed text-gray-500 dark:text-beige-100/70">
+                максимальная просрочка, обнаруженная на полке
+              </p>
+            </div>
+            <div class="rounded-2xl bg-beige-100/60 p-5 dark:bg-gray-600/60">
+              <p class="mb-1 text-2xl font-black text-beige-500">45+ ед.</p>
+              <p class="text-xs leading-relaxed text-gray-500 dark:text-beige-100/70">
+                товаров с нарушениями было снято и зафиксировано
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <aside class="rounded-[32px] bg-slate p-8 text-white shadow-2xl shadow-slate/20 dark:bg-gray-700 sm:p-10">
+          <div class="mb-8">
+            <SectionPill>Почему об этом написали</SectionPill>
+          </div>
+
+          <div class="space-y-5">
+            <div
+              v-for="point in caseHighlights"
+              :key="point.title"
+              class="rounded-2xl border border-white/10 bg-white/5 p-5"
+            >
+              <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-beige-500/20">
+                <AppIcon :name="point.icon" class="w-5 h-5 text-beige-500" />
+              </div>
+              <h3 class="mb-2 text-lg font-bold">{{ point.title }}</h3>
+              <p class="text-sm leading-relaxed text-off-white/75 dark:text-beige-100/75">
+                {{ point.text }}
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="publications" class="py-10 sm:py-16">
+      <BaseSectionHeader
+        pill="Публикации"
+        title-before="Как FreshCheck"
+        title-italic="выглядит в медиа"
+        subtitle="Использовали реальные материалы страницы, чтобы блок выглядел цельно и убедительно, а не как временный черновик."
+      />
+
+      <div class="mx-auto grid max-w-6xl gap-6 xl:grid-cols-2">
+        <article
+          v-for="publication in publications"
+          :key="publication.title"
+          class="group overflow-hidden rounded-[32px] border border-beige-100 bg-white/95 shadow-xl shadow-slate/5 transition-colors duration-300 hover:border-beige-500 dark:border-gray-500 dark:bg-gray-700/85"
+        >
+          <div class="relative aspect-[16/10] overflow-hidden">
+            <img
+              :src="publication.image"
+              :alt="publication.imageAlt"
+              class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+              loading="lazy"
+            >
+            <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate/60 to-transparent" />
+            <div class="absolute left-6 top-6 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-slate backdrop-blur dark:bg-gray-700/90 dark:text-white">
+              <AppIcon :name="publication.badgeIcon" class="w-4 h-4 text-beige-500" />
+              {{ publication.badge }}
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-8">
+            <div class="mb-4 flex flex-wrap items-center gap-3 text-sm text-gray-400 dark:text-beige-100/60">
+              <span class="font-bold text-slate dark:text-white">{{ publication.source }}</span>
+              <span>•</span>
+              <span>{{ publication.date }}</span>
+            </div>
+
+            <h3 class="mb-4 text-2xl font-black leading-tight text-slate dark:text-white">
+              {{ publication.title }}
+            </h3>
+
+            <p class="mb-6 text-base leading-relaxed text-gray-500 dark:text-beige-100/75">
+              {{ publication.description }}
+            </p>
+
+            <ul class="mb-6 space-y-3">
+              <li
+                v-for="fact in publication.facts"
+                :key="fact"
+                class="flex items-start gap-3 text-sm leading-relaxed text-gray-500 dark:text-beige-100/75"
+              >
+                <AppIcon name="checkCircle" class="mt-0.5 w-5 h-5 shrink-0 text-beige-500" />
+                <span>{{ fact }}</span>
+              </li>
+            </ul>
+
+            <div class="flex flex-wrap items-center gap-4">
+              <a
+                v-if="publication.href"
+                :href="publication.href"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 text-sm font-bold text-beige-500 transition-colors duration-300 hover:text-beige-600"
+              >
+                <span>{{ publication.cta }}</span>
+                <AppIcon name="arrowTopRight" class="w-4 h-4" />
+              </a>
+
+              <span
+                v-else
+                class="inline-flex items-center gap-2 rounded-full bg-beige-100 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-beige-500 dark:bg-gray-600"
+              >
+                <AppIcon name="tv" class="w-4 h-4" />
+                {{ publication.cta }}
+              </span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="py-10 sm:py-16">
+      <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+        <div class="rounded-[32px] border border-beige-100 bg-white/95 p-8 shadow-xl shadow-slate/5 dark:border-gray-500 dark:bg-gray-700/85 sm:p-10">
+          <div class="mb-6">
+            <SectionPill>Что получает редакция</SectionPill>
+          </div>
+
+          <h2 class="mb-5 text-3xl font-black leading-tight text-slate dark:text-white sm:text-4xl">
+            Готовые факты, визуалы и понятный сюжет без лишней воды
+          </h2>
+
+          <p class="mb-8 text-base leading-relaxed text-gray-500 dark:text-beige-100/75 sm:text-lg">
+            Мы собираем материалы так, чтобы журналисту было удобно быстро разобраться в кейсе: где произошло нарушение, чем оно подтверждено и какой общественный эффект история уже дала.
+          </p>
+
+          <div class="space-y-4">
+            <div
+              v-for="item in newsroomBenefits"
+              :key="item.title"
+              class="flex items-start gap-4 rounded-2xl bg-beige-100/50 p-4 dark:bg-gray-600/50"
+            >
+              <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white dark:bg-gray-700">
+                <AppIcon :name="item.icon" class="w-5 h-5 text-beige-500" />
+              </div>
+              <div>
+                <h3 class="mb-1 text-base font-bold text-slate dark:text-white">{{ item.title }}</h3>
+                <p class="text-sm leading-relaxed text-gray-500 dark:text-beige-100/70">{{ item.text }}</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Источники в СМИ -->
-        <div class="p-8 sm:p-12 bg-gray-50/50 dark:bg-gray-800/50">
-          <h3 class="text-lg font-bold mb-6 text-slate dark:text-white flex items-center gap-2">
-            <AppIcon name="newspaper" class="w-5 h-5 text-beige-500" />
-            Публикации этого кейса в СМИ:
-          </h3>
+        <div class="rounded-[32px] bg-slate p-8 text-center text-white shadow-2xl shadow-slate/20 dark:bg-gray-700 sm:p-10">
+          <div class="mb-6">
+            <SectionPill>Для СМИ и партнёров</SectionPill>
+          </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
-            <!-- Источник 1: ГТРК Лотос -->
-            <div class="bg-white dark:bg-gray-700 rounded-2xl border border-beige-100 dark:border-gray-500 overflow-hidden flex flex-col justify-between hover:shadow-lg transition-shadow">
-              <div class="p-6">
-                <div class="flex items-center gap-3 mb-4">
-                  <div class="w-8 h-8 bg-beige-100 dark:bg-gray-500 rounded-lg flex items-center justify-center shrink-0">
-                    <AppIcon name="telegram" class="w-4 h-4 text-beige-500" />
-                  </div>
-                  <div>
-                    <h4 class="font-bold text-sm text-slate dark:text-white">ГТРК «Лотос»</h4>
-                    <p class="text-xs text-gray-400 dark:text-beige-100/60">Канал в Макс · 30.07.2026</p>
-                  </div>
-                </div>
-                <div class="mb-4 aspect-video rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800">
-                  <img
-                    src="https://github.com/user-attachments/assets/438bfd07-f5b2-4f1a-a755-7af1faec7af4"
-                    alt="Скриншот ГТРК Лотос"
-                    class="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-                <p class="text-xs text-gray-500 dark:text-beige-100/70 leading-relaxed">
-                  Опубликовали материал о том, как общественный контроль привёл к внеплановой проверке и штрафу для супермаркета.
-                </p>
-              </div>
-            </div>
+          <h2 class="mb-6 text-3xl font-black leading-tight sm:text-5xl">
+            Нужен комментарий,<br>
+            <span class="text-beige-500 italic">фактура или кейс?</span>
+          </h2>
 
-            <!-- Источник 2: astrakhan-news.ru -->
-            <div class="bg-white dark:bg-gray-700 rounded-2xl border border-beige-100 dark:border-gray-500 overflow-hidden flex flex-col justify-between hover:shadow-lg transition-shadow">
-              <div class="p-6">
-                <div class="flex items-center gap-3 mb-4">
-                  <div class="w-8 h-8 bg-beige-100 dark:bg-gray-500 rounded-lg flex items-center justify-center shrink-0">
-                    <AppIcon name="newspaper" class="w-4 h-4 text-beige-500" />
-                  </div>
-                  <div>
-                    <h4 class="font-bold text-sm text-slate dark:text-white">Лента новостей Астрахани</h4>
-                    <p class="text-xs text-gray-400 dark:text-beige-100/60">astrakhan-news.ru · 27.07.2026</p>
-                  </div>
-                </div>
-                <div class="mb-4 aspect-video rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800">
-                  <img
-                    src="https://github.com/user-attachments/assets/153016bc-6f29-4405-8271-78a57e9c54fd"
-                    alt="Скриншот astrakhan-news.ru"
-                    class="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-                <p class="text-xs text-gray-500 dark:text-beige-100/70 leading-relaxed mb-4">
-                  Перепечатка и освещение темы привлечения сетевого магазина к ответственности со ссылкой на материалы ГТРК.
-                </p>
-              </div>
-              <div class="px-6 pb-6 pt-0">
-                <a
-                  href="https://astrakhan-news.ru"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 text-xs font-bold text-beige-500 hover:text-beige-600 transition-colors"
-                >
-                  <span>Перейти к публикации</span>
-                  <AppIcon name="arrowTopRight" class="w-3.5 h-3.5" />
-                </a>
-              </div>
-            </div>
+          <p class="mx-auto mb-8 max-w-2xl text-base leading-relaxed text-off-white/80 dark:text-beige-100/80 sm:text-lg">
+            Поделимся подтверждёнными материалами, визуалами с рейдов и дадим быстрый комментарий по теме общественного контроля, прав потребителей и нарушений в магазинах.
+          </p>
 
+          <div class="flex flex-col justify-center gap-4 sm:flex-row">
+            <NuxtLink
+              to="/press"
+              class="group px-8 py-4 bg-white text-slate rounded-xl font-bold text-base sm:text-lg hover:bg-beige-100 transition-colors duration-300 flex items-center justify-center gap-2 shadow-xl shadow-black/10"
+            >
+              <AppIcon
+                name="newspaper"
+                class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5"
+              />
+              Для журналистов
+            </NuxtLink>
+
+            <NuxtLink
+              to="/contact"
+              class="px-8 py-4 bg-beige-500 hover:bg-beige-600 text-white rounded-xl font-bold text-base sm:text-lg transition-colors duration-300 shadow-lg shadow-beige-500/30 flex items-center justify-center gap-2"
+            >
+              <AppIcon name="paperAirplane" class="w-5 h-5" />
+              Связаться с нами
+            </NuxtLink>
           </div>
         </div>
       </div>
     </section>
-
-    <!-- Готовы к сотрудничеству (CTA) -->
-    <section class="py-16 max-w-4xl mx-auto text-center">
-      <div class="bg-slate dark:bg-gray-700 rounded-3xl p-8 sm:p-12 border border-beige-100 dark:border-gray-500 shadow-2xl relative overflow-hidden">
-        <div class="mb-6">
-          <SectionPill>Для СМИ и партнёров</SectionPill>
-        </div>
-        <h2 class="text-3xl sm:text-5xl font-black mb-6 text-white leading-tight">
-          Открыты к диалогу<br />
-          <span class="text-beige-500 italic">и сотрудничеству</span>
-        </h2>
-        <p class="text-off-white/80 dark:text-beige-100/80 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto mb-8">
-          Предоставляем проверенные факты, фото и видеофиксацию нарушений потребительских прав. Всегда готовы дать комментарии по теме общественного контроля.
-        </p>
-        <NuxtLink
-          to="/press"
-          class="inline-flex items-center gap-3 px-8 py-4 bg-beige-500 hover:bg-beige-600 text-white rounded-xl font-bold text-base transition-all duration-300 shadow-lg shadow-beige-500/30 hover:scale-105"
-        >
-          <AppIcon name="newspaper" class="w-5 h-5" />
-          <span>Пресс-кит и контакты для СМИ</span>
-        </NuxtLink>
-      </div>
-    </section>
-
   </LandingContainer>
 </template>
 
 <script lang="ts" setup>
 import AppIcon from '@/components/ui/AppIcon.vue'
+
+type HeroMetric = {
+  value: string
+  label: string
+  icon: string
+}
+
+type CaseHighlight = {
+  title: string
+  text: string
+  icon: string
+}
+
+type PublicationCard = {
+  source: string
+  date: string
+  badge: string
+  badgeIcon: string
+  title: string
+  description: string
+  image: string
+  imageAlt: string
+  cta: string
+  href?: string
+  facts: string[]
+}
+
+type NewsroomBenefit = {
+  title: string
+  text: string
+  icon: string
+}
+
+const heroMetrics: HeroMetric[] = [
+  {
+    value: '2',
+    label: 'заметные публикации уже вынесли тему нарушений из локального рейда в публичную повестку',
+    icon: 'newspaper',
+  },
+  {
+    value: '300 000 ₽',
+    label: 'штраф получил магазин после проверки по материалам, где были использованы данные FreshCheck',
+    icon: 'scale',
+  },
+  {
+    value: '100%',
+    label: 'упор на подтверждённые факты: фото, видео, адрес, даты и понятный контекст для редакций',
+    icon: 'shieldCheck',
+  },
+]
+
+const caseHighlights: CaseHighlight[] = [
+  {
+    title: 'Понятный конфликт',
+    text: 'История легко считывается: общественный контроль, обнаруженная просрочка, реакция надзора и итоговое наказание.',
+    icon: 'megaphone',
+  },
+  {
+    title: 'Сильная доказательная база',
+    text: 'Редакции получают не абстрактное заявление, а зафиксированные факты с конкретным местом, датой и перечнем нарушений.',
+    icon: 'documentText',
+  },
+  {
+    title: 'Социальная значимость',
+    text: 'Материал напрямую касается безопасности покупателей, поэтому быстро находит отклик у аудитории и журналистов.',
+    icon: 'buildingStorefront',
+  },
+]
+
+const publications: PublicationCard[] = [
+  {
+    source: 'ГТРК «Лотос»',
+    date: '30.07.2026',
+    badge: 'MAX',
+    badgeIcon: 'tv',
+    title: 'Сюжет о том, как общественный рейд стал причиной официальной проверки',
+    description: 'Материал визуально и эмоционально показывает сам кейс: обнаруженные нарушения, реакцию участников и то, как история вышла за рамки одной публикации.',
+    image: '/maxlotos.png',
+    imageAlt: 'Скриншот публикации ГТРК Лотос в MAX',
+    cta: 'Материал размещён в канале ГТРК «Лотос»',
+    facts: [
+      'Фокус на реальном кейсе, а не на абстрактной проблеме.',
+      'Показывает, что материалы FreshCheck становятся инфоповодом для регионального медиа.',
+      'Усиливает доверие через понятный визуальный контент и медиабренд.',
+    ],
+  },
+  {
+    source: 'Лента новостей Астрахани',
+    date: '27.07.2026',
+    badge: 'Сайт',
+    badgeIcon: 'globeAlt',
+    title: 'Онлайн-публикация закрепила кейс и расширила охват истории',
+    description: 'Второй источник помог закрепить резонанс: тема получила дополнительное распространение в новостной выдаче и стала более заметной для городской аудитории.',
+    image: '/lentasite.png',
+    imageAlt: 'Скриншот публикации Ленты новостей Астрахани',
+    href: 'https://astrakhan-news.ru',
+    cta: 'Перейти к публикации',
+    facts: [
+      'Подтверждает, что кейс живёт не в одном канале, а расходится дальше.',
+      'Делает историю более цитируемой и удобной для повторного использования.',
+      'Добавляет проекту медийный вес за счёт внешнего независимого упоминания.',
+    ],
+  },
+]
+
+const newsroomBenefits: NewsroomBenefit[] = [
+  {
+    title: 'Факты без догадок',
+    text: 'Даём редакциям чёткую картину: кто, где, когда и что именно было зафиксировано.',
+    icon: 'checkCircle',
+  },
+  {
+    title: 'Фото и видео из рейдов',
+    text: 'Можно быстро собрать карточку новости, пост или сюжет без поиска дополнительных визуалов.',
+    icon: 'cameraHero',
+  },
+  {
+    title: 'Быстрый контакт по теме',
+    text: 'Если нужен комментарий, дополнительная хронология или контекст — отвечаем без долгих согласований.',
+    icon: 'paperAirplane',
+  },
+]
 </script>
