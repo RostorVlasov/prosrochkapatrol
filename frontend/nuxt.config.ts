@@ -20,6 +20,9 @@ export default defineNuxtConfig({
     '/product-review/**': { isr: 3600 },
     '/report/**': { isr: 3600 },
     '/_error/**': { isr: false },
+    '/_nuxt/builds/**': {
+      headers: { 'cache-control': 'no-store, no-cache' }
+    },
     '/_nuxt/**': {
       headers: { 'cache-control': 'max-age=31536000, immutable' }
     },
