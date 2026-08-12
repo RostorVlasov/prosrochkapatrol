@@ -67,11 +67,15 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
+      mailpit:
+        image: axllent/mailpit:v1.27
+        ports:
+          - 1025:1025
     env:
       CI: true
       DATABASE_URI: mongodb://127.0.0.1:27017/prosrochkapatrol-ci
       PAYLOAD_SECRET: ci-secret
-      SMTP_HOST: localhost
+      SMTP_HOST: 127.0.0.1
       SMTP_PORT: '1025'
       SMTP_USER: ci@example.com
       SMTP_PASS: ci-password
@@ -91,7 +95,7 @@ jobs:
           version: 10
 
       - name: Install backend dependencies
-        run: pnpm install --no-frozen-lockfile --lockfile=false
+        run: pnpm install --frozen-lockfile
 
       - name: Lint backend
         run: pnpm run lint
