@@ -25,8 +25,8 @@
       <div class="px-4 py-3 border-t border-gray-200 dark:border-gray-800">
         <button @click="toggleColorMode"
           class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors">
-          <AppIcon class="size-5" name="theme" />
           <ClientOnly>
+            <AppIcon class="size-5" :name="isDark ? 'themeDark' : 'theme'" />
             <span>{{ isDark ? 'Светлая тема' : 'Тёмная тема' }}</span>
           </ClientOnly>
         </button>
@@ -43,7 +43,9 @@
         </ClientOnly>
       </NuxtLink>
       <button @click="toggleColorMode" class="text-gray-800 dark:text-white">
-        <AppIcon class="size-8" name="theme" />
+        <ClientOnly>
+          <AppIcon class="size-8" :name="isDark ? 'themeDark' : 'theme'" />
+        </ClientOnly>
       </button>
     </header>
 

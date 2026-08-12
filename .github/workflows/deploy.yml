@@ -120,7 +120,13 @@ jobs:
             npm run build --silent > /dev/null 2>&1
             echo -e "${GREEN}готово${NC}"
 
-            # 4. Перезапуск PM2
+            # 4. Замена директории фронтенда (до перезапуска PM2, чтобы сервер стартовал из новых файлов)
+            echo -n "🔄 Применяем фронтенд... "
+            rm -rf $FRONT
+            mv $FRONT_TMP $FRONT
+            echo -e "${GREEN}готово${NC}"
+
+            # 5. Перезапуск PM2
             echo -n "🔄 Перезапускаем PM2... "
             pm2 delete all 2>/dev/null || true
             cd $BACK
@@ -130,7 +136,7 @@ jobs:
             pm2 save > /dev/null 2>&1
             echo -e "${GREEN}готово${NC}"
 
-            # 5. Проверка статуса
+            # 6. Проверка статуса
             sleep 5
             echo -n "✅ Проверяем статус... "
             if pm2 list | grep -q "prosrochka-back.*online" && pm2 list | grep -q "prosrochka-front.*online"; then
@@ -141,12 +147,6 @@ jobs:
               pm2 logs --lines 20
               exit 1
             fi
-
-            # 6. Замена директории фронтенда (после запуска, чтобы минимизировать простой)
-            echo -n "🔄 Применяем фронтенд... "
-            rm -rf $FRONT
-            mv $FRONT_TMP $FRONT
-            echo -e "${GREEN}готово${NC}"
 
             # 7. Проверка работоспособности
             echo -n "🏥 Проверка здоровья... "

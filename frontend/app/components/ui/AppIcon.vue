@@ -34,6 +34,7 @@ const icons = {
   settings: 'ph:gear',
   share: 'ph:share-network',
   theme: 'ph:sun',
+  themeDark: 'ph:moon-stars',
   trash: 'ph:trash-bold',
   loveOutline: 'ph:heart',
   loveFilled: 'ph:heart-fill',
