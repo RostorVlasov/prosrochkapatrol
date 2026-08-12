@@ -280,7 +280,7 @@
             </NuxtLink>
 
             <NuxtLink
-              to="/contact"
+              to="/press"
               class="px-8 py-4 bg-beige-500 hover:bg-beige-600 text-white rounded-xl font-bold text-base sm:text-lg transition-colors duration-300 shadow-lg shadow-beige-500/30 flex items-center justify-center gap-2"
             >
               <AppIcon name="paperAirplane" class="w-5 h-5" />
