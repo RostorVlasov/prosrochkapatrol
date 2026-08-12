@@ -7,12 +7,12 @@
       </div>
 
       <div class="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
-        <div class="text-center lg:text-left">
+        <div class="min-w-0 text-center lg:text-left">
           <div class="mb-8">
             <SectionPill>СМИ • Репортажи • Публикации</SectionPill>
           </div>
 
-          <h1 class="mb-6 text-5xl font-black leading-[0.9] tracking-tighter text-slate dark:text-white sm:text-6xl md:text-7xl lg:text-8xl">
+          <h1 class="mb-6 break-words text-5xl font-black leading-[0.9] tracking-tighter text-slate dark:text-white sm:text-6xl md:text-6xl lg:text-6xl xl:text-7xl 2xl:text-8xl">
             FreshCheck<br>
             <span class="text-beige-500 italic">в повестке региона</span>
           </h1>
@@ -43,7 +43,7 @@
           </div>
         </div>
 
-        <div class="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+        <div class="min-w-0 grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
           <div
             v-for="metric in heroMetrics"
             :key="metric.label"
@@ -83,7 +83,7 @@
           </h2>
 
           <p class="mb-8 text-base leading-relaxed text-gray-600 dark:text-beige-100/80 sm:text-lg">
-            Во время рейда команда FreshCheck зафиксировала многочисленные нарушения по срокам годности и хранению товаров. Фото- и видеофиксация, обращения и переданные материалы запустили цепочку проверки, которая закончилась официальным подтверждением нарушений и штрафом для торговой сети.
+            Во время проверки* команда FreshCheck зафиксировала многочисленные нарушения по срокам годности и хранению товаров. Фото- и видеофиксация, обращения и переданные материалы запустили цепочку проверки, которая закончилась официальным подтверждением нарушений и штрафом для торговой сети.
           </p>
 
           <div class="grid gap-4 md:grid-cols-3">
@@ -146,17 +146,27 @@
           :key="publication.title"
           class="group overflow-hidden rounded-[32px] border border-beige-100 bg-white/95 shadow-xl shadow-slate/5 transition-colors duration-300 hover:border-beige-500 dark:border-gray-500 dark:bg-gray-700/85"
         >
-          <div class="relative aspect-[16/10] overflow-hidden">
+          <div
+            class="relative flex aspect-[16/10] cursor-zoom-in items-center justify-center overflow-hidden bg-beige-100 dark:bg-gray-600"
+            role="button"
+            tabindex="0"
+            @click="openLightbox(publication)"
+            @keydown.enter="openLightbox(publication)"
+          >
             <img
               :src="publication.image"
               :alt="publication.imageAlt"
-              class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+              class="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
               loading="lazy"
             >
-            <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate/60 to-transparent" />
+            <div class="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate/60 to-transparent" />
             <div class="absolute left-6 top-6 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-slate backdrop-blur dark:bg-gray-700/90 dark:text-white">
               <AppIcon :name="publication.badgeIcon" class="w-4 h-4 text-beige-500" />
               {{ publication.badge }}
+            </div>
+            <div class="pointer-events-none absolute bottom-4 right-4 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-slate opacity-0 backdrop-blur transition-opacity duration-300 group-hover:opacity-100 dark:bg-gray-700/90 dark:text-white">
+              <AppIcon name="magnifyingGlass" class="w-4 h-4" />
+              Увеличить
             </div>
           </div>
 
@@ -212,7 +222,7 @@
     </section>
 
     <section class="py-10 sm:py-16">
-      <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+      <div class="mx-auto grid max-w-6xl gap-6">
         <div class="rounded-[32px] border border-beige-100 bg-white/95 p-8 shadow-xl shadow-slate/5 dark:border-gray-500 dark:bg-gray-700/85 sm:p-10">
           <div class="mb-6">
             <SectionPill>Что получает редакция</SectionPill>
@@ -254,7 +264,7 @@
           </h2>
 
           <p class="mx-auto mb-8 max-w-2xl text-base leading-relaxed text-off-white/80 dark:text-beige-100/80 sm:text-lg">
-            Поделимся подтверждёнными материалами, визуалами с рейдов и дадим быстрый комментарий по теме общественного контроля, прав потребителей и нарушений в магазинах.
+            Поделимся подтверждёнными материалами, визуалами с проверок* и дадим быстрый комментарий по теме общественного контроля, прав потребителей и нарушений в магазинах.
           </p>
 
           <div class="flex flex-col justify-center gap-4 sm:flex-row">
@@ -278,12 +288,38 @@
             </NuxtLink>
           </div>
         </div>
+
+        <p class="mx-auto max-w-3xl text-center text-xs leading-relaxed text-gray-400 dark:text-beige-100/50">
+          * Общественный мониторинг силами волонтёров FreshCheck — не является государственной проверкой в понимании законодательства РФ.
+        </p>
       </div>
     </section>
   </LandingContainer>
+
+  <Teleport to="body">
+    <div
+      v-if="lightboxImage"
+      class="fixed inset-0 z-[100] flex items-center justify-center bg-slate/90 p-4 backdrop-blur-sm sm:p-8"
+      @click.self="closeLightbox"
+    >
+      <button
+        type="button"
+        class="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-300 hover:bg-white/20"
+        @click="closeLightbox"
+      >
+        <AppIcon name="xMark" class="h-6 w-6" />
+      </button>
+      <img
+        :src="lightboxImage.src"
+        :alt="lightboxImage.alt"
+        class="max-h-full max-w-full rounded-2xl object-contain shadow-2xl"
+      >
+    </div>
+  </Teleport>
 </template>
 
 <script lang="ts" setup>
+import { onMounted, onUnmounted, ref } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
 type HeroMetric = {
@@ -321,7 +357,7 @@ type NewsroomBenefit = {
 const heroMetrics: HeroMetric[] = [
   {
     value: '2',
-    label: 'заметные публикации уже вынесли тему нарушений из локального рейда в публичную повестку',
+    label: 'заметные публикации уже вынесли тему нарушений из общественного мониторинга в публичную повестку',
     icon: 'newspaper',
   },
   {
@@ -360,7 +396,7 @@ const publications: PublicationCard[] = [
     date: '30.07.2026',
     badge: 'MAX',
     badgeIcon: 'tv',
-    title: 'Сюжет о том, как общественный рейд стал причиной официальной проверки',
+    title: 'Сюжет о том, как общественный мониторинг стал причиной официальной проверки',
     description: 'Материал визуально и эмоционально показывает сам кейс: обнаруженные нарушения, реакцию участников и то, как история вышла за рамки одной публикации.',
     image: '/maxlotos.png',
     imageAlt: 'Скриншот публикации ГТРК Лотос в MAX',
@@ -397,7 +433,7 @@ const newsroomBenefits: NewsroomBenefit[] = [
     icon: 'checkCircle',
   },
   {
-    title: 'Фото и видео из рейдов',
+    title: 'Фото и видео из проверок*',
     text: 'Можно быстро собрать карточку новости, пост или сюжет без поиска дополнительных визуалов.',
     icon: 'cameraHero',
   },
@@ -407,4 +443,21 @@ const newsroomBenefits: NewsroomBenefit[] = [
     icon: 'paperAirplane',
   },
 ]
+
+const lightboxImage = ref<{ src: string; alt: string } | null>(null)
+
+function openLightbox(publication: PublicationCard) {
+  lightboxImage.value = { src: publication.image, alt: publication.imageAlt }
+}
+
+function closeLightbox() {
+  lightboxImage.value = null
+}
+
+function handleKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape') closeLightbox()
+}
+
+onMounted(() => window.addEventListener('keydown', handleKeydown))
+onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 </script>
