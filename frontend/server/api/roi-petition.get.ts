@@ -1,6 +1,12 @@
+const PETITION_ID = 153114
+
 export default defineEventHandler(async () => {
-    const data = await $fetch('https://www.roi.ru/api/petition/153114.json', {
-        headers: { Accept: 'application/json' },
-    })
-    return data
+    try {
+        const data = await $fetch(`https://www.roi.ru/api/petition/${PETITION_ID}.json`, {
+            headers: { Accept: 'application/json' },
+        })
+        return data
+    } catch {
+        throw createError({ statusCode: 502, message: 'ROI API недоступен' })
+    }
 })
