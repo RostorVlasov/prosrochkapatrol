@@ -1,4 +1,4 @@
-name: Deploy to Server
+name: Деплой на сервер
 
 on:
   push:
@@ -10,51 +10,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Загрузка репозитория
         uses: actions/checkout@v4
 
-      - name: Setup Bun
+      - name: Установка Bun
         uses: oven-sh/setup-bun@v1
 
       # =========================
       # СБОРКА FRONTEND (Nuxt)
       # =========================
-      - name: Install frontend deps
+      - name: Сборка фронтенда
         working-directory: ./frontend
-        run: bun install
-
-      - name: Build frontend
-        working-directory: ./frontend
-        run: bun run build
-
-      # =========================
-      # ПОДГОТОВКА ПАПКИ ДЛЯ ДЕПЛОЯ
-      # =========================
-      - name: Prepare deploy folder
         run: |
-          rm -rf deploy
-          mkdir -p deploy/frontend
-          mkdir -p deploy/backend
+          echo "🔨 Собираем фронтенд..."
+          bun install > /dev/null 2>&1
+          bun run build > /dev/null 2>&1
+          echo "✅ Фронтенд собран"
 
+      # =========================
+      # ПОДГОТОВКА ПАКЕТА ДЛЯ ДЕПЛОЯ
+      # =========================
+      - name: Подготовка архива
+        run: |
+          echo "📦 Готовим архив для деплоя..."
+          rm -rf deploy
+          mkdir -p deploy/frontend deploy/backend
           cp -r frontend/.output deploy/frontend/
           cp -r backend/src deploy/backend/
           cp backend/package.json deploy/backend/
           cp backend/package-lock.json deploy/backend/ 2>/dev/null || true
-          cp backend/next.config.ts deploy/backend/ 2>/dev/null || cp backend/next.config.js deploy/backend/ 2>/dev/null || true
+          cp backend/next.config.* deploy/backend/ 2>/dev/null || true
           cp backend/tsconfig.json deploy/backend/ 2>/dev/null || true
           cp -r backend/public deploy/backend/ 2>/dev/null || true
-
-          echo "📊 Deploy size: $(du -sh deploy | cut -f1)"
-
-      - name: Archive deploy folder
-        run: |
           tar -czf deploy.tar.gz deploy
-          echo "📦 Archive size: $(du -sh deploy.tar.gz | cut -f1)"
+          echo "✅ Архив готов ($(du -sh deploy.tar.gz | cut -f1))"
 
       # =========================
       # ЗАГРУЗКА НА СЕРВЕР
       # =========================
-      - name: Upload archive to server
+      - name: Отправка на сервер
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -65,9 +59,9 @@ jobs:
           target: "/var/www/prosrochkapatrol/"
 
       # =========================
-      # ДЕПЛОЙ НА СЕРВЕРЕ (PM2)
+      # УДАЛЁННЫЙ ДЕПЛОЙ (PM2)
       # =========================
-      - name: Execute remote deploy script
+      - name: Развёртывание на сервере
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -78,100 +72,92 @@ jobs:
           script: |
             set -e
 
-            DEPLOY_TAR=/var/www/prosrochkapatrol/deploy.tar.gz
-            WORKDIR=/var/www/prosrochkapatrol/work
-            BACK=/var/www/prosrochkapatrol/back
-            FRONT=/var/www/prosrochkapatrol/front
-            LOGS=/var/log/prosrochkapatrol
+            # Переменные
+            DEPLOY_TAR="/var/www/prosrochkapatrol/deploy.tar.gz"
+            WORKDIR="/var/www/prosrochkapatrol/work"
+            BACK="/var/www/prosrochkapatrol/back"
+            FRONT="/var/www/prosrochkapatrol/front"
 
-            mkdir -p $LOGS
-            mkdir -p $BACK
-            mkdir -p $FRONT
+            # Красивые цвета
+            GREEN='\033[0;32m'
+            RED='\033[0;31m'
+            YELLOW='\033[0;33m'
+            NC='\033[0m'
 
-            # 1. РАСПАКОВКА
-            echo "📦 Extracting archive..."
-            rm -rf $WORKDIR
-            mkdir -p $WORKDIR
-            tar -xzf $DEPLOY_TAR -C $WORKDIR
+            echo -e "${GREEN}🚀 Запускаем деплой...${NC}"
 
-            # 2. ПОДГОТОВКА FRONTEND
-            echo "🌐 Preparing frontend..."
-            FRONT_TMP=$FRONT-tmp
-            rm -rf $FRONT_TMP
-            mkdir -p $FRONT_TMP
+            # 1. Распаковка
+            echo -n "📦 Распаковываем архив... "
+            rm -rf $WORKDIR && mkdir -p $WORKDIR
+            tar -xzf $DEPLOY_TAR -C $WORKDIR > /dev/null 2>&1
+            echo -e "${GREEN}готово${NC}"
+
+            # 2. Подготовка фронтенда
+            echo -n "🌐 Подготавливаем фронтенд... "
+            FRONT_TMP="$FRONT-tmp"
+            rm -rf $FRONT_TMP && mkdir -p $FRONT_TMP
             cp -r $WORKDIR/deploy/frontend/.output $FRONT_TMP/
+            echo -e "${GREEN}готово${NC}"
 
-            # 3. ПОДГОТОВКА И СБОРКА BACKEND
-            echo "⚙️ Deploying backend..."
-            if [ -f $BACK/.env ]; then
-              cp $BACK/.env /tmp/patrol-backup.env
-            fi
-
-            rm -rf $BACK/src
-            rm -f $BACK/package.json $BACK/package-lock.json $BACK/next.config.* $BACK/tsconfig.json
-
+            # 3. Подготовка и сборка бэкенда
+            echo -n "⚙️ Собираем бэкенд... "
+            # Сохраняем .env, если есть
+            [ -f $BACK/.env ] && cp $BACK/.env /tmp/backup.env
+            # Очищаем старые файлы
+            rm -rf $BACK/src $BACK/package.json $BACK/package-lock.json $BACK/next.config.* $BACK/tsconfig.json 2>/dev/null || true
+            # Копируем новые
             cp -r $WORKDIR/deploy/backend/src $BACK/
             cp -f $WORKDIR/deploy/backend/package.json $BACK/
             cp -f $WORKDIR/deploy/backend/package-lock.json $BACK/ 2>/dev/null || true
             cp -f $WORKDIR/deploy/backend/next.config.* $BACK/ 2>/dev/null || true
             cp -f $WORKDIR/deploy/backend/tsconfig.json $BACK/ 2>/dev/null || true
-
-            if [ -d "$WORKDIR/deploy/backend/public" ]; then
-              mkdir -p $BACK/public
-              cp -r $WORKDIR/deploy/backend/public/* $BACK/public/ 2>/dev/null || true
-            fi
-
-            if [ -f /tmp/patrol-backup.env ]; then
-              cp /tmp/patrol-backup.env $BACK/.env
-            fi
-
+            [ -d "$WORKDIR/deploy/backend/public" ] && cp -r $WORKDIR/deploy/backend/public/* $BACK/public/ 2>/dev/null || true
+            # Восстанавливаем .env
+            [ -f /tmp/backup.env ] && cp /tmp/backup.env $BACK/.env
+            # Устанавливаем зависимости и собираем (тихо)
             cd $BACK
-            echo "📦 Installing backend dependencies..."
-            npm install
-            echo "🔨 Building Next.js backend..."
-            npm run build
+            npm install --silent > /dev/null 2>&1
+            npm run build --silent > /dev/null 2>&1
+            echo -e "${GREEN}готово${NC}"
 
-            # 4. УДАЛЯЕМ ВСЕ СТАРЫЕ ПРОЦЕССЫ PM2 (чтобы избежать конфликтов портов)
-            echo "🔪 Stopping and deleting ALL PM2 processes..."
+            # 4. Перезапуск PM2
+            echo -n "🔄 Перезапускаем PM2... "
             pm2 delete all 2>/dev/null || true
+            cd $BACK
+            PORT=3333 pm2 start npm --name "prosrochka-back" -- start > /dev/null 2>&1
+            cd $FRONT
+            PORT=3001 pm2 start node --name "prosrochka-front" -- .output/server/index.mjs > /dev/null 2>&1
+            pm2 save > /dev/null 2>&1
+            echo -e "${GREEN}готово${NC}"
 
-            # 5. ЗАМЕНА ДИРЕКТОРИИ FRONTEND
-            echo "🔄 Swapping frontend..."
+            # 5. Проверка статуса
+            sleep 5
+            echo -n "✅ Проверяем статус... "
+            if pm2 list | grep -q "prosrochka-back.*online" && pm2 list | grep -q "prosrochka-front.*online"; then
+              echo -e "${GREEN}ОК${NC}"
+            else
+              echo -e "${RED}ОШИБКА${NC}"
+              echo "❌ Процессы не запущены. Логи:"
+              pm2 logs --lines 20
+              exit 1
+            fi
+
+            # 6. Замена директории фронтенда (после запуска, чтобы минимизировать простой)
+            echo -n "🔄 Применяем фронтенд... "
             rm -rf $FRONT
             mv $FRONT_TMP $FRONT
+            echo -e "${GREEN}готово${NC}"
 
-            # 6. ЗАПУСК В PM2 (ПРАВИЛЬНО - без обёрток bash)
-            echo "▶ Starting apps in PM2..."
-
-            # Бэкенд (Next.js через npm start, порт 3333)
-            cd $BACK
-            PORT=3333 pm2 start npm --name "prosrochka-back" -- start
-
-            # Фронтенд (Nuxt/Nitro напрямую через node, порт 3001)
-            cd $FRONT
-            PORT=3001 pm2 start node --name "prosrochka-front" -- .output/server/index.mjs
-
-            pm2 save
-
-            # 7. ПРОВЕРКА СТАБИЛЬНОСТИ
-            sleep 5
-
-            if pm2 list | grep -q "prosrochka-back.*online"; then
-              echo "✅ Backend is ONLINE"
+            # 7. Проверка работоспособности
+            echo -n "🏥 Проверка здоровья... "
+            BACK_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3333 2>/dev/null || echo "000")
+            FRONT_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3001 2>/dev/null || echo "000")
+            if [[ "$BACK_CODE" =~ ^(200|404)$ ]] && [[ "$FRONT_CODE" =~ ^(200|404)$ ]]; then
+              echo -e "${GREEN}ОК${NC} (бэк: $BACK_CODE, фронт: $FRONT_CODE)"
             else
-              echo "❌ Backend failed to start!"
-              pm2 logs prosrochka-back --lines 30
-              exit 1
+              echo -e "${YELLOW}ПРЕДУПРЕЖДЕНИЕ${NC} (бэк: $BACK_CODE, фронт: $FRONT_CODE)"
             fi
 
-            if pm2 list | grep -q "prosrochka-front.*online"; then
-              echo "✅ Frontend is ONLINE"
-            else
-              echo "❌ Frontend failed to start!"
-              pm2 logs prosrochka-front --lines 30
-              exit 1
-            fi
-
-            # 8. ОЧИСТКА
+            # 8. Очистка
             rm -rf $WORKDIR $DEPLOY_TAR
-            echo "🎉 DEPLOY SUCCESSFUL"
+            echo -e "${GREEN}🎉 Деплой успешно завершён!${NC}"
