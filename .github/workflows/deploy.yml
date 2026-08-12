@@ -23,8 +23,8 @@ jobs:
         working-directory: ./frontend
         run: |
           echo "🔨 Собираем фронтенд..."
-          bun install > /dev/null 2>&1
-          bun run build > /dev/null 2>&1
+          bun install
+          bun run build
           echo "✅ Фронтенд собран"
 
       # =========================
