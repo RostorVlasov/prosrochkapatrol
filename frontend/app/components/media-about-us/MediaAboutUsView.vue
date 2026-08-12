@@ -393,7 +393,7 @@ const caseHighlights: CaseHighlight[] = [
 const publications: PublicationCard[] = [
   {
     source: 'ГТРК «Лотос»',
-    date: '30.07.2026',
+    date: '27.07.2026',
     badge: 'MAX',
     badgeIcon: 'tv',
     title: 'Сюжет о том, как общественный мониторинг стал причиной официальной проверки',
