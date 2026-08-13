@@ -6,3 +6,5 @@ export const getImage: ProviderGetImage = (src, { baseURL } = {}) => {
     url: joinURL(baseURL || 'https://api.freshcheckastra.ru', src),
   }
 }
+
+export default { getImage }
