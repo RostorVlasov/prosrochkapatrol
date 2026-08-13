@@ -102,9 +102,9 @@ interface RoiPetitionResponse {
     }
 }
 
-const { data: petition, pending } = await useFetch<RoiPetitionResponse>('/api/roi-petition', {
+const { data: petition, pending } = useFetch<RoiPetitionResponse>('/api/roi-petition', {
     key: 'roi-petition',
-    server: true,
+    lazy: true,
 })
 
 const vote = computed<RoiVote | null>(() => petition.value?.data?.vote ?? null)

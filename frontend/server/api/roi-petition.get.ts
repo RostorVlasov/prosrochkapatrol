@@ -7,6 +7,6 @@ export default defineEventHandler(async () => {
         })
         return data
     } catch {
-        throw createError({ statusCode: 502, message: 'ROI API недоступен' })
+        return null
     }
 })
