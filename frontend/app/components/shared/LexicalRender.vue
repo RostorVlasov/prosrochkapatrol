@@ -139,7 +139,7 @@ const parseTextContent = (text: string) => {
     return parts
 }
 
-const { buildApiUrl } = useApiBuilder()
+const { buildImagePath } = useApiBuilder()
 </script>
 
 <template>
@@ -214,8 +214,8 @@ const { buildApiUrl } = useApiBuilder()
         <!-- Изображение (upload) -->
         <template v-else-if="node.type === 'upload'">
             <div class="my-6 rounded-lg overflow-hidden shadow-md">
-                <NuxtImg format="webp" quality="80" loading="lazy"
-                    :src="buildApiUrl(node.value?.url)"
+                <NuxtImg format="webp" quality="80" loading="lazy" provider="freshapi"
+                    :src="buildImagePath(node.value?.url)"
                     :alt="node.value?.alt || 'Image'"
                     class="w-full h-auto object-cover"
                 />

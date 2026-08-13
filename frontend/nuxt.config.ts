@@ -121,7 +121,16 @@ export default defineNuxtConfig({
     domains: ['api.freshcheckastra.ru'],
     ipx: {
       maxAge: 31536000,
-    }
+    },
+    providers: {
+      freshapi: {
+        name: 'freshapi',
+        provider: '~/providers/freshapi',
+        options: {
+          baseURL: 'https://api.freshcheckastra.ru',
+        },
+      },
+    },
   },
 
   pinia: {

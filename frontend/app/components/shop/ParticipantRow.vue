@@ -1,7 +1,7 @@
 <template>
     <div class="flex items-center justify-between gap-3">
         <div class="flex items-center gap-2.5 min-w-0">
-            <NuxtImg format="webp" loading="lazy" quality="80" v-if="user.avatar" class="rounded-full size-8 object-cover" :src="buildApiUrl(user.avatar.url)" alt=""/>
+            <NuxtImg format="webp" loading="lazy" quality="80" v-if="user.avatar" class="rounded-full size-8 object-cover" provider="freshapi" :src="buildImagePath(user.avatar.url)" alt=""/>
             <div v-else class="size-8 rounded-full flex items-center justify-center shrink-0" :class="avatarBg">
                 <AppIcon  :name="icon" class="size-4" :class="avatarIcon" />
             </div>
@@ -32,7 +32,7 @@ import type { BadgeDoc } from '~/types/badges.types';
 import type { Author } from '~/types/common.types.js';
 import type { IconName } from '../ui/AppIcon.vue';
 
-const {buildApiUrl} = useApiBuilder()
+const { buildImagePath } = useApiBuilder()
 
 const props = defineProps<{
     role: string

@@ -5,7 +5,7 @@
                 hover:bg-stone-50 dark:hover:bg-gray-600 active:bg-stone-100 dark:active:bg-gray-500 transition-colors">
 
             <div v-if="shop.shop_photo?.url" class="w-full mb-4 overflow-hidden">
-                <NuxtImg format="webp" loading="lazy" quality="80" :src="buildApiUrl(shop.shop_photo?.url as string)" :alt="shop.store_name"
+                <NuxtImg format="webp" loading="lazy" quality="80" provider="freshapi" :src="buildImagePath(shop.shop_photo?.url as string)" :alt="shop.store_name"
                     class="w-full aspect-video object-cover" />
             </div>
 
@@ -44,7 +44,7 @@ import { pages } from '~/data/pages.js';
 
 const props = defineProps<{ shop: ShopDoc }>()
 
-const { buildApiUrl } = useApiBuilder()
+const { buildImagePath } = useApiBuilder()
 
 interface ReasonTypeMapping {
     text: string
