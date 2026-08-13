@@ -13,7 +13,7 @@
                         formatDate(post.admin_panel.published_at) }}</span>
                 </div>
 
-                <NuxtImg v-if="post.cover" :src="buildApiUrl(post.cover.url)" format="webp" quality="80" loading="lazy"
+                <NuxtImg v-if="post.cover" provider="freshapi" :src="buildImagePath(post.cover.url)" format="webp" quality="80" loading="lazy"
                     :alt="post.cover.alt ? post.cover.alt : 'обложка статьи' + post.title"
                     class="rounded-lg shadow-xl aspect-video mt-4 w-full" />
                 <RubricList @click.stop.prevent class="mt-3" v-if="post.rubrics && post.rubrics.length > 0" :rubrics="post.rubrics" />
@@ -30,7 +30,7 @@
 import { pages } from '~/data/pages';
 import type { PostDoc } from '~/types/post.types';
 
-const { buildApiUrl } = useApiBuilder()
+const { buildImagePath } = useApiBuilder()
 
 const props = defineProps<{
     post: PostDoc

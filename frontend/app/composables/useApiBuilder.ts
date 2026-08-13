@@ -7,8 +7,21 @@ export const useApiBuilder = () => {
     
         return `${config.public.API_URL}${url}`
     }
+
+    const buildImagePath = (url: string | undefined): string => {
+        if (!url) return ''
+        if (url.startsWith('http')) {
+            try {
+                return new URL(url).pathname
+            } catch {
+                return url
+            }
+        }
+        return url
+    }
     
     return {
-        buildApiUrl
+        buildApiUrl,
+        buildImagePath,
     }
 }

@@ -32,7 +32,7 @@
 
     <!-- Фото обложки -->
     <div class="w-full rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700 mt-3">
-      <NuxtImg format="webp" loading="lazy" quality="80" :src="buildApiUrl(shop.shop_photo?.url as string)"
+      <NuxtImg format="webp" loading="lazy" quality="80" provider="freshapi" :src="buildImagePath(shop.shop_photo?.url as string)"
         :alt="shop.store_name" class="w-full aspect-video object-cover" />
     </div>
 

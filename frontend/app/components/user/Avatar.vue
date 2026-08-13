@@ -6,9 +6,9 @@
       class="absolute inset-0 rounded-full"
     />
 
-    <NuxtImg format="webp" loading="lazy" quality="80"
+    <NuxtImg format="webp" loading="lazy" quality="80" provider="freshapi"
       ref="imgRef"
-      :src="buildApiUrl(avatar.url)"
+      :src="buildImagePath(avatar.url)"
       alt="avatar"
       class="w-full h-full object-cover transition-opacity duration-300"
       :class="isLoading ? 'opacity-0' : 'opacity-100'"
@@ -24,7 +24,7 @@ import type { PhotoMeta } from '~/types/photo.types';
 const imgRef = ref<HTMLImageElement | null>(null)
 type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 
-const { buildApiUrl } = useApiBuilder()
+const { buildImagePath } = useApiBuilder()
 
 const props = defineProps<{
   avatar: PhotoMeta

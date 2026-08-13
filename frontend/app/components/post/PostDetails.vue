@@ -22,7 +22,7 @@
 
         <div>
             <h1 class="text-2xl mt-4 font-bold">{{ post.title }}</h1>
-            <NuxtImg v-if="post.cover" quality="80" format="webp" loading="lazy" :src="buildApiUrl(post.cover.url)" :alt="post.cover.alt ? post.cover.alt : 'обложка статьи ' + post.title"
+            <NuxtImg v-if="post.cover" quality="80" format="webp" loading="lazy" provider="freshapi" :src="buildImagePath(post.cover.url)" :alt="post.cover.alt ? post.cover.alt : 'обложка статьи ' + post.title"
                 class="rounded-lg shadow-xl aspect-video mt-4 w-full" />
         </div>
 
@@ -35,7 +35,7 @@ import LexicalRender from '../shared/LexicalRender.vue';
 import { pages } from '~/data/pages.js';
 import type { PostDoc } from '~/types/post.types';
 
-const { buildApiUrl } = useApiBuilder();
+const { buildApiUrl, buildImagePath } = useApiBuilder();
 
 const props = defineProps<{
     post: PostDoc
