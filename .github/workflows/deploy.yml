@@ -175,6 +175,10 @@ jobs:
               cp "$BACK/.env" "$BACK_NEW/.env"
             fi
 
+            if [ -d "$BACK/media" ]; then
+              cp -R "$BACK/media" "$BACK_NEW/media"
+            fi
+
             rm -rf "$BACK_PREV" "$FRONT_PREV"
             [ -d "$BACK" ] && mv "$BACK" "$BACK_PREV"
             [ -d "$FRONT" ] && mv "$FRONT" "$FRONT_PREV"
