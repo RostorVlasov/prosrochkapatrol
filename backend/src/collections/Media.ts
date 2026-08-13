@@ -16,7 +16,6 @@ export const Media: CollectionConfig = {
   },
   upload: {
     staticDir: process.env.MEDIA_DIR || 'public/media',
-    staticURL: '/media',
   },
   access: {
     create: () => true,
