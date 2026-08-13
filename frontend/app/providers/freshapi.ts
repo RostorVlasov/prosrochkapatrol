@@ -1,10 +1,10 @@
 import { joinURL } from 'ufo'
-import type { ProviderGetImage } from '@nuxt/image'
+import { defineProvider } from '@nuxt/image/runtime'
 
-export const getImage: ProviderGetImage = (src, { baseURL } = {}) => {
-  return {
-    url: joinURL(baseURL || 'https://api.freshcheckastra.ru', src),
-  }
-}
-
-export default { getImage }
+export default defineProvider({
+  getImage: (src, { baseURL } = {}) => {
+    return {
+      url: joinURL(baseURL || 'https://api.freshcheckastra.ru', src),
+    }
+  },
+})

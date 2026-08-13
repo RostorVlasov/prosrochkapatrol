@@ -14,9 +14,7 @@ export const Media: CollectionConfig = {
   admin: {
     hidden: ({ user }) => user?.role !== 'admin',
   },
-  upload: {
-    staticDir: process.env.MEDIA_DIR || 'public/media',
-  },
+  upload: true,
   access: {
     create: () => true,
     read: () => true,

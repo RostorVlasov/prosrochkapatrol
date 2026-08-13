@@ -99,7 +99,7 @@ const filteredBadges = computed(() => {
     const filtered = query
         ? byTab.filter(badge => {
             const code = (badge.code || '').toLowerCase()
-            const name = (badge.ownerName?.name || '').toLowerCase()
+            const name = badge.ownerName?.name.toLowerCase() || ''
             return code.includes(query) || name.includes(query)
         })
         : byTab
