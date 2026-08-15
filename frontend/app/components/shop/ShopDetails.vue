@@ -272,7 +272,7 @@
   import type { ShopDoc } from '~/types/shops.types'
 
   const props = defineProps<{ shop: ShopDoc }>()
-  const { buildApiUrl } = useApiBuilder()
+  const { buildApiUrl, buildImagePath } = useApiBuilder()
 
   const reasonTypeMapping = computed(() => {
     if (props.shop.reason_type === 'planned') {
