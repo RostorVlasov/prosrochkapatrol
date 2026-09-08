@@ -87,7 +87,7 @@
                         target="_blank"
                         rel="noopener noreferrer"
                         :aria-label="link.label"
-                        class="group flex h-9 w-9 items-center justify-center rounded-lg border border-beige-100 dark:border-gray-700 bg-white/70 dark:bg-gray-800/40 hover:border-beige-300 dark:hover:border-beige-500/40 transition-all duration-300"
+                        class="group flex h-9 w-9 items-center justify-center rounded-lg border border-beige-100 dark:border-gray-700 bg-white/70 dark:bg-gray-800/40 hover:border-beige-300 dark:hover:border-gray-500 transition-colors duration-300"
                     >
                         <AppIcon
                             :name="link.icon"
@@ -119,6 +119,9 @@
                 </p>
             </div>
         </div>
+
+        <!-- AI Chat Widget -->
+        <script async src="https://timeweb.cloud/api/v1/cloud-ai/agents/c96296fd-0a9f-4754-ac83-e6154e851851/embed.js?collapsed=true"></script>
     </footer>
 </template>
 
