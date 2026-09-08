@@ -119,8 +119,6 @@
                 </p>
             </div>
         </div>
-
-        <!-- AI Chat Widget -->
         <script async src="https://timeweb.cloud/api/v1/cloud-ai/agents/c96296fd-0a9f-4754-ac83-e6154e851851/embed.js?collapsed=true"></script>
     </footer>
 </template>
