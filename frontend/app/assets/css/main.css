@@ -201,12 +201,20 @@ html {
   }
 
   /* Поднимем виджет timeweb (чат/агент) выше, чтобы он не перекрывался мобильным нижним меню */
+  /* Сначала целимся конкретно в агент-виджет */
+  .agent-chat-widget,
+  .agent-chat-widget .floating-button-container,
+  .agent-chat-widget .floating-button,
   iframe[src*="timeweb.cloud"],
   .timeweb-agent-embed,
   .timeweb-embed,
   [class*="timeweb"],
-  [id*="timeweb"],
-  div[style*="position:fixed"][style*="bottom:0px"] {
+  [id*="timeweb"] {
+    /* Устанавливаем inset: top right bottom left */
+    inset: auto 30px calc(72px + env(safe-area-inset-bottom)) auto !important;
+    right: 30px !important;
+    left: auto !important;
+    top: auto !important;
     bottom: calc(72px + env(safe-area-inset-bottom)) !important;
   }
 
