@@ -199,4 +199,15 @@ html {
     right: 0.75rem !important;
     top: 0.75rem !important;
   }
+
+  /* Поднимем виджет timeweb (чат/агент) выше, чтобы он не перекрывался мобильным нижним меню */
+  iframe[src*="timeweb.cloud"],
+  .timeweb-agent-embed,
+  .timeweb-embed,
+  [class*="timeweb"],
+  [id*="timeweb"],
+  div[style*="position:fixed"][style*="bottom:0px"] {
+    bottom: calc(72px + env(safe-area-inset-bottom)) !important;
+  }
+
 }
