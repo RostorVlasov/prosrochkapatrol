@@ -105,7 +105,7 @@
                 <div class="w-max">
                     <Mervik />
                 </div>
-                <p class="max-w-4xl text-[11px] text-gray-400 dark:text-beige-100/40 md:text-right">*Термины «проверка», «проверяющий», «проверили» и п�[...]
+                <p class="max-w-4xl text-[11px] text-gray-400 dark:text-beige-100/40 md:text-right">*Термины «проверка», «проверяющий», «проверили» и подобные используются как синонимы «общественного мониторинга» и не наделяют участников властными или надзорными полномочиями.</p>
                 <p
                     class="max-w-4xl text-[11px] leading-relaxed text-gray-400 dark:text-beige-100/40 md:text-right"
                 >
