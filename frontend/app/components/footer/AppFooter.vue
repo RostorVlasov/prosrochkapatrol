@@ -75,7 +75,7 @@
                             </span>
                             
                         </a>
-                        <NuxtLink class="text-gray-500 text-xs transition-colors duration-300 dark:text-beige-100/60 hover:text-beige-500" to="/privacy">Политика конфиденциальности</NuxtLink>
+                        <NuxtLink class="text-gray-500 text-xs transition-colors duration-300 dark:text-beige-100/60 hover:text-beige-500" to="/privacy">Политика конфиденциаль[...]
                     </div>
                 </div>
 
@@ -87,7 +87,7 @@
                         target="_blank"
                         rel="noopener noreferrer"
                         :aria-label="link.label"
-                        class="group flex h-9 w-9 items-center justify-center rounded-lg border border-beige-100 dark:border-gray-700 bg-white/70 dark:bg-gray-800/40 hover:border-beige-300 dark:hover:border-gray-500 transition-colors duration-300"
+                        class="group flex h-9 w-9 items-center justify-center rounded-lg border border-beige-100 dark:border-gray-700 bg-white/70 dark:bg-gray-800/40 hover:border-beige-300 dark:ho[...]"
                     >
                         <AppIcon
                             :name="link.icon"
@@ -105,7 +105,7 @@
                 <div class="w-max">
                     <Mervik />
                 </div>
-                <p class="max-w-4xl text-[11px] text-gray-400 dark:text-beige-100/40 md:text-right">*Термины «проверка», «проверяющий», «проверили» и подобные используются как синонимы «общественного мониторинга» и не наделяют участников властными или надзорными полномочиями.</p>
+                <p class="max-w-4xl text-[11px] text-gray-400 dark:text-beige-100/40 md:text-right">*Термины «проверка», «проверяющий», «проверили» и п�[...]
                 <p
                     class="max-w-4xl text-[11px] leading-relaxed text-gray-400 dark:text-beige-100/40 md:text-right"
                 >
@@ -175,5 +175,42 @@ const contactDetails = [
     { label: 'Телефон', value: PHONE_PLACEHOLDER, href: PHONE },
     { label: 'ВКонтакте', value: VK_FOUNDER_PLACEHOLDER, href: VK_FOUNDER },
 ]
+
+// JS-fix: ждём появления .agent-chat-widget и применяем стили с приоритетом important
+if (process.client) {
+  const applyAgentFix = () => {
+    try {
+      const el = document.querySelector('.agent-chat-widget') as HTMLElement | null
+      if (!el) return false
+
+      // Установка необходимых inline-стилей с приоритетом important
+      el.style.setProperty('inset', 'auto 30px calc(110px + env(safe-area-inset-bottom)) auto', 'important')
+      el.style.setProperty('bottom', 'calc(110px + env(safe-area-inset-bottom))', 'important')
+      el.style.setProperty('right', '30px', 'important')
+      el.style.setProperty('left', 'auto', 'important')
+      el.style.setProperty('z-index', '99999', 'important')
+
+      const btn = el.querySelector('.floating-button') as HTMLElement | null
+      if (btn) btn.style.setProperty('transform', 'translateY(-6px)', 'important')
+
+      return true
+    } catch (e) {
+      return false
+    }
+  }
+
+  if (!applyAgentFix()) {
+    const mo = new MutationObserver(() => {
+      if (applyAgentFix()) mo.disconnect()
+    })
+    mo.observe(document.body, { childList: true, subtree: true })
+
+    // backup — интервал на случай, если MutationObserver не поймал момент
+    let tries = 0
+    const interval = setInterval(() => {
+      if (applyAgentFix() || ++tries > 12) clearInterval(interval)
+    }, 500)
+  }
+}
 
 </script>
