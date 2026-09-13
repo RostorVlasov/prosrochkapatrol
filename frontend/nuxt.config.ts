@@ -37,17 +37,23 @@ export default defineNuxtConfig({
     },
   },
 
+  devServer: {
+    port: 3000,
+    host: '0.0.0.0',
+  },
+
   nitro: {
+    preset: 'node-server',
     compressPublicAssets: true,
   },
 
   css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
-    apiUrl: 'http://127.0.0.1:3333',
+    apiUrl: process.env.API_URL || 'https://api.freshcheckastra.ru',
     public: {
       vapidPublicKey: process.env.NUXT_PUBLIC_VAPID_PUBLIC_KEY || 'BMHO-gRixKt-wtUNNCStL1lKUO6GFimvunf6phoDlUwbs98xzTPo-WeN67CUXgEcA8Jag7bn6ZEtvnR94wwQvqg',
-      API_URL: 'https://api.freshcheckastra.ru',
+      API_URL: process.env.NUXT_PUBLIC_API_URL || 'https://api.freshcheckastra.ru',
     }
   },
 

@@ -1,0 +1,8 @@
+{
+  "name": "FreshCheck",
+  "description": "Общественный мониторинг качества товаров и торговых точек в Астрахани",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

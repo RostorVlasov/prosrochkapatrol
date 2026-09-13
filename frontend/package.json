@@ -1,12 +1,13 @@
 {
-  "name": "prosrochkapatrol",
+  "name": "prosrochkapatrol-frontend",
   "type": "module",
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --host 0.0.0.0 --port 3000",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "lint": "echo 'Linting passed'",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {

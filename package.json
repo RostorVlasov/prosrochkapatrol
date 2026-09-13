@@ -1,0 +1,15 @@
+{
+  "name": "prosrochkapatrol-root",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=prosrochkapatrol-frontend",
+    "build": "npm run build --workspace=prosrochkapatrol-frontend",
+    "start": "node frontend/.output/server/index.mjs",
+    "lint": "npm run lint --workspace=prosrochkapatrol-frontend"
+  }
+}
