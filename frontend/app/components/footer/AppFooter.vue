@@ -94,12 +94,19 @@
                 </p>
             </div>
         </div>
-
-        <script async src="https://timeweb.cloud/api/v1/cloud-ai/agents/c96296fd-0a9f-4754-ac83-e6154e851851/embed.js?collapsed=true"></script>
     </footer>
 </template>
 
 <script lang="ts" setup>
+useHead({
+  script: [
+    {
+      src: 'https://timeweb.cloud/api/v1/cloud-ai/agents/c96296fd-0a9f-4754-ac83-e6154e851851/embed.js?collapsed=true',
+      async: true
+    }
+  ]
+})
+
 import { BADGES_DOC_URL, DECLARATION_DOC_URL, PUBLIC_POLICY_DOC_URL, REGULATION_DOC_URL } from '~/data/docs'
 import {
   TELEGRAM_FOUNDER,
