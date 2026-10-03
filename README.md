@@ -1,25 +1,39 @@
-# 🦊 FreshCheck — Общественный мониторинг качества товаров
+<p align="center">
+  <img src="frontend/public/LogoFreshCheckOsnSVG.svg" width="120" alt="FreshCheck" />
+</p>
+<h1 align="center">FreshCheck</h1>
+<p align="center">Платформа гражданского мониторинга качества товаров</p>
+<p align="center">
+  <a href="https://freshcheckastra.ru/">Сайт</a> ·
+  <a href="https://rumiscola.ru/projects/freshcheck">Кейс разработки</a> ·
+  <a href="../../releases">Релизы</a> ·
+  <a href="CONTRIBUTING.md">Предложить изменение</a>
+</p>
 
-Платформа для автоматизации работы активистов проекта **FreshCheck**. Система позволяет:
-- 📋 Фиксировать нарушения (продажу товаров с истёкшим сроком годности)
-- 🏪 Вести базу данных торговых точек
-- 📊 Формировать публичные отчёты по результатам проверок
-- 🔐 Управлять данными через удобный административный интерфейс
+<p align="center">
+  <img src="https://img.shields.io/badge/Nuxt-4-00DC82?style=flat-square&logo=nuxt" alt="Nuxt 4" />
+  <img src="https://img.shields.io/badge/Vue-3-42b883?style=flat-square&logo=vuedotjs" alt="Vue 3" />
+  <img src="https://img.shields.io/badge/Payload-CMS-111111?style=flat-square" alt="Payload CMS" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+</p>
 
----
+## О проекте
 
-## 📋 Оглавление
+FreshCheck объединяет публичный сайт и административную систему. Посетители знакомятся с результатами проверок торговых точек, материалами проекта и могут отправить обращение. Команда управляет магазинами, публикациями, медиа и обращениями через Payload CMS.
 
-- [Стек технологий](#-стек-технологий)
-- [Архитектура проекта](#-архитектура-проекта)
-- [Локальный запуск](#-локальный-запуск)
-- [Структура репозитория](#-структура-репозитория)
-- [Переменные окружения](#-переменные-окружения)
-- [Разработка](#-разработка)
+| Часть | Что реализовано |
+|---|---|
+| Публичный сайт | Презентация проекта, торговые точки, новости, документы, форма обращения |
+| Контент и данные | Семь основных коллекций: пользователи, медиа, публикации, магазины, обращения, рубрики, бейджи |
+| Интерфейс | Фирменная айдентика, адаптивные страницы, компоненты и состояния |
+| Автоматизация | GitHub Actions, сборка production-артефактов, деплой и проверка сервисов |
 
----
+## Авторы
 
-## 🛠️ Стек технологий
+**Роман Трошин / Студия Велрома** — айдентика, UI/UX и ключевые публичные страницы фронтенда.  
+**Борис Степаненко** — архитектура бэкенда, Payload CMS, база данных, инфраструктура и вспомогательная фронтенд-логика.
+
+## Стек технологий
 
 | Слой | Технология | Версия |
 |---|---|---|
@@ -40,7 +54,7 @@
 
 ---
 
-## 🏗️ Архитектура проекта
+## Архитектура проекта
 
 Проект использует **монорепо** структуру с отдельными фронтенд и бэкенд приложениями:
 
@@ -91,7 +105,7 @@ prosrochkapatrol/
 
 ---
 
-## 🚀 Локальный запуск
+## Локальный запуск
 
 ### Требования
 
@@ -190,7 +204,7 @@ pnpm run dev
 
 ---
 
-## 📁 Структура репозитория
+## Структура репозитория
 
 ```
 prosrochkapatrol/
@@ -233,27 +247,27 @@ prosrochkapatrol/
 
 ---
 
-## 🔐 Переменные окружения
+## Переменные окружения
 
 ### Backend (Payload CMS)
 
 | Переменная | Описание | Пример | Обязательна |
 |---|---|---|---|
-| `DATABASE_URI` | URI MongoDB | `mongodb://127.0.0.1/prosrochkapatrol` | ✅ |
-| `PAYLOAD_SECRET` | Секретный ключ для CMS | `your_secret_key` | ✅ |
-| `NODE_ENV` | Окружение (development/production) | `development` | ❌ |
-| `SMTP_HOST` | Хост SMTP сервера | `smtp.gmail.com` | ❌ |
-| `SMTP_PORT` | Порт SMTP | `587` | ❌ |
-| `SMTP_USER` | Пользователь SMTP | `your_email@gmail.com` | ❌ |
-| `SMTP_PASS` | Пароль SMTP | `your_app_password` | ❌ |
+| `DATABASE_URI` | URI MongoDB | `mongodb://127.0.0.1/prosrochkapatrol` | |
+| `PAYLOAD_SECRET` | Секретный ключ для CMS | `your_secret_key` | |
+| `NODE_ENV` | Окружение (development/production) | `development` | |
+| `SMTP_HOST` | Хост SMTP сервера | `smtp.gmail.com` | |
+| `SMTP_PORT` | Порт SMTP | `587` | |
+| `SMTP_USER` | Пользователь SMTP | `your_email@gmail.com` | |
+| `SMTP_PASS` | Пароль SMTP | `your_app_password` | |
 
 ### Frontend (Nuxt)
 
 | Переменная | Описание | Пример | Обязательна |
 |---|---|---|---|
-| `NUXT_PUBLIC_API_URL` | URL бэкенд API | `http://localhost:3000` | ❌ |
-| `NUXT_HOST` | Хост фронтенда | `localhost` | ❌ |
-| `NUXT_PORT` | Порт фронтенда | `3001` | ❌ |
+| `NUXT_PUBLIC_API_URL` | URL бэкенд API | `http://localhost:3000` | |
+| `NUXT_HOST` | Хост фронтенда | `localhost` | |
+| `NUXT_PORT` | Порт фронтенда | `3001` | |
 
 ### Production
 
@@ -279,7 +293,7 @@ SMTP_PASS=your_app_password
 
 ---
 
-## 💻 Разработка
+## Разработка
 
 ### Доступные команды
 
@@ -384,17 +398,13 @@ pnpm run generate:types
 
 ---
 
-## 🤝 Контрибьютинг
+## Предложения изменений
 
-При разработке пожалуйста:
-1. Создавайте отдельные ветки для новых фич
-2. Пишите понятные commit messages
-3. Проходите все тесты перед PR (`pnpm run test`)
-4. Обновляйте эту документацию при необходимости
+Создайте форк, внесите изменения в свою копию и откройте pull request. Принятие изменений выполняет владелец репозитория. Подробнее: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
-## 📄 Лицензия
+## Лицензия
 
 Copyright (c) 2026 Roman Troshin, Boris Stepanenko (FreshCheck). All rights reserved.
 
@@ -402,7 +412,7 @@ Copyright (c) 2026 Roman Troshin, Boris Stepanenko (FreshCheck). All rights rese
 
 ---
 
-## 📞 Контакты
+## Контакты
 
 Проект: **FreshCheck** — Общественный мониторинг качества товаров
 
@@ -410,4 +420,4 @@ Copyright (c) 2026 Roman Troshin, Boris Stepanenko (FreshCheck). All rights rese
 
 ---
 
-**Последнее обновление**: май 2026
+**Документация обновлена:** 3 октября 2026
