@@ -15,8 +15,8 @@
                 class="text-sm sm:text-base md:text-xl text-gray-500 dark:text-beige-100/80 leading-relaxed mb-12 max-w-2xl mx-auto">
                 Мы — <span class="font-bold text-slate dark:text-white">независимая гражданская инициатива жителей
                     Астрахани</span>.
-                Проводим общественный мониторинг, информируем администрацию о недочётах и помогаем защищать права
-                потребителей.
+                Ранее мы проводили общественный мониторинг магазинов. Сейчас выезды приостановлены, но мы
+                продолжаем помогать с подготовкой обращений по вопросам защиты прав потребителей.
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -26,12 +26,16 @@
                         class="w-5 h-5 transition-transform duration-300 group-hover:translate-y-0.5" />
                     Как это работает
                 </button>
-                <a href="/contact"
-                    class="px-8 py-4 bg-beige-500 hover:bg-beige-600 text-white rounded-xl font-bold text-base sm:text-lgtransition-colors duration-300 shadow-lg shadow-beige-500/30 flex items-center justify-center gap-2">
+                <a :href="TELEGRAM_FOUNDER" target="_blank" rel="noopener noreferrer"
+                    class="px-8 py-4 bg-beige-500 hover:bg-beige-600 text-white rounded-xl font-bold text-base sm:text-lg transition-colors duration-300 shadow-lg shadow-beige-500/30 flex items-center justify-center gap-2">
                     <AppIcon name="paperAirplane" class="w-5 h-5" />
-                    Предложить магазин
+                    Помощь с обращением
                 </a>
             </div>
         </div>
     </section>
 </template>
+
+<script setup lang="ts">
+import { TELEGRAM_FOUNDER } from '~/data/social'
+</script>

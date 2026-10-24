@@ -14,7 +14,8 @@ export const Complaints: CollectionConfig = {
     plural: 'Жалобы',
   },
   access: {
-    create: () => true,
+    // Temporarily disable public complaint submissions without removing stored reports.
+    create: ({ req: { user } }) => user?.role === 'admin',
     read: ({ req: { user } }) => user?.role === 'admin' || user?.role === 'inspector' || user?.role === 'editor',
     update: ({ req: { user } }) => user?.role === 'admin',
     delete: ({ req: { user } }) => user?.role === 'admin',

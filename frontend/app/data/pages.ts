@@ -6,7 +6,7 @@ type PageItem = {
     icon: IconName;
 };
 
-type SidebarKeys = 'home' | 'news' | 'productReview' | 'contact';
+type SidebarKeys = 'home' | 'news' | 'productReview';
 type OtherKeys = 'badges' | 'docs' | 'faq' | 'forStores' | 'privacy' | 'press' | 'partners' | 'media'
 // | 'report'
 
@@ -29,11 +29,6 @@ export const pages: {
             url: '/product-review',
             name: 'Проверенные* магазины',
             icon: "shops",
-        },
-        contact: {
-            url: '/contact',
-            name: 'Сообщить о нарушении',
-            icon: 'megaphone',
         },
     },
     other: {

@@ -1,22 +1,23 @@
 <template>
-    <section class="py-24 text-center">
-        <div class="p-6 pb-12 rounded-3xl overflow-hidden relative bg-beige-100/50 dark:bg-slate">
-            <div class="relative z-10">
-                <AppIcon name="chatBubble" class="size-12 mx-auto mb-4 text-beige-500" />
-                <h3 class="text-lg sm:text-2xl font-bold mb-2 text-slate dark:text-white">Заметили что-то не то?</h3>
-                <p class="text-gray-500 text-xs sm:text-base dark:text-beige-100/70 max-w-xl mx-auto mb-8">
-                    Поделитесь наблюдением — мы заглянем в магазин, поговорим с администрацией и опубликуем честный
-                    обзор.
-                </p>
-                <div class="flex flex-col gap-4 justify-center items-center">
-                    <Contacts />
-                    <NuxtLink to="/contact"
-                        class="px-8 py-4 bg-beige-500 hover:bg-beige-600 text-white rounded-xl font-bold text-xs sm:text-lg transition-colors duration-300 shadow-lg shadow-beige-500/30 flex items-center justify-center gap-2">
-                        <AppIcon name="paperAirplane" class="w-5 h-5" />
-                        Отправить жалобу с сайта
-                    </NuxtLink>
-                </div>
-            </div>
-        </div>
-    </section>
+  <section class="py-24 text-center">
+    <div class="relative overflow-hidden rounded-3xl bg-beige-100/50 p-6 pb-12 dark:bg-slate">
+      <div class="relative z-10">
+        <AppIcon name="chatBubble" class="mx-auto mb-4 size-12 text-beige-500" />
+        <h3 class="mb-2 text-lg font-bold text-slate dark:text-white sm:text-2xl">Нужна помощь с обращением?</h3>
+        <p class="mx-auto mb-8 max-w-xl text-xs text-gray-500 dark:text-beige-100/70 sm:text-base">
+          Сейчас мониторинг магазинов и приём заявок через сайт приостановлены.
+          Однако мы продолжаем помогать с подготовкой обращений в уполномоченные органы.
+        </p>
+        <a :href="TELEGRAM_FOUNDER" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center justify-center gap-2 rounded-xl bg-beige-500 px-8 py-4 text-xs font-bold text-white shadow-lg shadow-beige-500/30 transition-colors duration-300 hover:bg-beige-600 sm:text-lg">
+          <AppIcon name="telegram" class="size-5" />
+          Написать нам в Telegram
+        </a>
+      </div>
+    </div>
+  </section>
 </template>
+
+<script setup lang="ts">
+import { TELEGRAM_FOUNDER } from '~/data/social'
+</script>

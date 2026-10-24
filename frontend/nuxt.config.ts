@@ -12,7 +12,8 @@ export default defineNuxtConfig({
   routeRules: {
     '/': { isr: 3600 },
     '/badges/**': { isr: 3600 },
-    '/contact/**': { isr: 3600 },
+    '/contact': { isr: false, headers: { 'cache-control': 'no-store' } },
+    '/contact/**': { isr: false, headers: { 'cache-control': 'no-store' } },
     '/docs/**': { isr: 3600 },
     '/faq/**': { isr: 3600 },
     '/for-stores/**': { isr: 3600 },
@@ -96,6 +97,7 @@ export default defineNuxtConfig({
   },
 
   sitemap: {
+    exclude: ['/contact', '/contact/**'],
     sources: ['/api/__sitemap__/urls'],
     cacheMaxAgeSeconds: 60 * 60,
   },
