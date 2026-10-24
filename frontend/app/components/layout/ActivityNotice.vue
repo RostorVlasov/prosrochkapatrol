@@ -8,7 +8,7 @@
         <p class="mt-0.5 text-[#735a3b] dark:text-amber-100/80">
           Сейчас мы не проводим общественный мониторинг и не принимаем обращения через сайт.
           При этом продолжаем помогать с подготовкой обращений.
-          <a :href="TELEGRAM_FOUNDER" target="_blank" rel="noopener noreferrer"
+          <a href="https://freshcheckastra.ru/docs/#contacts"
             class="whitespace-nowrap font-semibold text-amber-900 underline underline-offset-2 hover:no-underline dark:text-amber-200">
             Связаться с нами
           </a>
@@ -18,6 +18,3 @@
   </section>
 </template>
 
-<script setup lang="ts">
-import { TELEGRAM_FOUNDER } from '~/data/social'
-</script>
