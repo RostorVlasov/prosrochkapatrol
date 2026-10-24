@@ -49,7 +49,7 @@
       </button>
     </header>
 
-    <div class="pt-16 lg:ml-56 lg:pt-0">
+    <div class="relative z-30 pt-16 lg:ml-56 lg:pt-0">
       <ActivityNotice />
     </div>
 

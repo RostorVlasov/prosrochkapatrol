@@ -1,5 +1,5 @@
 export const TELEGRAM_CHANNEL = 'tg://resolve?domain=prosrochka_patrol'
-export const TELEGRAM_FOUNDER = 'tg://resolve?domain=FreshCheckAstraAdmin'
+export const TELEGRAM_FOUNDER = 'https://t.me/FreshCheckAstraAdmin'
 export const VK_GROUP = 'https://vk.com/prosrochka_patrol'
 export const VK_FOUNDER = 'https://vk.com/id1116640119'
 // export const INSTAGRAM = 'https://instagram.com/freshcheckastra/'
