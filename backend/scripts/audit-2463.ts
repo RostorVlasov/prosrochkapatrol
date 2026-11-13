@@ -39,8 +39,7 @@ async function main(): Promise<void> {
   if (!process.env.DATABASE_URI) throw new Error('DATABASE_URI is required for read-only CMS audit')
   const payload = await getPayload({ config })
   const hits: Hit[] = []
-  try {
-    for (const collection of ['posts', 'shops'] as const) {
+  for (const collection of ['posts', 'shops'] as const) {
       let page = 1
       for (;;) {
         const result = await payload.find({ collection, limit: 100, page, depth: 0, overrideAccess: true })
@@ -64,10 +63,7 @@ async function main(): Promise<void> {
       notice: 'Read-only findings. Preserve accurate historical legal references; current legal guidance uses Resolution No. 657, paragraph 2 of the Rules.',
       hits,
     }, null, 2))
-  } finally {
-    // Intentionally stop the one-off CLI even when Payload keeps DB handles open.
-    process.exitCode = 0
-    setImmediate(() => process.exit(0))
-  }
+  // Payload may retain database connections in this standalone process.
+  process.exit(0)
 }
 main().catch((error) => { console.error(error); process.exit(1) })
